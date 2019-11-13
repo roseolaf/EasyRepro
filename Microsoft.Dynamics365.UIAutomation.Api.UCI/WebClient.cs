@@ -222,7 +222,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                 driver.SwitchTo().DefaultContent();
 
                 //Handle left hand Nav
-                if (driver.WaitUntilVisible(By.XPath(AppElements.Xpath[AppReference.Navigation.AppMenuButton])))
+                if (driver.WaitUntilVisible(By.XPath(AppElements.Xpath[AppReference.Navigation.AppMenuButton]), TimeSpan.FromSeconds(1)))
                 {
                     driver.ClickWhenAvailable(By.XPath(AppElements.Xpath[AppReference.Navigation.AppMenuButton]));
 
