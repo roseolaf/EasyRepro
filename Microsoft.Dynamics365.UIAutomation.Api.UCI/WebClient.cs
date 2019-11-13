@@ -214,7 +214,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
         #region Navigation
         internal BrowserCommandResult<bool> OpenApp(string appName, int thinkTime = Constants.DefaultThinkTime)
         {
-            this.Browser.ThinkTime(thinkTime);
+            //this.Browser.ThinkTime(thinkTime);
 
             return this.Execute(GetOptions("Open App"), driver =>
             {
@@ -222,7 +222,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                 driver.SwitchTo().DefaultContent();
 
                 //Handle left hand Nav
-                if (driver.HasElement(By.XPath(AppElements.Xpath[AppReference.Navigation.AppMenuButton])))
+                if (driver.WaitUntilVisible(By.XPath(AppElements.Xpath[AppReference.Navigation.AppMenuButton])))
                 {
                     driver.ClickWhenAvailable(By.XPath(AppElements.Xpath[AppReference.Navigation.AppMenuButton]));
 
@@ -252,7 +252,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                 }
 
                 //Handle main.aspx?ForcUCI=1
-                if (driver.HasElement(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppContainer])))
+                if (driver.WaitUntilVisible(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppContainer])))
                 {
                     var tileContainer = driver.FindElement(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppContainer]));
                     tileContainer.FindElement(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppTile].Replace("[NAME]", appName))).Click(true);
@@ -270,7 +270,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                     //Switch to frame 0
                     driver.SwitchTo().Frame(0);
 
-                    if (driver.HasElement(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppContainer])))
+                    if (driver.WaitUntilVisible(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppContainer])))
                     {
                         var tileContainer = driver.FindElement(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppContainer]));
                         tileContainer.FindElement(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppTile].Replace("[NAME]", appName))).Click(true);
