@@ -222,7 +222,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                 driver.SwitchTo().DefaultContent();
 
                 //Handle left hand Nav
-                if (driver.WaitUntilVisible(By.XPath(AppElements.Xpath[AppReference.Navigation.AppMenuButton]),TimeSpan.FromSeconds(1)))
+                if (driver.WaitUntilVisible(By.XPath(AppElements.Xpath[AppReference.Navigation.AppMenuButton]),TimeSpan.FromSeconds(2)))
                 {
                     driver.ClickWhenAvailable(By.XPath(AppElements.Xpath[AppReference.Navigation.AppMenuButton]));
 
@@ -252,7 +252,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                 }
 
                 //Handle main.aspx?ForcUCI=1
-                if (driver.WaitUntilVisible(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppContainer])))
+                if (driver.WaitUntilVisible(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppContainer]), TimeSpan.FromSeconds(2)))
                 {
                     var tileContainer = driver.FindElement(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppContainer]));
                     tileContainer.FindElement(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppTile].Replace("[NAME]", appName))).Click(true);
@@ -270,7 +270,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                     //Switch to frame 0
                     driver.SwitchTo().Frame(0);
 
-                    if (driver.WaitUntilVisible(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppContainer])))
+                    if (driver.WaitUntilVisible(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppContainer]), TimeSpan.FromSeconds(2)))
                     {
                         var tileContainer = driver.FindElement(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppContainer]));
                         tileContainer.FindElement(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppTile].Replace("[NAME]", appName))).Click(true);
