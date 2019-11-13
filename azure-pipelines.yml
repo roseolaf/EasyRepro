@@ -14,6 +14,9 @@ variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
+  Major: '1'
+  Minor: '0'
+  Patch: '0'
 
 steps:
 - task: NuGetToolInstaller@1
@@ -32,11 +35,6 @@ steps:
   inputs:
     platform: '$(buildPlatform)'
     configuration: '$(buildConfiguration)'
-
-variables:
-  Major: '1'
-  Minor: '0'
-  Patch: '0'
 
 - task: NuGetCommand@2
   inputs:
