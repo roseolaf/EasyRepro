@@ -16,7 +16,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         /// The default amount of time to wait between retrying command executions if they fail.
         /// Value is expressed in miliseconds.
         /// </summary>
-        public const int DefaultRetryDelay = 5000;
+        public const int DefaultRetryDelay = 10000;
 
         /// <summary>
         /// The default number of retry attempts for a command execution if it fails.

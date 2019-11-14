@@ -1898,7 +1898,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
 
         private void SetLookUpByValue(IWebDriver driver, LookupItem control, int index)
         {
-            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(10));
+            var wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
             wait.Until(d => d.FindElement(By.XPath(AppElements.Xpath[AppReference.Entity.LookupFieldNoRecordsText].Replace("[NAME]", control.Name) + "|" +
                 AppElements.Xpath[AppReference.Entity.LookupFieldResultList].Replace("[NAME]", control.Name))));
 
