@@ -94,19 +94,21 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             }
 
 
-            options.AddArgument("--proxy-auto-detect");
+            //options.AddArgument("--proxy-auto-detect");
 
             // Does not work
             //options.AddArgument("--proxy-pac-url=\"http://autoproxy.draeger.com/wpad.dat\"");
 
 
-            // Does not work at all
-            //var p = new Proxy
-            //{
-            //    ProxyAutoConfigUrl = @"http://autoproxy.draeger.com/wpad.dat",
-            //    IsAutoDetect = true
-            //};
-            //options.Proxy = p;
+            //Does not work at all
+           var p = new Proxy
+           {
+               IsAutoDetect = true,
+               SocksProxy = "socks5://185.46.212.91:80",
+               SocksUserName = "tmp-QA-TA-001",
+               SocksPassword = "DraegerQA01"
+           };
+            options.Proxy = p;
 
             return options;
         }
