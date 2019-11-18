@@ -92,29 +92,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             {
                 options.AddArgument("--user-agent=" + UserAgentValue);
             }
-
-
-            //options.AddArgument("--proxy-auto-detect");
-
-            // Does not work
-            //options.AddArgument("--proxy-pac-url=\"http://autoproxy.draeger.com/wpad.dat
-
-            options.AddArgument("ignore-certificate-errors");
-            options.AddArgument("--proxy-server=\"185.46.212.91:80\"");
-            options.AddArgument("--host-resolver-rules=\"MAP * ~NOTFOUND , EXCLUDE 185.46.212.91\"");
-
-
-            //Does not work at all
-            //var p = new Proxy
-            //{
-            //    SocksProxy = "185.46.212.91:80",
-            //    SocksUserName = "tmp-QA-TA-001",
-            //    SocksPassword = "DraegerQA01",
-
-
-            //};
-            //options.Proxy = p;
-
+            
             return options;
         }
         
