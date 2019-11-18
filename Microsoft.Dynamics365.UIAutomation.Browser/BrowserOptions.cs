@@ -103,7 +103,6 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             //Does not work at all
            var p = new Proxy
            {
-               IsAutoDetect = true,
                SocksProxy = "socks5://185.46.212.91:80",
                SocksUserName = "tmp-QA-TA-001",
                SocksPassword = "DraegerQA01"
