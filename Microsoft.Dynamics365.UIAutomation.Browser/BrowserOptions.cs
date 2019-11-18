@@ -92,10 +92,15 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             {
                 options.AddArgument("--user-agent=" + UserAgentValue);
             }
-             
-            Proxy p = new Proxy();
-            p.ProxyAutoConfigUrl = "http://autoproxy.draeger.com/wpad.dat";
-            options.Proxy = p;
+
+            options.AddArgument("--proxy-pac-url=\"http://autoproxy.draeger.com/wpad.dat\"");
+
+            //var p = new Proxy
+            //{
+            //    ProxyAutoConfigUrl = @"http://autoproxy.draeger.com/wpad.dat",
+            //    IsAutoDetect = true
+            //};
+            //options.Proxy = p;
 
             return options;
         }
