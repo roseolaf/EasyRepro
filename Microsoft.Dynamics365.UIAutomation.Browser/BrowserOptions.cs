@@ -101,7 +101,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
             options.AddArgument("ignore-certificate-errors");
             options.AddArgument("--proxy-server=\"185.46.212.91:80\"");
-            options.AddArgument("--host - resolver - rules = \"MAP * ~NOTFOUND , EXCLUDE 185.46.212.91\"");
+            options.AddArgument("--host-resolver-rules=\"MAP * ~NOTFOUND , EXCLUDE 185.46.212.91\"");
 
 
             //Does not work at all
