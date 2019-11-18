@@ -100,15 +100,17 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             //options.AddArgument("--proxy-pac-url=\"http://autoproxy.draeger.com/wpad.dat
 
             options.AddArgument("ignore-certificate-errors");
-            options.AddArgument("--proxy-server=\"http://tmp-QA-TA-001:DraegerQA01@185.46.212.91:80\"");
+            options.AddArgument("--proxy-server=\"socks5://tmp-QA-TA-001:DraegerQA01@185.46.212.91:80\"");
 
 
             //Does not work at all
             //var p = new Proxy
             //{
-            //    SocksProxy = "socks5://185.46.212.91:80",
+            //    SocksProxy = "185.46.212.91:80",
             //    SocksUserName = "tmp-QA-TA-001",
-            //    SocksPassword = "DraegerQA01"
+            //    SocksPassword = "DraegerQA01",
+                
+                
             //};
             //options.Proxy = p;
 
