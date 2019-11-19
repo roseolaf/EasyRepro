@@ -94,9 +94,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                 options.AddArgument("--user-agent=" + UserAgentValue);
             }
 
-            var RunningPath = AppDomain.CurrentDomain.BaseDirectory;
-            var FileName = $"{Path.GetFullPath(Path.Combine(RunningPath, @"..\..\"))}Resources\\AutoAuthProxy.crx";
-            options.AddExtension(FileName);
+            options.AddExtension("C:/Selenium/AutoAuthProxy.crx");
 
             return options;
         }

@@ -61,16 +61,6 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser.Properties {
         }
         
         /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
-        /// </summary>
-        public static byte[] AutoAuthProxy {
-            get {
-                object obj = ResourceManager.GetObject("AutoAuthProxy", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Sucht eine lokalisierte Zeichenfolge, die // Copyright (c) Microsoft Corporation. All rights reserved.
         ///// Licensed under the MIT license.
         ///
