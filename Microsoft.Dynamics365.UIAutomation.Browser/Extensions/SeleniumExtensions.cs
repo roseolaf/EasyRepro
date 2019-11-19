@@ -253,6 +253,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             try
             {
+                driver.WaitUntilExists(by, TimeSpan.FromSeconds(3));
                 return driver.FindElements(by).Count > 0;
             }
             catch (NoSuchElementException)
@@ -634,6 +635,50 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             try
             {
                 wait.Until(ExpectedConditions.ElementIsVisible(by));
+
+                success = true;
+            }
+            catch (NoSuchElementException)
+            {
+                success = false;
+            }
+            catch (WebDriverTimeoutException)
+            {
+                success = false;
+            }
+
+            if (success.HasValue && success.Value && successCallback != null)
+                successCallback(driver);
+            else if (success.HasValue && !success.Value && failureCallback != null)
+                failureCallback(driver);
+
+            return success.Value;
+        }
+
+        public static bool WaitUntilExists(this IWebDriver driver, By by)
+        {
+            return WaitUntilVisible(driver, by, Constants.DefaultTimeout, null, null);
+        }
+
+        public static bool WaitUntilExists(this IWebDriver driver, By by, TimeSpan timeout)
+        {
+            return WaitUntilVisible(driver, by, timeout, null, null);
+        }
+
+        public static bool WaitUntilExists(this IWebDriver driver, By by, TimeSpan timeout, Action<IWebDriver> successCallback)
+        {
+            return WaitUntilVisible(driver, by, timeout, successCallback, null);
+        }
+        public static bool WaitUntilExists(this IWebDriver driver, By by, TimeSpan timeout, Action<IWebDriver> successCallback, Action<IWebDriver> failureCallback)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, timeout);
+            bool? success;
+
+            wait.IgnoreExceptionTypes(typeof(NoSuchElementException), typeof(StaleElementReferenceException));
+
+            try
+            {
+                wait.Until(ExpectedConditions.ElementExists(by));
 
                 success = true;
             }

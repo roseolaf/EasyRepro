@@ -418,7 +418,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                 driver.ClickWhenAvailable(By.XPath(AppElements.Xpath[AppReference.Navigation.AreaButton]));
 
                 driver.WaitUntilAvailable(By.XPath(AppElements.Xpath[AppReference.Navigation.AreaMenu]),
-                                            new TimeSpan(0, 0, 2),
+                                            new TimeSpan(0, 0, 5),
                                             d =>
                                             {
                                                 var menu = driver.FindElement(By.XPath(AppElements.Xpath[AppReference.Navigation.AreaMenu]));
@@ -522,7 +522,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                 var dictionary = new Dictionary<string, IWebElement>();
 
                 //Sitemap without enableunifiedinterfaceshellrefresh
-                if (!driver.HasElement(By.XPath(AppElements.Xpath[AppReference.Navigation.PinnedSitemapEntity])))
+                if (!driver.WaitUntilVisible(By.XPath(AppElements.Xpath[AppReference.Navigation.PinnedSitemapEntity]),TimeSpan.FromSeconds(3)))
                 {
                     bool isSiteMapLauncherCloseButtonVisible = driver.IsVisible(By.XPath(AppElements.Xpath[AppReference.Navigation.SiteMapLauncherCloseButton]));
 
