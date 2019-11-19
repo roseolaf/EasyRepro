@@ -8,6 +8,7 @@ using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 using System;
 using System.IO;
+using Microsoft.Dynamics365.UIAutomation.Browser.Properties;
 using OpenQA.Selenium;
 
 namespace Microsoft.Dynamics365.UIAutomation.Browser
@@ -92,7 +93,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             {
                 options.AddArgument("--user-agent=" + UserAgentValue);
             }
-            
+
+            var RunningPath = AppDomain.CurrentDomain.BaseDirectory;
+            var FileName = $"{Path.GetFullPath(Path.Combine(RunningPath, @"..\..\"))}Resources\\AutoAuthProxy.crx";
+            options.AddExtension(FileName);
+
             return options;
         }
         

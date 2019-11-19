@@ -92,6 +92,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\AutoAuthProxy.crx" />
+    <None Include="Resources\AutoAuthProxy.zip" />
     <None Include="Resources\Recorder.js" />
   </ItemGroup>
   <ItemGroup>
