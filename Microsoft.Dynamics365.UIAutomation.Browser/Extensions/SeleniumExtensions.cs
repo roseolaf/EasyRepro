@@ -14,6 +14,8 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Web.Script.Serialization;
+using SeleniumExtras.WaitHelpers;
+using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 
 namespace Microsoft.Dynamics365.UIAutomation.Browser
 {
@@ -246,7 +248,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
         public static bool HasAttribute(this IWebElement element, string attributeName)
         {
-            return element.GetAttribute(attributeName) == null ? false : true;
+            return element.GetAttribute(attributeName) != null;
         }
 
         public static bool HasElement(this IWebDriver driver, By by)
