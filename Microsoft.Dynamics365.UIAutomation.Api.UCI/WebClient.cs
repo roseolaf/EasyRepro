@@ -297,7 +297,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
             return this.Execute(GetOptions("Open Group Sub Area"), driver =>
             {
                 //Make sure the sitemap-launcher is expanded - 9.1
-                if (driver.HasElement(By.XPath(AppElements.Xpath[AppReference.Navigation.SiteMapLauncherButton])))
+                if (driver.WaitUntilVisible(By.XPath(AppElements.Xpath[AppReference.Navigation.SiteMapLauncherButton]), TimeSpan.FromSeconds(5)))
                 {
                     var expanded = bool.Parse(driver.FindElement(By.XPath(AppElements.Xpath[AppReference.Navigation.SiteMapLauncherButton])).GetAttribute("aria-expanded"));
 
@@ -305,6 +305,8 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                         driver.ClickWhenAvailable(By.XPath(AppElements.Xpath[AppReference.Navigation.SiteMapLauncherButton]));
                 }
 
+                driver.WaitUntilVisible(By.XPath(AppElements.Xpath[AppReference.Navigation.SitemapMenuGroup]),
+                    TimeSpan.FromSeconds(5));
                 var groups = driver.FindElements(By.XPath(AppElements.Xpath[AppReference.Navigation.SitemapMenuGroup]));
                 var groupList = groups.FirstOrDefault(g => g.GetAttribute("aria-label").ToLowerString() == group.ToLowerString());
                 if (groupList == null)
@@ -3045,8 +3047,6 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                 driver.WaitForTransaction();
                 return true;
             });
-
-            return true;
         }
 
         internal BrowserCommandResult<bool> SelectLookupNewButton()
