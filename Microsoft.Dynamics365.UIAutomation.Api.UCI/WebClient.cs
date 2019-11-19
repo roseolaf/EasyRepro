@@ -553,6 +553,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                 else
                 {
                     //Sitemap with enableunifiedinterfaceshellrefresh enabled
+                    driver.WaitUntilVisible(By.XPath(AppElements.Xpath[AppReference.Navigation.SubAreaContainer]));
                     var menuShell = driver.FindElements(By.XPath(AppElements.Xpath[AppReference.Navigation.SubAreaContainer]));
 
                     //The menu is broke into multiple sections. Gather all items.
