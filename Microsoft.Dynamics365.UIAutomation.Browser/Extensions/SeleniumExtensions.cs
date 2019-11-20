@@ -42,7 +42,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             {
                 element.Click();
             }
-            catch(StaleElementReferenceException ex)
+            catch (StaleElementReferenceException ex)
             {
                 if (!ignoreStaleElementException)
                     throw ex;
@@ -255,7 +255,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             try
             {
-                driver.WaitUntilExists(by, TimeSpan.FromSeconds(3));
+                driver.WaitUntilExists(by, TimeSpan.FromSeconds(1));
                 return driver.FindElements(by).Count > 0;
             }
             catch (NoSuchElementException)
@@ -331,7 +331,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         public static void SetVisible(this IWebDriver driver, By by, bool visible)
         {
             IWebElement element = driver.FindElement(by);
-            if(visible)
+            if (visible)
                 driver.ExecuteScript($"document.getElementById('{element.GetAttribute("Id")}').setAttribute('style', 'display: inline;')");
             else
                 driver.ExecuteScript($"document.getElementById('{element.GetAttribute("Id")}').setAttribute('style', 'display: none;')");
@@ -438,7 +438,8 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                 WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(maxWaitTimeInSeconds));
 
                 //Checks every 500 ms whether predicate returns true if returns exit otherwise keep trying till it returns ture
-                wait.Until(d => {
+                wait.Until(d =>
+                {
 
                     try
                     {
@@ -509,11 +510,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                     return state;
                 });
             }
-            catch(Exception)
+            catch (Exception)
             {
 
             }
-           
+
             return state;
         }
         public static string Last(this System.Collections.ObjectModel.ReadOnlyCollection<string> handles, IWebDriver driver)
@@ -549,6 +550,77 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
             return null;
         }
+
+        public static IWebElement WaitUntilInteractable(this IWebDriver driver, By by)
+        {
+            return WaitUntilInteractable(driver, by, Constants.DefaultTimeout, null, null);
+        }
+
+        public static IWebElement WaitUntilInteractable(this IWebDriver driver, By by, TimeSpan timeout)
+        {
+            return WaitUntilInteractable(driver, by, timeout, null, null);
+        }
+
+        public static IWebElement WaitUntilInteractable(this IWebDriver driver, By by, string exceptionMessage)
+        {
+            return WaitUntilInteractable(driver, by, Constants.DefaultTimeout, null, d =>
+            {
+                throw new InvalidOperationException(exceptionMessage);
+            });
+        }
+
+        public static IWebElement WaitUntilInteractable(this IWebDriver driver, By by, TimeSpan timeout, string exceptionMessage)
+        {
+            return WaitUntilInteractable(driver, by, timeout, null, d =>
+            {
+                throw new InvalidOperationException(exceptionMessage);
+            });
+        }
+
+        public static IWebElement WaitUntilInteractable(this IWebDriver driver, By by, TimeSpan timeout, Action<IWebDriver> successCallback)
+        {
+            return WaitUntilInteractable(driver, by, timeout, successCallback, null);
+        }
+
+        public static IWebElement WaitUntilInteractable(this IWebDriver driver, By by, TimeSpan timeout, Action<IWebDriver> successCallback, Action<IWebDriver> failureCallback)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, timeout);
+            bool? success;
+            IWebElement returnElement = null;
+
+            wait.IgnoreExceptionTypes(typeof(NoSuchElementException), typeof(StaleElementReferenceException));
+
+            try
+            {
+                returnElement = wait.Until(d =>
+                {
+                    var element = d.FindElement(by);
+                    driver.ExecuteScript("arguments[0].scrollIntoView();", element);
+                    driver.IsElementInteractable(element);
+                    return element;
+                });
+
+
+                success = true;
+            }
+            catch (NoSuchElementException)
+            {
+                success = false;
+            }
+            catch (WebDriverTimeoutException)
+            {
+                success = false;
+            }
+
+            if (success.HasValue && success.Value && successCallback != null)
+                successCallback(driver);
+            else if (success.HasValue && !success.Value && failureCallback != null)
+                failureCallback(driver);
+
+            return returnElement;
+        }
+
+
 
         public static IWebElement WaitUntilAvailable(this IWebDriver driver, By by)
         {
@@ -611,6 +683,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
             return returnElement;
         }
+
 
         public static bool WaitUntilVisible(this IWebDriver driver, By by)
         {
@@ -721,11 +794,13 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             WebDriverWait wait = new WebDriverWait(driver, timeout);
             bool? success;
 
+            
             wait.IgnoreExceptionTypes(typeof(NoSuchElementException), typeof(StaleElementReferenceException));
 
             try
             {
-                wait.Until(ExpectedConditions.ElementToBeClickable(by));
+                wait.Until( d => ExpectedConditions.ElementToBeClickable(by) != null && d.IsElementInteractable(d.FindElement(by)));
+                Thread.Sleep(250);
 
                 success = true;
             }
@@ -745,6 +820,26 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
             return success.Value;
         }
+
+        static bool IsElementInteractable(this IWebDriver driver, IWebElement element)
+        {
+
+            return (bool)driver.ExecuteScript(@"
+		        return (function(element)
+		        {
+			        function belongsToElement(subElement)
+			        {
+				        return element == subElement || element.contains(subElement);
+			        }
+			        var rec = element.getBoundingClientRect();  
+			        var elementAtPosition1 = document.elementFromPoint(rec.left, rec.top);
+			        var elementAtPosition2 = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);
+			        var elementAtPosition3 = document.elementFromPoint(rec.left+rec.width/3, rec.top+rec.height/3);
+			        return belongsToElement(elementAtPosition1) || belongsToElement(elementAtPosition2) || belongsToElement(elementAtPosition3);
+		        })(arguments[0]);                    
+	        ", element);
+        }
+
         #endregion Waits
 
         #region Args / Tracing
@@ -762,7 +857,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                     return e.FindMethod.ToString();
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 return e.FindMethod.ToString();
             }
