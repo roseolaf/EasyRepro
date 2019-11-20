@@ -1824,7 +1824,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                     driver.WaitForTransaction();
                 }
 
-                if (control.Value != null && control.Value != "")
+                if (!string.IsNullOrEmpty(control.Value))
                 {
                     SetLookUpByValue(driver, control, index);
                 }

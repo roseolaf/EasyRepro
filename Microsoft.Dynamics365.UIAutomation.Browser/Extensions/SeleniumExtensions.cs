@@ -659,17 +659,17 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
         public static bool WaitUntilExists(this IWebDriver driver, By by)
         {
-            return WaitUntilVisible(driver, by, Constants.DefaultTimeout, null, null);
+            return WaitUntilExists(driver, by, Constants.DefaultTimeout, null, null);
         }
 
         public static bool WaitUntilExists(this IWebDriver driver, By by, TimeSpan timeout)
         {
-            return WaitUntilVisible(driver, by, timeout, null, null);
+            return WaitUntilExists(driver, by, timeout, null, null);
         }
 
         public static bool WaitUntilExists(this IWebDriver driver, By by, TimeSpan timeout, Action<IWebDriver> successCallback)
         {
-            return WaitUntilVisible(driver, by, timeout, successCallback, null);
+            return WaitUntilExists(driver, by, timeout, successCallback, null);
         }
         public static bool WaitUntilExists(this IWebDriver driver, By by, TimeSpan timeout, Action<IWebDriver> successCallback, Action<IWebDriver> failureCallback)
         {
