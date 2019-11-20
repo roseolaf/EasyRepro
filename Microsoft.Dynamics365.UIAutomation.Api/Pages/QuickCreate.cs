@@ -297,7 +297,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 driver.WaitUntilVisible(By.Id(control.Id));
 
-                if (!driver.HasElement(By.Id(control.Id)))
+                if (!driver.WaitUntilExists(By.Id(control.Id)))
                     return false;
 
                 driver.ClickWhenAvailable(By.Id(control.Id));
@@ -810,7 +810,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 driver.WaitUntilVisible(By.Id(control.Id));
 
-                if (!driver.HasElement(By.Id(control.Id)))
+                if (!driver.WaitUntilExists(By.Id(control.Id)))
                     return false;
 
                 driver.ClickWhenAvailable(By.Id(control.Id));

@@ -282,7 +282,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 /*
                 driver.WaitUntilVisible(By.Id(control.Id));
 
-                if (!driver.HasElement(By.Id(control.Id)))
+                if (!driver.WaitUntilExists(By.Id(control.Id)))
                     return false;
 
                 driver.ClickWhenAvailable(By.Id(control.Id));
@@ -326,7 +326,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute("Finish BPF", driver =>
             {
-                if (!driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Finish])))
+                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Finish])))
                     throw new Exception("Business Process Flow Finish Element does not exist");
 
                 if (driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Finish])).GetAttribute("class").Contains("hidden"))
@@ -551,7 +551,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute("Hide", driver =>
             {
-                if (!driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Hide])))
+                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Hide])))
                     throw new Exception("Business Process Flow Hide Element does not exist");
 
                 driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Hide]));
@@ -571,7 +571,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute("Next Stage", driver =>
             {
-                if (!driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStage])))
+                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStage])))
                     throw new Exception("Business Process Flow Next Stage Element does not exist");
 
                 if(driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStage])).GetAttribute("class").Contains("disabled"))
@@ -596,7 +596,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute("Next Stage", driver =>
             {
-                if (!driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStageMenu])))
+                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStageMenu])))
                     throw new Exception("Business Process Flow Next Stage Element does not exist");
 
                 if (driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStageMenu])).GetAttribute("class").Contains("disabled"))
@@ -657,7 +657,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute("Previous Stage", driver =>
             {
-                if (!driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.PreviousStage])))
+                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.PreviousStage])))
                     throw new Exception("Business Process Flow Previous Stage Element does not exist");
 
                 if (driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.PreviousStage])).GetAttribute("class").Contains("disabled"))
@@ -753,7 +753,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute("Set Active", driver =>
             {
-                if (!driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.SetActive])))
+                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.SetActive])))
                     throw new Exception("Business Process Flow Set Active Element does not exist");
 
                 if (driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.SetActive])).GetAttribute("class").Contains("hidden"))
@@ -1036,7 +1036,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 /*
                 driver.WaitUntilVisible(By.Id(control.Id));
 
-                if (!driver.HasElement(By.Id(control.Id)))
+                if (!driver.WaitUntilExists(By.Id(control.Id)))
                     return false;
 
                 driver.ClickWhenAvailable(By.Id(control.Id));

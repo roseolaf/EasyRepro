@@ -36,7 +36,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions($"Filter With: {entity}"), driver =>
             {
-                if (!driver.HasElement(By.XPath(Elements.Xpath[Reference.GlobalSearch.Filter])))
+                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.GlobalSearch.Filter])))
                     throw new InvalidOperationException("Filter With picklist is not available");
 
                 var picklist = driver.FindElement(By.XPath(Elements.Xpath[Reference.GlobalSearch.Filter]));
@@ -70,7 +70,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchResults]));
 
-                if (!driver.HasElement(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchResults])))
+                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchResults])))
                     throw new InvalidOperationException("Search Results is not available");
 
                 var results = driver.FindElement(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchResults]));

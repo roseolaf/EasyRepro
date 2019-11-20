@@ -287,7 +287,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 driver.WaitUntilVisible(By.Id(control.Id));
 
-                if (!driver.HasElement(By.Id(control.Id)))
+                if (!driver.WaitUntilExists(By.Id(control.Id)))
                     return false;
 
                 driver.ClickWhenAvailable(By.Id(control.Id));
@@ -581,7 +581,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 driver.WaitUntilVisible(By.Id(control.Id));
 
-                if (!driver.HasElement(By.Id(control.Id)))
+                if (!driver.WaitUntilExists(By.Id(control.Id)))
                     return false;
 
                 driver.ClickWhenAvailable(By.Id(control.Id));
@@ -686,7 +686,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions($"Collapse Tab: {name}"), driver =>
             {
-                if (!driver.HasElement(By.XPath(Elements.Xpath[Reference.Entity.Tab].Replace("[NAME]", name))))
+                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.Entity.Tab].Replace("[NAME]", name))))
                 {
                     throw new InvalidOperationException($"Tab with name '{name}' does not exist.");
                 }
@@ -732,7 +732,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions($"Expand Tab: {name}"), driver =>
             {
-                if (!driver.HasElement(By.XPath(Elements.Xpath[Reference.Entity.Tab].Replace("[NAME]", name))))
+                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.Entity.Tab].Replace("[NAME]", name))))
                 {
                     throw new InvalidOperationException($"Tab with name '{name}' does not exist.");
                 }
@@ -1244,7 +1244,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions($"Get State for Tab: {name}"), driver =>
             {
-                if (!driver.HasElement(By.XPath(Elements.Xpath[Reference.Entity.Tab].Replace("[NAME]", name))))
+                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.Entity.Tab].Replace("[NAME]", name))))
                 {
                     throw new InvalidOperationException($"Tab with name '{name}' does not exist.");
                 }
@@ -1534,7 +1534,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             return this.Execute(GetOptions("Navigate Down"), driver =>
             {
                 SwitchToDefault();
-                if (!driver.HasElement(By.CssSelector(_navigateDownCssSelector)))
+                if (!driver.WaitUntilExists(By.CssSelector(_navigateDownCssSelector)))
                     return false;
 
                 var buttons = driver.FindElements(By.CssSelector(_navigateDownCssSelector));
@@ -1560,7 +1560,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             return this.Execute(GetOptions("Navigate Up"), driver =>
             {
                 SwitchToDefault();
-                if (!driver.HasElement(By.CssSelector(_navigateUpCssSelector)))
+                if (!driver.WaitUntilExists(By.CssSelector(_navigateUpCssSelector), TimeSpan.FromSeconds(2)))
                     return false;
 
                 var buttons = driver.FindElements(By.CssSelector(_navigateUpCssSelector));
@@ -1835,7 +1835,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions($"SelectTab: {name}"), driver =>
             {
-                if (!driver.HasElement(By.XPath(Elements.Xpath[Reference.Entity.Tab].Replace("[NAME]", name))))
+                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.Entity.Tab].Replace("[NAME]", name)), TimeSpan.FromSeconds(2)))
                 {
                     throw new InvalidOperationException($"Tab with name '{name}' does not exist.");
                 }
@@ -2109,7 +2109,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 driver.WaitUntilVisible(By.Id(control.Id));
 
-                if (!driver.HasElement(By.Id(control.Id)))
+                if (!driver.WaitUntilExists(By.Id(control.Id), TimeSpan.FromSeconds(2)))
                     return false;
 
                 driver.ClickWhenAvailable(By.Id(control.Id));
@@ -2217,7 +2217,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 List<GridItem> subGridRows = new List<GridItem>();
 
-                if (!driver.HasElement(By.XPath(Elements.Xpath[Reference.Entity.SubGrid].Replace("[NAME]", subgridName))))
+                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.Entity.SubGrid].Replace("[NAME]", subgridName)), TimeSpan.FromSeconds(2)))
                     throw new NotFoundException($"{subgridName} subgrid not found. Subgrid names are case sensitive.  Please make sure casing is the same.");
 
                 //Find the subgrid contents
@@ -2279,7 +2279,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute(GetOptions($"Get Subgrid Items Count for subgrid { subgridName }"), driver =>
             {
-                if (!driver.HasElement(By.XPath(Elements.Xpath[Reference.Entity.SubGrid].Replace("[NAME]", subgridName))))
+                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.Entity.SubGrid].Replace("[NAME]", subgridName))))
                 {
                     throw new NotFoundException($"{ subgridName } subgrid not found. Subgrid names are case sensitive.  Please make sure casing is the same.");
                 }
