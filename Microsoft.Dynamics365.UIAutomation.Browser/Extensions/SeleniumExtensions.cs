@@ -255,7 +255,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             try
             {
-                driver.WaitUntilExists(by, TimeSpan.FromSeconds(1));
+                driver.WaitUntilExists(by, TimeSpan.FromSeconds(5));
                 return driver.FindElements(by).Count > 0;
             }
             catch (NoSuchElementException)
