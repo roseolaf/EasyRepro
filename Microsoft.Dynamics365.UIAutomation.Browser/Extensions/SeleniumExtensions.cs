@@ -595,7 +595,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                 returnElement = wait.Until(d =>
                 {
                     var element = d.FindElement(by);
-                    driver.ExecuteScript("arguments[0].scrollIntoView();", element);
+                    driver.ExecuteScript("arguments[0].scrollIntoViewIfNeeded();", element);
                     driver.IsElementInteractable(element);
                     return element;
                 });
