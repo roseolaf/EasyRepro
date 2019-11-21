@@ -454,11 +454,8 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                     var result = condition;
                     if (c == typeof(bool))
                     {
-                        if ((object)result is bool nullable)
-                        {
-                            if (nullable)
-                                return result;
-                        }
+                        if ((object) result is bool)
+                            return result;
                     }
                     else if ((object)result != null)
                         return result;
