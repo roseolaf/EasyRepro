@@ -266,7 +266,8 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             try
             {
-                driver.WaitUntilExists(by, TimeSpan.FromSeconds(25));
+                driver.Wait();
+                driver.WaitUntilExists(by, TimeSpan.FromSeconds(1));
                 return driver.FindElements(by).Count > 0;
             }
             catch (NoSuchElementException)
@@ -279,6 +280,8 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             try
             {
+                element.Wait();
+                element.WaitUntilElement(e => e.Enabled,TimeSpan.FromSeconds(1));
                 return element.FindElements(by).Count > 0;
             }
             catch (NoSuchElementException)
@@ -469,7 +472,6 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine(e);
                 }
                 if (DateTime.Now > startTime.Add(time))
                 {
@@ -907,25 +909,6 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                 failureCallback(driver);
 
             return success.Value;
-        }
-
-        static bool IsElementInteractable(this IWebDriver driver, IWebElement element)
-        {
-
-            return (bool)driver.ExecuteScript(@"
-		        return (function(element)
-		        {
-			        function belongsToElement(subElement)
-			        {
-				        return element == subElement || element.contains(subElement);
-			        }
-			        var rec = element.getBoundingClientRect();  
-			        var elementAtPosition1 = document.elementFromPoint(rec.left, rec.top);
-			        var elementAtPosition2 = document.elementFromPoint(rec.left+rec.width/2, rec.top+rec.height/2);
-			        var elementAtPosition3 = document.elementFromPoint(rec.left+rec.width/3, rec.top+rec.height/3);
-			        return belongsToElement(elementAtPosition1) || belongsToElement(elementAtPosition2) || belongsToElement(elementAtPosition3);
-		        })(arguments[0]);                    
-	        ", element);
         }
 
         #endregion Waits
