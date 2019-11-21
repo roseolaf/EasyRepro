@@ -411,14 +411,14 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             driver.WaitForLoading();
             driver.WaitForSaving();
             driver.WaitForTransaction(5);
-            Thread.Sleep(250);
+            Thread.Sleep(150);
         }
 
         public static void Wait(this IWebElement element)
         {
             element.WaitForLoading();
             element.WaitForSaving();
-            Thread.Sleep(250);
+            Thread.Sleep(150);
         }
 
         public static void WaitForLoading(this IWebDriver driver)
@@ -443,22 +443,15 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             element.WaitUntilElement(e => !e.FindElements(By.XPath("//*[starts-with(text(),'Saving')]")).Any(), TimeSpan.FromSeconds(60));
         }
 
-        public static Func<IWebElement, T> WaitUntilElement<T>(this IWebElement element, Func<IWebElement, T> condition, TimeSpan time)
+        public static void WaitUntilElement(this IWebElement element, Func<IWebElement, bool> condition, TimeSpan time)
         {
             DateTime startTime = DateTime.Now;
-            Type c = typeof(T);
             while (true)
             {
                 try
                 {
-                    var result = condition;
-                    if (c == typeof(bool))
-                    {
-                        if ((object) result is bool)
-                            return result;
-                    }
-                    else if ((object)result != null)
-                        return result;
+                    if (condition.Invoke(element))
+                        return;
                 }
                 catch (Exception)
                 {
