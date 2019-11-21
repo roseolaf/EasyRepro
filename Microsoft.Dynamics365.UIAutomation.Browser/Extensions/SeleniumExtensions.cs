@@ -463,9 +463,9 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                 catch (Exception)
                 {
                 }
-                if (startTime < startTime.Add(time))
+                if (DateTime.Now < startTime.Add(time))
                 {
-                    string exceptionMessage = $"Timed out after {(DateTime.Now - startTime).TotalSeconds} seconds for {element.Text}";
+                    string exceptionMessage = $"Timed out after {time} seconds for {element.Text}";
                     throw new WebDriverTimeoutException(exceptionMessage);
                 }
                 Thread.Sleep(500);
