@@ -36,20 +36,20 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions($"Filter With: {entity}"), driver =>
             {
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.GlobalSearch.Filter])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.GlobalSearch.Filter])))
                     throw new InvalidOperationException("Filter With picklist is not available");
 
                 var picklist = driver.FindElement(By.XPath(Elements.Xpath[Reference.GlobalSearch.Filter]));
                 var options = driver.FindElements(By.TagName("option"));
 
-                picklist.ClickWait()
+                picklist.ClickWait();
 
                 IWebElement select = options.FirstOrDefault(x => x.Text == entity);
 
                 if (select == null)
                     throw new InvalidOperationException($"Entity '{entity}' does not exist in the Filter options.");
 
-                select.ClickWait()
+                select.ClickWait();
 
                 return true;
             });
@@ -70,7 +70,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchResults]));
 
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchResults])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchResults])))
                     throw new InvalidOperationException("Search Results is not available");
 
                 var results = driver.FindElement(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchResults]));
@@ -93,7 +93,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                 SwitchToContent();
                 driver.WaitForPageToLoad();
-                driver.WaitUntilClickable(By.XPath(Elements.Xpath[Reference.Entity.Form]),
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.Form]),
                     new TimeSpan(0, 0, 60),
                     null,
                     d => { throw new Exception("CRM Record is Unavailable or not finished loading. Timeout Exceeded"); }
@@ -115,14 +115,14 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions($"Global Search"), driver =>
             {
-                if (!driver.WaitUntilClickable(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchText]), new TimeSpan(0, 0, 10)))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchText]), new TimeSpan(0, 0, 10)))
                     throw new InvalidOperationException("Search Text Box is not available");
 
-                var searchText = driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchText]));
+                var searchText = driver.FindElement(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchText])).ClickWait();
 
-                searchText.SendKeys(criteria, true);
+                searchText.SendKeysWait(criteria, true);
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchButton]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchButton])).ClickWait();
 
                 return true;
             });

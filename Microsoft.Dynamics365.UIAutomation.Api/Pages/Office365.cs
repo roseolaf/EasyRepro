@@ -36,18 +36,18 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(NavigationRetryOptions, driver =>
             {
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Office365.AddUser]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Office365.AddUser])).ClickWait();
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Office365.FirstName])).SendKeys(firstname, true);
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Office365.LastName])).SendKeys(lastname, true);
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Office365.DisplayName])).SendKeys(displayname,true);
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Office365.UserName])).SendKeys(username, true);
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Office365.FirstName])).SendKeysWait(firstname, true).ClickWait();
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Office365.LastName])).SendKeysWait(lastname, true).ClickWait();
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Office365.DisplayName])).SendKeysWait(displayname,true).ClickWait();
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Office365.UserName])).SendKeysWait(username, true).ClickWait();
 
                 //ClickWait the Microsoft Dynamics CRM Online Professional License
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Office365.License]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Office365.License])).ClickWait();
 
                 //ClickWait Add
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Office365.Add]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Office365.Add])).ClickWait();
 
                 driver.LastWindow().Close();
                 driver.LastWindow();

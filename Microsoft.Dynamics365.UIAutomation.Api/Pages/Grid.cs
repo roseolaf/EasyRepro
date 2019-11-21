@@ -26,7 +26,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             SwitchToContent();
 
-            browser.Driver.WaitUntilVisible(By.Id(Elements.ElementId[Reference.Frames.ViewFrameId]),
+            browser.Driver.WaitUntilAvailable(By.Id(Elements.ElementId[Reference.Frames.ViewFrameId]),
                                             new TimeSpan(0, 0, 1),
                                             x=> { SwitchToView(); });
         }
@@ -42,19 +42,19 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 var dictionary = new Dictionary<string, Guid>();
 
-                driver.WaitUntilClickable(By.XPath(Elements.Xpath[Reference.Grid.ViewSelector]),
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.ViewSelector]),
                                          new TimeSpan(0,0,20),
-                                         d=> { d.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Grid.ViewSelector])); },
+                                         d=> { d.FindElement(By.XPath(Elements.Xpath[Reference.Grid.ViewSelector])).ClickWait(); },
                                          d=> { throw new Exception("Unable to click the View Picker"); });                
 
-                driver.WaitUntilVisible(By.ClassName(Elements.CssClass[Reference.Grid.ViewContainer]),
+                driver.WaitUntilAvailable(By.ClassName(Elements.CssClass[Reference.Grid.ViewContainer]),
                                         new TimeSpan(0, 0, 20),
                                         null,
                                         d => 
                                         {
                                             //Fix for Firefox not clicking the element in the event above. Issue with the driver. 
-                                            d.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Grid.ViewSelector]));
-                                            driver.WaitUntilVisible(By.ClassName(Elements.CssClass[Reference.Grid.ViewContainer]), new TimeSpan(0, 0, 3), null, e => { throw new Exception("View Picker menu is not avilable"); });
+                                            d.FindElement(By.XPath(Elements.Xpath[Reference.Grid.ViewSelector])).ClickWait();
+                                            driver.WaitUntilAvailable(By.ClassName(Elements.CssClass[Reference.Grid.ViewContainer]), new TimeSpan(0, 0, 3), null, e => { throw new Exception("View Picker menu is not avilable"); });
 
                                         });
 
@@ -116,7 +116,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 {
                     if (viewItem.Text == viewName)
                     {
-                        viewItem.ClickWait()
+                        viewItem.ClickWait();
                     }
                 }
 
@@ -136,7 +136,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("OpenChart"), driver =>
             {
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Grid.OpenChart]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Grid.OpenChart])).ClickWait();
 
                 return true;
             });
@@ -153,7 +153,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("CloseChart"), driver =>
             {
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Grid.CloseChart]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Grid.CloseChart])).ClickWait();
 
                 return true;
             });
@@ -170,7 +170,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Pin"), driver =>
             {
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Grid.DefaultViewIcon]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Grid.DefaultViewIcon])).ClickWait();
 
                 return true;
             });
@@ -189,15 +189,15 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Search"), driver =>
             {
-                driver.WaitUntilClickable(By.XPath(Elements.Xpath[Reference.Grid.FindCriteria]));
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.FindCriteria]));
 
                 if (clearByDefault)
                 {
                     driver.FindElement(By.XPath(Elements.Xpath[Reference.Grid.FindCriteria])).Clear();
                 }
 
-                driver.FindElement(By.XPath(Elements.Xpath[Reference.Grid.FindCriteria])).SendKeys(searchCriteria);
-                driver.FindElement(By.XPath(Elements.Xpath[Reference.Grid.FindCriteria])).SendKeys(Keys.Enter);
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Grid.FindCriteria])).SendKeysWait(searchCriteria);
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Grid.FindCriteria])).SendKeysWait(Keys.Enter);
 
                 return true;
             });
@@ -214,7 +214,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Search"), driver =>
             {
-                driver.WaitUntilClickable(By.XPath(Elements.Xpath[Reference.Grid.FindCriteria]));
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.FindCriteria]));
 
                 driver.FindElement(By.XPath(Elements.Xpath[Reference.Grid.FindCriteria])).Clear();
 
@@ -239,7 +239,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 if (sortCol == null)
                     throw new InvalidOperationException($"Column: {columnName} Does not exist");
                 else
-                    sortCol.ClickWait()
+                    sortCol.ClickWait();
                 return true;
             });
         }
@@ -281,7 +281,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     {
                         SwitchToContent();
                         driver.WaitForPageToLoad();
-                        driver.WaitUntilClickable(By.XPath(Elements.Xpath[Reference.Entity.Form]),
+                        driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.Form]),
                                                     new TimeSpan(0, 0, 30),
                                                     null,
                                                     d => { throw new Exception("CRM Record is Unavailable or not finished loading. Timeout Exceeded"); }
@@ -314,8 +314,8 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 var select = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.RowSelect].Replace("[INDEX]", index.ToString())),
                                                         $"Row with index {index.ToString()} is not found");
 
-                select?.ClickWait()
-                
+                select?.ClickWait();
+
                 return false;
             });
         }
@@ -342,7 +342,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 foreach (var letter in letterCells)
                 {
                     if (letter.Text == filter.ToString())
-                        letter.ClickWait()
+                        letter.ClickWait();
                 }
                
                 return true;
@@ -362,7 +362,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 var showAll = driver.FindElement(By.XPath(Elements.Xpath[Reference.Grid.ShowAll]));
 
-                showAll?.ClickWait()
+                showAll?.ClickWait();
 
                 return true;
             });
@@ -382,7 +382,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 var filter = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.Filter]),
                                                         "Filter option is not available");
 
-                filter?.ClickWait()
+                filter?.ClickWait();
 
                 return true;
             });
@@ -405,7 +405,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Switch Chart"), driver =>
             {
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Grid.ChartList]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Grid.ChartList])).ClickWait();
 
                 var dialog = driver.FindElement(By.XPath(Elements.Xpath[Reference.Grid.ChartDialog]));
                 var menuItems = dialog.FindElements(By.TagName("a"));
@@ -420,7 +420,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 if (selectedItem == null)
                     throw new InvalidOperationException($"Chart with name {chartName} does not exist");
                 else
-                    selectedItem.ClickWait()
+                    selectedItem.ClickWait();
 
                 return true;
             });

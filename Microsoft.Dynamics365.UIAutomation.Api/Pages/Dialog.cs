@@ -60,7 +60,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 SetValue(new DateTimeControl { Name = Elements.ElementId[Reference.Dialogs.CloseOpportunity.CloseDateId], Value = closeDate });
                 SetValue(Elements.ElementId[Reference.Dialogs.CloseOpportunity.DescriptionId], description);
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.CloseOpportunity.Ok]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Dialogs.CloseOpportunity.Ok])).ClickWait();
 
                 return true;
             });
@@ -113,14 +113,14 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 if (roleName != null || roleName != "")
                 {
                     // Wait till role lookup button is available 
-                    driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.AddConnection.RoleLookupButton]));
+                    driver.FindElement(By.XPath(Elements.Xpath[Reference.Dialogs.AddConnection.RoleLookupButton])).ClickWait();
 
                     // wait till role table is available
                     driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.AddConnection.RoleLookupTable]));
 
                     try
                     {
-                       driver.FindElement(By.XPath("//span[contains(text(),'" + roleName + "')]")).ClickWait()
+                       driver.FindElement(By.XPath("//span[contains(text(),'" + roleName + "')]")).ClickWait();
                     }
                     catch (Exception ex)
                     {
@@ -131,10 +131,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 SwitchToDefault();
 
                 //Save and Close
-                var savebtn = driver.HasElement(By.XPath(Elements.Xpath[Reference.Dialogs.AddConnection.Save]));
+                var savebtn = driver.ElementExists(By.XPath(Elements.Xpath[Reference.Dialogs.AddConnection.Save]));
                 try
                 {
-                    driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.AddConnection.Save]));
+                    driver.FindElement(By.XPath(Elements.Xpath[Reference.Dialogs.AddConnection.Save])).ClickWait();
                 }
                 catch { }
                 
@@ -168,7 +168,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 switch (to)
                 {
                     case AssignTo.Me:
-                        driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.Assign.Ok]));
+                        driver.FindElement(By.XPath(Elements.Xpath[Reference.Dialogs.Assign.Ok])).ClickWait();
                        
                         break;
 
@@ -240,9 +240,9 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                  {
 
                      if (save)
-                         driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.DuplicateDetection.Save]));
+                         driver.FindElement(By.XPath(Elements.Xpath[Reference.Dialogs.DuplicateDetection.Save])).ClickWait();
                      else
-                         driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.DuplicateDetection.Cancel]));
+                         driver.FindElement(By.XPath(Elements.Xpath[Reference.Dialogs.DuplicateDetection.Cancel])).ClickWait();
                  });
 
                 return true;
@@ -313,7 +313,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 lookup.Add();
 
                 SwitchToDialog(1);
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.RunWorkflow.Confirm]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Dialogs.RunWorkflow.Confirm])).ClickWait();
                 return true;
             });
         }
@@ -337,20 +337,20 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 switch (records)
                 {
                     case ReportRecords.AllRecords:
-                        driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.RunReport.Default]));
+                        driver.FindElement(By.XPath(Elements.Xpath[Reference.Dialogs.RunReport.Default])).ClickWait();
 
                         break;
 
                     case ReportRecords.SelectedRecords:
-                        driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.RunReport.Selected]));
+                        driver.FindElement(By.XPath(Elements.Xpath[Reference.Dialogs.RunReport.Selected])).ClickWait();
                         break;
 
                     case ReportRecords.AllRecordsOnPage:
-                        driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.RunReport.View]));
+                        driver.FindElement(By.XPath(Elements.Xpath[Reference.Dialogs.RunReport.View])).ClickWait();
                         break;
                 }
                 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.RunReport.Confirm]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Dialogs.RunReport.Confirm])).ClickWait();
                 return true;
             });
         }
@@ -367,7 +367,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     new TimeSpan(0, 0, 10),
                     "The Add User dialog is not available.");
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.AddUser.Add]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Dialogs.AddUser.Add])).ClickWait();
                 
                 return true;
             });
@@ -383,7 +383,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     !(dialogFooter?.FindElements(By.XPath(Elements.Xpath[Reference.Dialogs.WarningCloseButton])).Count >
                       0)) return true;
                 var closeBtn = dialogFooter.FindElement(By.XPath(Elements.Xpath[Reference.Dialogs.WarningCloseButton]));
-                closeBtn.ClickWait()
+                closeBtn.ClickWait();
                 return true;
             });
         }

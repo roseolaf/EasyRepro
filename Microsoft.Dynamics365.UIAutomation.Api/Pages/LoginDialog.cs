@@ -93,14 +93,14 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             if (online)
             {
                 if (driver.IsVisible(By.Id("use_another_account_link")))
-                    driver.ClickWhenAvailable(By.Id("use_another_account_link"));
+                    driver.FindElement(By.Id("use_another_account_link")).ClickWait();
 
                 driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Login.UserId]),
                     $"The Office 365 sign in page did not return the expected result and the user '{username}' could not be signed in.");
 
-                driver.FindElement(By.XPath(Elements.Xpath[Reference.Login.UserId])).SendKeys(username.ToUnsecureString());
-                driver.FindElement(By.XPath(Elements.Xpath[Reference.Login.UserId])).SendKeys(Keys.Tab);
-                driver.FindElement(By.XPath(Elements.Xpath[Reference.Login.UserId])).SendKeys(Keys.Enter);
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Login.UserId])).SendKeysWait(username.ToUnsecureString());
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Login.UserId])).SendKeysWait(Keys.Tab);
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Login.UserId])).SendKeysWait(Keys.Enter);
 
                 Thread.Sleep(1000);
 
@@ -125,22 +125,22 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 }
                 else
                 {
-                    driver.FindElement(By.XPath(Elements.Xpath[Reference.Login.LoginPassword])).SendKeys(password.ToUnsecureString());
-                    driver.FindElement(By.XPath(Elements.Xpath[Reference.Login.LoginPassword])).SendKeys(Keys.Tab);
+                    driver.FindElement(By.XPath(Elements.Xpath[Reference.Login.LoginPassword])).SendKeysWait(password.ToUnsecureString());
+                    driver.FindElement(By.XPath(Elements.Xpath[Reference.Login.LoginPassword])).SendKeysWait(Keys.Tab);
                     driver.FindElement(By.XPath(Elements.Xpath[Reference.Login.LoginPassword])).Submit();
 
                     Thread.Sleep(2000);
 
                     if (driver.IsVisible(By.XPath(Elements.Xpath[Reference.Login.StaySignedIn])))
                     {
-                        driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Login.StaySignedIn]));
+                        driver.FindElement(By.XPath(Elements.Xpath[Reference.Login.StaySignedIn])).ClickWait();
                         
                         //ClickWait didn't work so use submit
-                        if(driver.HasElement(By.XPath(Elements.Xpath[Reference.Login.StaySignedIn])))
+                        if(driver.ElementExists(By.XPath(Elements.Xpath[Reference.Login.StaySignedIn])))
                             driver.FindElement(By.XPath(Elements.Xpath[Reference.Login.StaySignedIn])).Submit();
                     }
 
-                    driver.WaitUntilVisible(By.XPath(Elements.Xpath[Reference.Login.CrmMainPage])
+                    driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Login.CrmMainPage])
                         , new TimeSpan(0, 0, 60),
                         e => 
                         {
@@ -158,7 +158,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
         private void MarkOperation(IWebDriver driver)
         {
-            if (driver.HasElement(By.Id(Elements.ElementId[Reference.Login.TaggingId])))
+            if (driver.ElementExists(By.Id(Elements.ElementId[Reference.Login.TaggingId])))
                 driver.ExecuteScript($"document.getElementById('{Elements.ElementId[Reference.Login.TaggingId]}').src = '_imgs/NavBar/Invisible.gif?operation=easyrepro|web|{Guid.NewGuid().ToString()}';");
         }
 
@@ -171,13 +171,13 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             var d = args.Driver;
 
-            d.FindElement(By.Id("passwordInput")).SendKeys(args.Password.ToUnsecureString());
-            d.ClickWhenAvailable(By.Id("submitButton"), new TimeSpan(0, 0, 2));
+            d.FindElement(By.Id("passwordInput")).SendKeysWait(args.Password.ToUnsecureString());
+            d.WaitUntilAvailable(By.Id("submitButton"), new TimeSpan(0, 0, 2)).ClickWait();
 
             //Insert any additional code as required for the SSO scenario
 
             //Wait for CRM Page to load
-            d.WaitUntilVisible(By.XPath(Elements.Xpath[Reference.Login.CrmMainPage])
+            d.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Login.CrmMainPage])
                 , new TimeSpan(0, 0, 60),
             e =>
             {

@@ -101,10 +101,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Sample.Web
         {
             //Modify Report Filter to change the default "Modified On" of 30 days to 15 days
             var criteria = args.Driver.FindElement(By.XPath("id(\"CRM_FilteredAccountEFGRP0FFLD0CCVALLBL\")"));
-            criteria.ClickWait()
+            criteria.ClickWait();
 
             var input = args.Driver.FindElement(By.XPath("id(\"CRM_FilteredAccountEFGRP0FFLD0CCVALCTL\")"));
-            input.SendKeys("15", true);
+            input.SendKeysWait("15", true);
 
         }
     }

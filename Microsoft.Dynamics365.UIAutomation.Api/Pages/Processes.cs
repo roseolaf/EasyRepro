@@ -37,15 +37,15 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 SwitchToDialogFrame();
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Process.Name]))
-                      .SendKeys(name);
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Process.Name]))
+                      .SendKeysWait(name);
 
                 SetValue(new OptionSet() { Name = Elements.ElementId[Reference.Process.Category], Value = type.ToString() });
                 SetValue(new OptionSet() { Name = Elements.ElementId[Reference.Process.Entity], Value = entity });
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Process.BlankWorkflow]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Process.BlankWorkflow])).ClickWait();
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Process.Create]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Process.Create])).ClickWait();
 
                 return true;
             });
@@ -57,11 +57,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Activate"), driver =>
             {
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Process.Activate]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Process.Activate])).ClickWait();
 
                 SwitchToDialogFrame();
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Process.Begin]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Process.Begin])).ClickWait();
 
                 return true;
             });
@@ -73,11 +73,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Activate"), driver =>
             {
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Process.Deactivate]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Process.Deactivate])).ClickWait();
 
                 SwitchToDialogFrame();
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Process.Begin]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Process.Begin])).ClickWait();
 
                 return true;
             });
@@ -88,11 +88,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Activate"), driver =>
             {
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Process.Delete]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Process.Delete])).ClickWait();
 
                 SwitchToDialogFrame();
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Process.Begin]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Process.Begin])).ClickWait();
 
                 return true;
             });

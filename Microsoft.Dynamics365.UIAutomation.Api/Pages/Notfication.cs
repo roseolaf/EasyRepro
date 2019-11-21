@@ -36,7 +36,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 bool returnValue = false;
 
-                driver.WaitUntilVisible(By.XPath(Elements.Xpath[Reference.Notification.AppMessageBar]), new TimeSpan(0, 0, 5), d =>
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Notification.AppMessageBar]), new TimeSpan(0, 0, 5), d =>
                 {
                     var container = driver.FindElement(By.XPath(Elements.Xpath[Reference.Notification.AppMessageBar]));
                     var rows = container.FindElements(By.ClassName(Elements.CssClass[Reference.Notification.MessageBarRow]));
@@ -46,7 +46,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         var dismissButtonElement = row.FindElement(By.ClassName(Elements.CssClass[Reference.Notification.MessageBarButtonContainer]));
                         var dismissButton = dismissButtonElement.FindElement(By.TagName("a"));
 
-                        dismissButton.ClickWait()
+                        dismissButton.ClickWait();
 
                         returnValue = true;
                     }
@@ -71,7 +71,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 bool returnValue = false;
 
-                driver.WaitUntilVisible(By.XPath(Elements.Xpath[Reference.Notification.AppMessageBar]), new TimeSpan(0, 0, 5), d =>
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Notification.AppMessageBar]), new TimeSpan(0, 0, 5), d =>
                 {
                     var container = driver.FindElement(By.XPath(Elements.Xpath[Reference.Notification.AppMessageBar]));
                     var rows = container.FindElements(By.ClassName(Elements.CssClass[Reference.Notification.MessageBarRow]));
@@ -82,7 +82,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         var dismissButtonElement = row.FindElement(By.ClassName(Elements.CssClass[Reference.Notification.MessageBarButtonContainer]));
                         var dismissButton = dismissButtonElement.FindElement(By.TagName("a"));
 
-                        dismissButton.ClickWait()
+                        dismissButton.ClickWait();
 
                         returnValue = true;
                     }
@@ -104,7 +104,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     var returnList = new List<AppNotification>();
                     var index = 0;
 
-                    driver.WaitUntilVisible(By.XPath(Elements.Xpath[Reference.Notification.AppMessageBar]), new TimeSpan(0, 0, 5), d =>
+                    driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Notification.AppMessageBar]), new TimeSpan(0, 0, 5), d =>
                     {
                         var container = driver.FindElement(By.XPath(Elements.Xpath[Reference.Notification.AppMessageBar]));
                         var rows = container.FindElements(By.ClassName(Elements.CssClass[Reference.Notification.MessageBarRow]));

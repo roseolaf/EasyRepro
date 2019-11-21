@@ -61,7 +61,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                 if (includeMoreCommandsValues)
                 {
-                    driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.CommandBar.MoreCommands]));
+                    driver.FindElement(By.XPath(Elements.Xpath[Reference.CommandBar.MoreCommands])).ClickWait();
 
                     var retrieveMoreCommandsValues = GetCommands(true).Value;
 

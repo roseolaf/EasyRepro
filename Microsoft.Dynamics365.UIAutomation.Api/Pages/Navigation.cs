@@ -38,24 +38,24 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions($"Global Search: {searchText}"), driver =>
             {
-                driver.WaitUntilClickable(By.XPath(Elements.Xpath[Reference.Navigation.SearchButton]),
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Navigation.SearchButton]),
                     new TimeSpan(0, 0, 5),
-                    d => { driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Navigation.SearchButton])); },
+                    d => { driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.SearchButton])).ClickWait(); },
                     d => { throw new InvalidOperationException("The Global Search button is not available."); });
 
 
                 if (driver.IsVisible(By.XPath(Elements.Xpath[Reference.Navigation.SearchLabel])))
                 {
-                    driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Navigation.SearchLabel]));
+                    driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.SearchLabel])).ClickWait();
                 }
 
-                driver.WaitUntilClickable(By.XPath(Elements.Xpath[Reference.Navigation.Search]),
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Navigation.Search]),
                     new TimeSpan(0, 0, 5),
                     d =>
                     {
-                        driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.Search])).SendKeys(searchText, true);
+                        driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.Search])).SendKeysWait(searchText, true);
                         Thread.Sleep(500);
-                        driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.Search])).SendKeys(Keys.Enter);
+                        driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.Search])).SendKeysWait(Keys.Enter);
                     },
                     d => { throw new InvalidOperationException("The Global Search text field is not available."); });
 
@@ -91,7 +91,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions($"Open Admin Portal"), driver =>
             {
-                driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.AdminPortal]))?.ClickWait()
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.AdminPortal]))?.ClickWait();
 
                 return true;
             });
@@ -111,7 +111,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 //Narrow down the scope to the Search Tab when looking for the search input
                 var navBar = driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.AdvFindSearch]));
 
-                navBar.FindElement(By.ClassName("navTabButtonLink")).ClickWait()
+                navBar.FindElement(By.ClassName("navTabButtonLink")).ClickWait();
 
                 return true;
             });
@@ -145,7 +145,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions($"Open Guided Help"), driver =>
             {
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Navigation.GuidedHelp]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.GuidedHelp])).ClickWait();
 
                 return true;
             });
@@ -174,7 +174,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 driver.WaitUntilAvailable(By.ClassName(Elements.CssClass[Reference.Navigation.TopLevelItem]));
 
                 var topItem = driver.FindElements(By.ClassName(Elements.CssClass[Reference.Navigation.TopLevelItem])).FirstOrDefault();
-                topItem?.FindElement(By.Name(Elements.Name[Reference.Navigation.HomeTab])).ClickWait()
+                topItem?.FindElement(By.Name(Elements.Name[Reference.Navigation.HomeTab])).ClickWait();
 
                 driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Navigation.ActionGroup]));
 
@@ -196,7 +196,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 var list = new List<Link>();
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Navigation.TabGlobalMruNode]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.TabGlobalMruNode])).ClickWait();
 
 
                 var navContainer = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Navigation.Shuffle]));
@@ -300,7 +300,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Open Related Menu"), driver =>
             {
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Navigation.TabNode]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.TabNode])).ClickWait();
 
                 var element = driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.ActionGroup]));
                 var subItems = element.FindElements(By.ClassName("nav-rowBody"));
@@ -312,7 +312,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 }
 
                 Browser.ActiveFrameId = related.GetAttribute("id").Replace("Node_nav", "area");
-                related?.ClickWait()
+                related?.ClickWait();
 
                 return true;
             });
@@ -320,7 +320,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
         private static void OpenSettingsOption(IWebDriver driver, string settingPath)
         {
-            driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Navigation.Settings]));
+            driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.Settings])).ClickWait();
             Thread.Sleep(1000);
 
             //Bug: 563823 
@@ -328,8 +328,8 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             driver.SetVisible(By.XPath(settingPath), true);
             //End bug fix
 
-            driver.WaitUntilVisible(By.XPath(settingPath));
-            driver.ClickWhenAvailable(By.XPath(settingPath));
+            driver.WaitUntilAvailable(By.XPath(settingPath));
+            driver.FindElement(By.XPath(settingPath)).ClickWait();
         }
 
         /// <summary>
@@ -377,13 +377,13 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 var list = new List<KeyValuePair<string, IWebElement>>();
 
-                driver.WaitUntilVisible(By.Id(area.GetAttribute("Id")));
+                driver.WaitUntilAvailable(By.Id(area.GetAttribute("Id")));
 
-                area.ClickWait()
+                area.ClickWait();
 
                 Thread.Sleep(1000);
 
-                driver.WaitUntilVisible(By.XPath(Elements.Xpath[Reference.Navigation.SubActionGroupContainer]));
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Navigation.SubActionGroupContainer]));
 
                 var subNavElement = driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.SubActionGroupContainer]));
 
@@ -428,9 +428,9 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions($"Open Quick Create"), driver =>
             {
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Navigation.GlobalCreate]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.GlobalCreate])).ClickWait();
 
-                driver.WaitUntilVisible(By.XPath(Elements.Xpath[Reference.QuickCreate.EntityContainer]), new TimeSpan(0, 0, 2));
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.QuickCreate.EntityContainer]), new TimeSpan(0, 0, 2));
 
                 var area = driver.FindElement(By.XPath(Elements.Xpath[Reference.QuickCreate.EntityContainer]));
                 var items = area.FindElements(By.TagName("a"));
@@ -444,7 +444,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                 item.ClickWait(true);
 
-                driver.WaitUntilVisible(By.XPath(Elements.Xpath[Reference.QuickCreate.Container]));
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.QuickCreate.Container]));
 
                 return true;
             });
@@ -533,9 +533,9 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             return this.Execute(GetOptions($"SignOut"), driver =>
             {
                 var userInfo = driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.UserInfo]));
-                userInfo?.ClickWait()
+                userInfo?.ClickWait();
                 var signOut = driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.SignOut]));
-                signOut?.ClickWait()
+                signOut?.ClickWait();
                 return true;
             });
         }

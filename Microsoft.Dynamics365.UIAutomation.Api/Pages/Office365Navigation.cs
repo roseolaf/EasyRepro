@@ -38,7 +38,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 var dictionary = new Dictionary<string, Uri>();
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Office365Navigation.NavMenu]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Office365Navigation.NavMenu])).ClickWait();
 
                 var element = driver.FindElement(By.ClassName(Elements.CssClass[Reference.Office365Navigation.MenuTabContainer]));
                 var subItems = element.FindElements(By.ClassName(Elements.CssClass[Reference.Office365Navigation.AppItem]));

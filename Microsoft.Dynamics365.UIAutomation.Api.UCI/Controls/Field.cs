@@ -56,7 +56,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
         {
             get
             {
-                if (containerElement.HasElement(By.XPath(AppElements.Xpath[AppReference.Field.ReadOnly])))
+                if (containerElement.ElementExists(By.XPath(AppElements.Xpath[AppReference.Field.ReadOnly])))
                 {
                     var readOnly = containerElement.FindElement(By.XPath(AppElements.Xpath[AppReference.Field.ReadOnly]));
 

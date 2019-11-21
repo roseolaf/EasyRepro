@@ -35,11 +35,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute(GetOptions($"Clear BPF Text Field Value: {field}"), driver =>
             {
-                if (driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.TextFieldContainer].Replace("[NAME]", field.ToLower()))))
+                if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.TextFieldContainer].Replace("[NAME]", field.ToLower()))))
                 {
                     var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.TextFieldContainer].Replace("[NAME]", field.ToLower())));
 
-                    fieldElement.ClickWait()
+                    fieldElement.ClickWait();
 
                     if (fieldElement.FindElements(By.TagName("textarea")).Count > 0)
                     {
@@ -66,7 +66,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute(GetOptions($"Clear BPF Checkbox/TwoOption Value: {option.Name}"), driver =>
             {
-                if (driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower()))))
+                if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower()))))
                 {
                     var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower())));
 
@@ -106,7 +106,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             return this.Execute(GetOptions($"Clear BPF OptionSet Value: {option.Name}"), driver =>
             {
 
-                if (driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.OptionSetFieldContainer].Replace("[NAME]", option.Name.ToLower()))))
+                if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.OptionSetFieldContainer].Replace("[NAME]", option.Name.ToLower()))))
                 {
                     var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower())));
                     var select = fieldElement;
@@ -141,7 +141,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute(GetOptions($"Clear BPF Lookup Value: {control.Name}"), driver =>
             {
-                if (driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.LookupFieldContainer].Replace("[NAME]", control.Name.ToLower()))))
+                if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.LookupFieldContainer].Replace("[NAME]", control.Name.ToLower()))))
                 {
                     var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.LookupFieldContainer].Replace("[NAME]", control.Name.ToLower())));
 
@@ -173,7 +173,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         if (dialogItems.Any())
                         {
                             var dialogItem = dialogItems.Last();
-                            dialogItem.Element.ClickWait()
+                            dialogItem.Element.ClickWait();
                         }
 
                         SwitchToDialog();
@@ -198,7 +198,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute(GetOptions($"Clear BPF DateTime Field: {date.Name}"), driver =>
             {
-                if (driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.DateFieldContainer].Replace("[NAME]", date.Name.ToLower()))))
+                if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.DateFieldContainer].Replace("[NAME]", date.Name.ToLower()))))
                 {
                     var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.DateFieldContainer].Replace("[NAME]", date.Name.ToLower())));
 
@@ -210,7 +210,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         // Clear any existing values
                         fieldInput.Clear();
                         fieldElement.ClickWait(true);
-                        fieldElement.SendKeys(Keys.Enter);
+                        fieldElement.SendKeysWait(Keys.Enter);
                     }
                 }
                 else
@@ -231,11 +231,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
 
                 /*
-                driver.WaitUntilVisible(By.Id(option.Name));
+                driver.WaitUntilAvailable(By.Id(option.Name));
 
-                if (driver.HasElement(By.Id(option.Name)))
+                if (driver.ElementExists(By.Id(option.Name)))
                 {
-                    var container = driver.ClickWhenAvailable(By.Id(option.Name));
+                    var container = driver.FindElement(By.Id(option.Name)).ClickWait();
 
                     if (removeExistingValues)
                     {
@@ -247,7 +247,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                     var input = container.FindElement(By.TagName("input"));
                     input.ClickWait();
-                    input.SendKeys(" ");
+                    input.SendKeysWait(" ");
 
                     var options = container.FindElements(By.TagName("li"));
 
@@ -280,14 +280,14 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             return this.Execute(GetOptions($"Clear BPF ConpositeControl Value: {control.Id}"), driver =>
             {
                 /*
-                driver.WaitUntilVisible(By.Id(control.Id));
+                driver.WaitUntilAvailable(By.Id(control.Id));
 
-                if (!driver.WaitUntilExists(By.Id(control.Id)))
+                if (!driver.ElementExists(By.Id(control.Id)))
                     return false;
 
-                driver.ClickWhenAvailable(By.Id(control.Id));
+                driver.FindElement(By.Id(control.Id)).ClickWait();
 
-                if (driver.HasElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.FlyOut])))
+                if (driver.ElementExists(By.Id(control.Id + Elements.ElementId[Reference.SetValue.FlyOut])))
                 {
                     var compcntrl =
                         driver.FindElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.FlyOut]));
@@ -302,7 +302,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                         //BugFix - Setvalue -The value is getting erased even after setting the value ,might be due to recent CSS changes.
                         driver.ExecuteScript("document.getElementById('" + result?.GetAttribute("id") + "').value = ''");
-                        result?.SendKeys(field.Value);
+                        result?.SendKeysWait(field.Value);
                     }
 
                     compcntrl.FindElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.Confirm])).ClickWait();
@@ -326,15 +326,15 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute("Finish BPF", driver =>
             {
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Finish])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Finish])))
                     throw new Exception("Business Process Flow Finish Element does not exist");
 
                 if (driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Finish])).GetAttribute("class").Contains("hidden"))
                     throw new Exception("The Business Process is already finished");
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Finish]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Finish])).ClickWait();
 
-                driver.WaitUntilVisible(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.FinishedLabel]));
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.FinishedLabel]));
 
                 if (!driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Finish])).GetAttribute("class").Contains("hidden"))
                     throw new Exception("The finish operation did not complete as expected.");
@@ -353,10 +353,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute($"Get BPF Text Field Value: {field}", driver =>
             {
-                driver.WaitUntilVisible(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.TextFieldContainer].Replace("[NAME]", field.ToLower())));
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.TextFieldContainer].Replace("[NAME]", field.ToLower())));
 
                 string text = string.Empty;
-                if (driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.TextFieldContainer].Replace("[NAME]", field.ToLower()))))
+                if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.TextFieldContainer].Replace("[NAME]", field.ToLower()))))
                 {
                     var fieldElement = driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.TextFieldContainer].Replace("[NAME]", field.ToLower())));
 
@@ -388,11 +388,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 string text = string.Empty;
 
                 /*
-                driver.WaitUntilVisible(By.Id(control.Id));
+                driver.WaitUntilAvailable(By.Id(control.Id));
 
-                driver.ClickWhenAvailable(By.Id(control.Id));
+                driver.FindElement(By.Id(control.Id)).ClickWait();
 
-                if (driver.HasElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.FlyOut])))
+                if (driver.ElementExists(By.Id(control.Id + Elements.ElementId[Reference.SetValue.FlyOut])))
                 {
                     var compcntrl =
                         driver.FindElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.FlyOut]));
@@ -425,10 +425,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute($"Get BPF OptionSet Value: {option.Name}", driver =>
             {
-                driver.WaitUntilVisible(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.OptionSetFieldContainer].Replace("[NAME]", option.Name.ToLower())));
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.OptionSetFieldContainer].Replace("[NAME]", option.Name.ToLower())));
 
                 string text = string.Empty;
-                if (driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.OptionSetFieldContainer].Replace("[NAME]", option.Name.ToLower()))))
+                if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.OptionSetFieldContainer].Replace("[NAME]", option.Name.ToLower()))))
                 {
                     var input = driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.OptionSetFieldContainer].Replace("[NAME]", option.Name.ToLower())));
                     text = input.Text;
@@ -449,10 +449,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute($"Get BPF Lookup Value: {control.Name}", driver =>
             {
-                driver.WaitUntilVisible(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.LookupFieldContainer].Replace("[NAME]", control.Name.ToLower())));
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.LookupFieldContainer].Replace("[NAME]", control.Name.ToLower())));
 
                 string lookupValue = string.Empty;
-                if (driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.LookupFieldContainer].Replace("[NAME]", control.Name.ToLower()))))
+                if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.LookupFieldContainer].Replace("[NAME]", control.Name.ToLower()))))
                 {
                     var input = driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.LookupFieldContainer].Replace("[NAME]", control.Name.ToLower())));
                     lookupValue = input.Text;
@@ -476,7 +476,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 bool check = false;
 
-                if (driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower()))))
+                if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower()))))
                 {
                     var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower())));
                     var select = fieldElement;
@@ -521,7 +521,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             return this.Execute(GetOptions($"Get BPF DateTime Value: {date.Name}"), driver =>
             {
                 string dateValue = "";
-                if (driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.DateFieldContainer].Replace("[NAME]", date.Name.ToLower()))))
+                if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.DateFieldContainer].Replace("[NAME]", date.Name.ToLower()))))
                 {
 
                     var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.DateFieldContainer].Replace("[NAME]", date.Name.ToLower())));
@@ -551,10 +551,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute("Hide", driver =>
             {
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Hide])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Hide])))
                     throw new Exception("Business Process Flow Hide Element does not exist");
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Hide]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Hide])).ClickWait();
 
                 return true;
             });
@@ -571,13 +571,13 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute("Next Stage", driver =>
             {
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStage])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStage])))
                     throw new Exception("Business Process Flow Next Stage Element does not exist");
 
                 if(driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStage])).GetAttribute("class").Contains("disabled"))
                     throw new Exception("Business Process Flow Next Stage Element is not enabled");
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStage]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStage])).ClickWait();
 
                 return true;
             });
@@ -596,7 +596,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute("Next Stage", driver =>
             {
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStageMenu])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStageMenu])))
                     throw new Exception("Business Process Flow Next Stage Element does not exist");
 
                 if (driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStageMenu])).GetAttribute("class").Contains("disabled"))
@@ -657,13 +657,13 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute("Previous Stage", driver =>
             {
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.PreviousStage])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.PreviousStage])))
                     throw new Exception("Business Process Flow Previous Stage Element does not exist");
 
                 if (driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.PreviousStage])).GetAttribute("class").Contains("disabled"))
                     throw new Exception("Business Process Flow Previous Stage Element is not enabled");
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.PreviousStage]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.PreviousStage])).ClickWait();
 
                 return true;
             });
@@ -700,11 +700,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     }
 
                     if (element != null)
-                        element.ClickWait()
+                        element.ClickWait();
                     else
                         throw new InvalidOperationException($"The Business Process with name: '{name}' does not exist");
 
-                    driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Ok]));
+                    driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.Ok])).ClickWait();
                 }
                 else
                 {
@@ -753,7 +753,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute("Set Active", driver =>
             {
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.SetActive])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.SetActive])))
                     throw new Exception("Business Process Flow Set Active Element does not exist");
 
                 if (driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.SetActive])).GetAttribute("class").Contains("hidden"))
@@ -768,7 +768,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     }
                 }
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.SetActive]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.SetActive])).ClickWait();
 
                 return true;
             });
@@ -784,21 +784,21 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute(GetOptions($"Set BPF Text Field Value: {field}"), driver =>
             {
-                if (driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.TextFieldContainer].Replace("[NAME]", field.ToLower()))))
+                if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.TextFieldContainer].Replace("[NAME]", field.ToLower()))))
                 {
                     var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.TextFieldContainer].Replace("[NAME]", field.ToLower())));
 
-                    fieldElement.ClickWait()
-                    
+                    fieldElement.ClickWait();
+
                     if (fieldElement.FindElements(By.TagName("textarea")).Count > 0)
                     {
                         fieldElement.FindElement(By.TagName("textarea")).Clear();
-                        fieldElement.FindElement(By.TagName("textarea")).SendKeys(value);
+                        fieldElement.FindElement(By.TagName("textarea")).SendKeysWait(value);
                     }
                     else if (fieldElement.TagName == "textarea")
                     {
                         fieldElement.Clear();
-                        fieldElement.SendKeys(value);
+                        fieldElement.SendKeysWait(value);
                     }                    
                 }
                 else
@@ -817,7 +817,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute(GetOptions($"Set BPF Checkbox/TwoOption Value: {option.Name}"), driver =>
             {
-                if (driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower()))))
+                if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower()))))
                 {
                     var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower())));
 
@@ -848,7 +848,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             return this.Execute(GetOptions($"Set BPF OptionSet Value: {option.Name}"), driver =>
             {
 
-                if (driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.OptionSetFieldContainer].Replace("[NAME]", option.Name.ToLower()))))
+                if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.OptionSetFieldContainer].Replace("[NAME]", option.Name.ToLower()))))
                 {
                     var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.OptionSetFieldContainer].Replace("[NAME]", option.Name.ToLower())));
                     var select = fieldElement;
@@ -883,16 +883,16 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute(GetOptions($"Set BPF Lookup Value: {control.Name}"), driver =>
             {
-                if (driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.LookupFieldContainer].Replace("[NAME]", control.Name.ToLower()))))
+                if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.LookupFieldContainer].Replace("[NAME]", control.Name.ToLower()))))
                 {
                     driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.LookupFieldContainer].Replace("[NAME]", control.Name.ToLower())));
 
-                    var lookupInput = driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.LookupFieldContainer].Replace("[NAME]", control.Name.ToLower())));
-
+                    var lookupInput = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.LookupFieldContainer].Replace("[NAME]", control.Name.ToLower())));
+                    lookupInput.ClickWait();
                     if (lookupInput.FindElement(By.ClassName(Elements.CssClass[Reference.SetValue.LookupRenderClass])) == null)
                         throw new InvalidOperationException($"Field: {control.Name} is not Lookup control");
 
-                    lookupInput.FindElement(By.ClassName(Elements.CssClass[Reference.SetValue.LookupRenderClass])).Click(true);
+                    lookupInput.FindElement(By.ClassName(Elements.CssClass[Reference.SetValue.LookupRenderClass])).ClickWait(true);
 
                     var dialogName = $"Dialog_header_process_{control.Name}_IMenu";
 
@@ -942,29 +942,31 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute(GetOptions($"Set BPF DateTime Value: {date.Name}"), driver =>
             {
-                if (driver.HasElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.DateFieldContainer].Replace("[NAME]", date.Name.ToLower()))))
+                if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.DateFieldContainer].Replace("[NAME]", date.Name.ToLower()))))
                 {
-                    var fieldElement = driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.DateFieldContainer].Replace("[NAME]", date.Name.ToLower())));
-
+                    var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.DateFieldContainer].Replace("[NAME]", date.Name.ToLower())));
+                    fieldElement.ClickWait();
                     //Check to see if focus is on field already
                     if (fieldElement.FindElement(By.ClassName(Elements.CssClass[Reference.SetValue.EditClass])) != null)
-                        fieldElement.FindElement(By.ClassName(Elements.CssClass[Reference.SetValue.EditClass])).ClickWait()
+                        fieldElement.FindElement(By.ClassName(Elements.CssClass[Reference.SetValue.EditClass]))
+                            .ClickWait();
                     else
-                        fieldElement.FindElement(By.ClassName(Elements.CssClass[Reference.SetValue.ValueClass])).ClickWait()
+                        fieldElement.FindElement(By.ClassName(Elements.CssClass[Reference.SetValue.ValueClass]))
+                            .ClickWait();
 
                     var input = fieldElement.FindElement(By.TagName("input"));
 
                     if (input.GetAttribute("value").Length > 0)
                     {
                         input.Clear();
-                        fieldElement.ClickWait()
-                        input.SendKeys(date.Value.ToShortDateString());
-                        input.SendKeys(Keys.Enter);
+                        fieldElement.ClickWait();
+                        input.SendKeysWait(date.Value.ToShortDateString());
+                        input.SendKeysWait(Keys.Enter);
                     }
                     else
                     {
-                        input.SendKeys(date.Value.ToShortDateString());
-                        input.SendKeys(Keys.Enter);
+                        input.SendKeysWait(date.Value.ToShortDateString());
+                        input.SendKeysWait(Keys.Enter);
                     }
                 }
                 else
@@ -985,11 +987,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
 
                 /*
-                driver.WaitUntilVisible(By.Id(option.Name));
+                driver.WaitUntilAvailable(By.Id(option.Name));
 
-                if (driver.HasElement(By.Id(option.Name)))
+                if (driver.ElementExists(By.Id(option.Name)))
                 {
-                    var container = driver.ClickWhenAvailable(By.Id(option.Name));
+                    var container = driver.FindElement(By.Id(option.Name)).ClickWait();
 
                     if (removeExistingValues)
                     {
@@ -1001,7 +1003,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                     var input = container.FindElement(By.TagName("input"));
                     input.ClickWait();
-                    input.SendKeys(" ");
+                    input.SendKeysWait(" ");
 
                     var options = container.FindElements(By.TagName("li"));
 
@@ -1034,14 +1036,14 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             return this.Execute(GetOptions($"Set BPF CompositeControl Value: {control.Id}"), driver =>
             {
                 /*
-                driver.WaitUntilVisible(By.Id(control.Id));
+                driver.WaitUntilAvailable(By.Id(control.Id));
 
-                if (!driver.WaitUntilExists(By.Id(control.Id)))
+                if (!driver.ElementExists(By.Id(control.Id)))
                     return false;
 
-                driver.ClickWhenAvailable(By.Id(control.Id));
+                driver.FindElement(By.Id(control.Id)).ClickWait();
 
-                if (driver.HasElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.FlyOut])))
+                if (driver.ElementExists(By.Id(control.Id + Elements.ElementId[Reference.SetValue.FlyOut])))
                 {
                     var compcntrl =
                         driver.FindElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.FlyOut]));
@@ -1056,7 +1058,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                         //BugFix - Setvalue -The value is getting erased even after setting the value ,might be due to recent CSS changes.
                         driver.ExecuteScript("document.getElementById('" + result?.GetAttribute("id") + "').value = ''");
-                        result?.SendKeys(field.Value);
+                        result?.SendKeysWait(field.Value);
                     }
 
                     compcntrl.FindElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.Confirm])).ClickWait();

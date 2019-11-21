@@ -55,7 +55,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
 
             return this.Execute(GetOptions($"Select Tab on the Record Wall"), driver =>
             {
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.NotesControl])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.NotesControl])))
                     throw new InvalidOperationException("The Record Wall is not available.");
 
                 var notesControl = driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.NotesControl]));
@@ -84,7 +84,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
 
             return this.Execute(GetOptions($"Add Note"), driver =>
             {
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.NotesWall])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.NotesWall])))
                     throw new InvalidOperationException("The Notes Wall is not available. Please check that the Notes tab is selected.");
 
                 var wall = driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.NotesWall]));
@@ -93,7 +93,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
 
                 var textArea = wall.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.NotesText]));
                 textArea.ClickWait();
-                textArea.SendKeys(noteText);
+                textArea.SendKeysWait(noteText);
 
                 var post = driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.NotesDone]));
                 var done = post.FindElement(By.Id("postButton"));
@@ -115,14 +115,14 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
 
             return this.Execute(GetOptions($"Add Post"), driver =>
             {
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.PostWall])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.PostWall])))
                     throw new InvalidOperationException("The Post Wall is not available. Please check that the Posts tab is selected.");
 
                 var wall = driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.PostWall]));
                 var text = wall.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.PostText]));
 
                 text.ClickWait();
-                text.SendKeys(postText);
+                text.SendKeysWait(postText);
 
                 wall.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.PostButton])).ClickWait();
 
@@ -142,7 +142,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
 
             return this.Execute(GetOptions($"Filter Activity by Status"), driver =>
             {
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityWall])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityWall])))
                     throw new InvalidOperationException("The Activity Wall is not available. Please check that the Activities tab is selected.");
 
                 var wall = driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityWall]));
@@ -166,10 +166,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
 
             return this.Execute(GetOptions($"Open Activities Associated View"), driver =>
             {
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityWall])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityWall])))
                     throw new InvalidOperationException("The Activity Wall is not available. Please check that the Activities tab is selected.");
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityAssociatedView]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityAssociatedView])).ClickWait();
 
                 return true;
             });
@@ -189,21 +189,21 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
 
             return this.Execute(GetOptions($"Add Phone Call from Activity Feed"), driver =>
             {
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityWall])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityWall])))
                     throw new InvalidOperationException("The Activity Feed is not available. Please check that the Activities tab is selected.");
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityAddPhoneCall]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityAddPhoneCall])).ClickWait();
 
                 this.SetValue(Elements.ElementId[Reference.ActivityFeed.ActivityPhoneCallDescriptionId], description);
                 if (leftVoiceMail)
                 {
-                    driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.ActivityFeed.VoiceMail]));
+                    driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.VoiceMail])).ClickWait();
                 }
 
                 if (!outgoing)
-                    driver.ClickWhenAvailable(By.Id(Elements.ElementId[Reference.ActivityFeed.ActivityPhoneCallDirectionId]));
+                    driver.FindElement(By.Id(Elements.ElementId[Reference.ActivityFeed.ActivityPhoneCallDirectionId])).ClickWait();;
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityPhoneCallOk]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityPhoneCallOk])).ClickWait();;
 
                 return true;
             });
@@ -223,16 +223,16 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
 
             return this.Execute(GetOptions($"Add Task from Activity Feed"), driver =>
             {
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityWall])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityWall])))
                     throw new InvalidOperationException("The Activity Feed is not available. Please check that the Activities tab is selected.");
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityAddTask]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityAddTask])).ClickWait();;
 
                 this.SetValue(Elements.ElementId[Reference.ActivityFeed.ActivityTaskSubjectId], subject);
                 this.SetValue(Elements.ElementId[Reference.ActivityFeed.ActivityTaskDescriptionId], description);
                 this.SetCalenderValue(Elements.ElementId[Reference.ActivityFeed.ActivityAddTaskDueDateId], dueDate.ToShortDateString());
 
-                if (driver.HasElement(By.Id(Elements.ElementId[Reference.ActivityFeed.ActivityAddTaskDueTimeId])))
+                if (driver.ElementExists(By.Id(Elements.ElementId[Reference.ActivityFeed.ActivityAddTaskDueTimeId])))
                 {
                     this.SetCalenderValue(Elements.ElementId[Reference.ActivityFeed.ActivityAddTaskDueTimeId], dueDate.ToShortTimeString());
                 }
@@ -242,7 +242,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
 
                 this.SetValue(priority);
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityTaskOk]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityTaskOk])).ClickWait();;
 
                 return true;
             });
@@ -252,13 +252,13 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
         {
             return this.Execute("Set calender value", driver =>
             {
-                if (driver.HasElement(By.Id(field)))
+                if (driver.ElementExists(By.Id(field)))
                 {
-                    driver.WaitUntilVisible(By.Id(field));
+                    driver.WaitUntilAvailable(By.Id(field));
 
-                    var fieldElement = driver.ClickWhenAvailable(By.Id(field));
+                    var fieldElement = driver.FindElement(By.Id(field)).ClickWait();;
 
-                    fieldElement.FindElement(By.TagName("input")).SendKeys(value, true);
+                    fieldElement.FindElement(By.TagName("input")).SendKeysWait(value, true);
                 }
                 else
                     throw new InvalidOperationException($"Field: {field} Does not exist");
@@ -278,10 +278,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
 
             return this.Execute(GetOptions($"Add Email from Activity Feed"), driver =>
             {
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityWall])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityWall])))
                     throw new InvalidOperationException("The Activity Feed is not available. Please check that the Activities tab is selected.");
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityMoreActivities]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityMoreActivities])).ClickWait();;
                 var activitiesList = driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityStatusFilterDialog]));
                 var appointment = activitiesList.FindElements(By.TagName("li"));
                 appointment.Where(x => x.Text.ToLower() == Activities.Email.ToString().ToLower()).FirstOrDefault()?.ClickWait();
@@ -301,10 +301,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
 
             return this.Execute(GetOptions($"Add Appointment from Activity Feed"), driver =>
             {
-                if (!driver.WaitUntilExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityWall])))
+                if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityWall])))
                     throw new InvalidOperationException("The Activity Feed is not available. Please check that the Activities tab is selected.");
 
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityMoreActivities]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityMoreActivities])).ClickWait();;
                 var activitiesList = driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityStatusFilterDialog]));
 
                 var appointment = activitiesList.FindElements(By.TagName("li"));

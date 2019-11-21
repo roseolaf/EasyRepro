@@ -34,7 +34,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Cancel"), driver =>
             {
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Report.Close]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Report.Close])).ClickWait();
 
                 return true;
             });
@@ -55,7 +55,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 {
                     setFilterCriteriaAction?.Invoke(new ReportEventArgs( driver));
                 }
-                driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Report.RunReport]));
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Report.RunReport])).ClickWait();
 
                 return true;
             });

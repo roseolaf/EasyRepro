@@ -34,7 +34,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                 driver.Navigate().GoToUrl(baseUri.GetLeftPart(System.UriPartial.Authority) + "/m");
 
-                driver.WaitUntilVisible(By.XPath(Elements.Xpath[Reference.Mobile.Page])
+                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Mobile.Page])
                     , new TimeSpan(0, 0, 60),
                     e => { e.WaitForPageToLoad(); },
                     f => { throw new Exception("Mobile page failed to load."); });

@@ -41,7 +41,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 var viewSelectorContainer = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.ViewSelectorContainer]));
                 var viewLink = viewSelectorContainer.FindElement(By.TagName("a"));
 
-                viewLink.ClickWait()
+                viewLink.ClickWait();
 
                 Thread.Sleep(500);
 
@@ -99,7 +99,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 {
                     if (viewItem.Text == viewName)
                     {
-                        viewItem.ClickWait()
+                        viewItem.ClickWait();
                     }
                 }
 
@@ -123,9 +123,9 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 var inputs = driver.FindElements(By.TagName("input"));
                 var input = inputs.Where(x => x.GetAttribute("id").Contains("findCriteria")).FirstOrDefault();
 
-                input.SendKeys(searchCriteria);
+                input.SendKeysWait(searchCriteria);
                 var searchImg = driver.FindElement(By.Id(input.GetAttribute("id") + "Img"));
-                searchImg?.ClickWait()
+                searchImg?.ClickWait();
                 return true;
             });
         }
@@ -148,7 +148,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 if (sortCol == null)
                     throw new InvalidOperationException($"Column: {columnName} Does not exist");
                 else
-                    sortCol.ClickWait()
+                    sortCol.ClickWait();
                 return true;
             });
         }
@@ -178,7 +178,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     {
                         if (currentIndex == index)
                         {
-                            link.ClickWait()
+                            link.ClickWait();
                             clicked = true;
 
                             break;
@@ -192,7 +192,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 {
                     SwitchToContent();
                     driver.WaitForPageToLoad();
-                    driver.WaitUntilClickable(By.XPath(Elements.Xpath[Reference.Entity.Form]),
+                    driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.Form]),
                         new TimeSpan(0, 0, 60),
                         null,
                         d => { throw new Exception("CRM Record is Unavailable or not finished loading. Timeout Exceeded"); }

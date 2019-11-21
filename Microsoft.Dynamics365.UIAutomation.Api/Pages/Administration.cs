@@ -35,7 +35,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     if (String.Equals(item.Text, name, StringComparison.OrdinalIgnoreCase))
                     {
                         itemExists = true;
-                        item.ClickWait()
+                        item.ClickWait();
                     }
                 }
 
