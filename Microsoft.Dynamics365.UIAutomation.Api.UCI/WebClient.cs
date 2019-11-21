@@ -1910,12 +1910,14 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
             driver.WaitForTransaction();
 
             driver.WaitUntilAvailable(By.XPath(AppElements.Xpath[AppReference.Entity.LookupFieldResultListItem].Replace("[NAME]", control.Name)));
-            var lookupResultsItems = driver.FindElements(By.XPath(AppElements.Xpath[AppReference.Entity.LookupFieldResultListItem].Replace("[NAME]", control.Name))).Where(e => e.HasAttribute("aria-label") && e.GetAttribute("aria-label").StartsWith(control.Value)).ToList();
+            var lookupResultsItems = driver.FindElements(By.XPath(AppElements.Xpath[AppReference.Entity.LookupFieldResultListItem].Replace("[NAME]", control.Name)))
+                .Where(e => e.HasAttribute("aria-label") && e.GetAttribute("aria-label").StartsWith(control.Value))
+                .ToList();
 
             if (!lookupResultsItems.Any())
                 throw new NotFoundException($"No Results Matching {control.Value} Were Found.");            
 
-            lookupResultsItems.First().ClickWait();
+            lookupResultsItems.First().FindElement(By.XPath("./div")).ClickWait();
 
             driver.WaitForTransaction();
         }

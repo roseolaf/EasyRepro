@@ -376,12 +376,14 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
         public static void WaitForLoading(this IWebDriver driver)
         {
+            Thread.Sleep(100);
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
             wait.Until(d => !d.FindElements(By.XPath("//div[@class='progressDot']")).Any(elem =>  int.Parse(elem.GetAttribute("clientHeight")) > 0));
         }
 
         public static void WaitForSaving(this IWebDriver driver)
         {
+            Thread.Sleep(100);
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
             wait.Until(d => !d.FindElements(By.XPath("//span[starts-with(text(),'Saving')]")).Any());
         }
@@ -393,11 +395,13 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
         public static void WaitForLoading(this IWebElement element)
         {
+            Thread.Sleep(100);
             element.WaitUntilElement(e => !e.FindElements(By.XPath("//div[@class='progressDot']")).Any(elem => int.Parse(elem.GetAttribute("clientHeight")) > 0), TimeSpan.FromSeconds(60));
         }
 
         public static void WaitForSaving(this IWebElement element)
         {
+            Thread.Sleep(100);
             element.WaitUntilElement(e => !e.FindElements(By.XPath("//span[starts-with(text(),'Saving')]")).Any(), TimeSpan.FromSeconds(60));
         }
 
