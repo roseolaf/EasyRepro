@@ -29,7 +29,9 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
             if (element != null)
             {
+                driver.Wait();
                 element.Click();
+                driver.Wait();
                 System.Threading.Thread.Sleep((int)timeout.TotalMilliseconds);
             }
 
@@ -40,7 +42,9 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             try
             {
+                element.Wait();
                 element.Click();
+                element.Wait();
             }
             catch (StaleElementReferenceException ex)
             {
@@ -65,11 +69,13 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
         public static IWebElement ClickWhenAvailable(this IWebDriver driver, By by)
         {
+            driver.Wait();
             return ClickWhenAvailable(driver, by, Constants.DefaultTimeout);
         }
 
         public static IWebElement ClickWhenAvailable(this IWebDriver driver, By by, TimeSpan timeout)
         {
+            driver.Wait();
             var element = driver.FindElement(by);
 
             WaitUntilClickable(driver,
@@ -91,8 +97,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             try
             {
+                driver.Wait();
                 Actions actions = new Actions(driver);
                 actions.DoubleClick(element).Perform();
+                driver.Wait();
             }
             catch (StaleElementReferenceException ex)
             {
@@ -105,8 +113,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             try
             {
+                driver.Wait();
                 var element = driver.FindElement(by);
                 driver.DoubleClick(element, ignoreStaleElementException);
+                driver.Wait();
             }
             catch (StaleElementReferenceException ex)
             {
@@ -395,6 +405,77 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         #endregion Elements
 
         #region Waits
+
+        public static void Wait(this IWebDriver driver)
+        {
+            driver.WaitForLoading();
+            driver.WaitForSaving();
+            driver.WaitForTransaction(5);
+            Thread.Sleep(250);
+        }
+
+        public static void Wait(this IWebElement element)
+        {
+            element.WaitForLoading();
+            element.WaitForSaving();
+            Thread.Sleep(250);
+        }
+
+        public static void WaitForLoading(this IWebDriver driver)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
+            wait.Until(d => !d.FindElements(By.XPath("//div[@class='progressDot']")).Any(elem => int.Parse(elem.GetAttribute("clientHeight")) > 0));
+        }
+
+        public static void WaitForSaving(this IWebDriver driver)
+        {
+            WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
+            wait.Until(d => !d.FindElements(By.XPath("//*[starts-with(text(),'Saving')]")).Any());
+        }
+
+        public static void WaitForLoading(this IWebElement element)
+        {
+            element.WaitUntilElement(e => !e.FindElements(By.XPath("//div[@class='progressDot']")).Any(elem => int.Parse(elem.GetAttribute("clientHeight")) > 0), TimeSpan.FromSeconds(60));
+        }
+
+        public static void WaitForSaving(this IWebElement element)
+        {
+            element.WaitUntilElement(e => e.FindElements(By.XPath("//*[starts-with(text(),'Saving')]")).Any(), TimeSpan.FromSeconds(60));
+        }
+
+        public static Func<IWebElement, T> WaitUntilElement<T>(this IWebElement element, Func<IWebElement, T> condition, TimeSpan time)
+        {
+            DateTime startTime = DateTime.Now;
+            Type c = typeof(T);
+            while (true)
+            {
+                try
+                {
+                    var result = condition;
+                    if (c == typeof(bool))
+                    {
+                        if ((object)result is bool nullable)
+                        {
+                            if (nullable)
+                                return result;
+                        }
+                    }
+                    else if ((object)result != null)
+                        return result;
+                }
+                catch (Exception)
+                {
+                }
+                if (startTime < startTime.Add(time))
+                {
+                    string exceptionMessage = $"Timed out after {(DateTime.Now - startTime).TotalSeconds} seconds for element {condition}";
+                    throw new WebDriverTimeoutException(exceptionMessage);
+                }
+                Thread.Sleep(500);
+            }
+        }
+
+
 
         public static bool WaitFor(this IWebDriver driver, Predicate<IWebDriver> predicate)
         {
