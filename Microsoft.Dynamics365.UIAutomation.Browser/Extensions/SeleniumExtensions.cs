@@ -409,17 +409,21 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
         public static void Wait(this IWebDriver driver)
         {
+            var start = DateTime.Now;
             driver.WaitForLoading();
             driver.WaitForSaving();
             Thread.Sleep(150);
+            Console.WriteLine($"Driver Wait: {DateTime.Now - start}");
         }
 
         public static void Wait(this IWebElement element)
         {
+            var start = DateTime.Now;
             element.WaitForLoading();
             element.WaitForSaving();
             element.WaitUntilInteractable();
             Thread.Sleep(150);
+            Console.WriteLine($"Element Wait: {DateTime.Now - start}");
         }
 
         public static void WaitForLoading(this IWebDriver driver)
