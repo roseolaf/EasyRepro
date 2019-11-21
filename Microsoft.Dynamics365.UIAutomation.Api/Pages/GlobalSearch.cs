@@ -42,14 +42,14 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 var picklist = driver.FindElement(By.XPath(Elements.Xpath[Reference.GlobalSearch.Filter]));
                 var options = driver.FindElements(By.TagName("option"));
 
-                picklist.Click();
+                picklist.ClickWait()
 
                 IWebElement select = options.FirstOrDefault(x => x.Text == entity);
 
                 if (select == null)
                     throw new InvalidOperationException($"Entity '{entity}' does not exist in the Filter options.");
 
-                select.Click();
+                select.ClickWait()
 
                 return true;
             });
@@ -89,7 +89,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 if (records.Count < index)
                     throw new InvalidOperationException($"Search Results List does not have {index + 1} items.");
 
-                records[index].Click(true);
+                records[index].ClickWait(true);
 
                 SwitchToContent();
                 driver.WaitForPageToLoad();

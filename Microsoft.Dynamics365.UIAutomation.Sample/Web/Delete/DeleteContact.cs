@@ -31,11 +31,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Sample.Web
 
                 xrmBrowser.Grid.OpenRecord(0);
 
-                //Click the Delete button from the command bar
+                //ClickWait the Delete button from the command bar
                 //xrmBrowser.CommandBar.ClickCommand("Delete", "", true, 3000); //Use this option if Delete is under the More Commands menu
                 xrmBrowser.CommandBar.ClickCommand("Delete"); //Use this option if Delete is directly visible on the command bar
 
-                //Click the Delete button on the dialog
+                //ClickWait the Delete button on the dialog
                 xrmBrowser.Dialogs.Delete();
 
                 xrmBrowser.ThinkTime(3000);

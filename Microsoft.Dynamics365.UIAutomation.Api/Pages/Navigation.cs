@@ -91,7 +91,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions($"Open Admin Portal"), driver =>
             {
-                driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.AdminPortal]))?.Click();
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.AdminPortal]))?.ClickWait()
 
                 return true;
             });
@@ -111,7 +111,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 //Narrow down the scope to the Search Tab when looking for the search input
                 var navBar = driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.AdvFindSearch]));
 
-                navBar.FindElement(By.ClassName("navTabButtonLink")).Click();
+                navBar.FindElement(By.ClassName("navTabButtonLink")).ClickWait()
 
                 return true;
             });
@@ -174,7 +174,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 driver.WaitUntilAvailable(By.ClassName(Elements.CssClass[Reference.Navigation.TopLevelItem]));
 
                 var topItem = driver.FindElements(By.ClassName(Elements.CssClass[Reference.Navigation.TopLevelItem])).FirstOrDefault();
-                topItem?.FindElement(By.Name(Elements.Name[Reference.Navigation.HomeTab])).Click();
+                topItem?.FindElement(By.Name(Elements.Name[Reference.Navigation.HomeTab])).ClickWait()
 
                 driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Navigation.ActionGroup]));
 
@@ -312,7 +312,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 }
 
                 Browser.ActiveFrameId = related.GetAttribute("id").Replace("Node_nav", "area");
-                related?.Click();
+                related?.ClickWait()
 
                 return true;
             });
@@ -362,7 +362,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     throw new InvalidOperationException($"No subarea with the name '{subArea}' exists inside of '{area}'.");
                 }
 
-                subAreas.FirstOrDefault(x => x.Key==subArea).Value.Click(true);
+                subAreas.FirstOrDefault(x => x.Key==subArea).Value.ClickWait(true);
 
                 SwitchToContent();
                 driver.WaitForPageToLoad();
@@ -379,7 +379,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                 driver.WaitUntilVisible(By.Id(area.GetAttribute("Id")));
 
-                area.Click();
+                area.ClickWait()
 
                 Thread.Sleep(1000);
 
@@ -442,7 +442,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     throw new InvalidOperationException($"No Entity with the name '{entity}' exists inside QuickCreate.");
                 }
 
-                item.Click(true);
+                item.ClickWait(true);
 
                 driver.WaitUntilVisible(By.XPath(Elements.Xpath[Reference.QuickCreate.Container]));
 
@@ -533,9 +533,9 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             return this.Execute(GetOptions($"SignOut"), driver =>
             {
                 var userInfo = driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.UserInfo]));
-                userInfo?.Click();
+                userInfo?.ClickWait()
                 var signOut = driver.FindElement(By.XPath(Elements.Xpath[Reference.Navigation.SignOut]));
-                signOut?.Click();
+                signOut?.ClickWait()
                 return true;
             });
         }

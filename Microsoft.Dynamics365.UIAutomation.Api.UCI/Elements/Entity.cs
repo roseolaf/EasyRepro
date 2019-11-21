@@ -436,7 +436,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
         }
         
         /// <summary>
-        /// Click Process>Switch Process
+        /// ClickWait Process>Switch Process
         /// </summary>
         /// <param name="processToSwitchTo">Name of the process to switch to</param>
         public void SwitchProcess(string processToSwitchTo)

@@ -60,7 +60,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 var dictionary = new Dictionary<string, IWebElement>();
 
                 var viewSelectorContainer = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.LookUp.SavedQuerySelector]));
-                viewSelectorContainer.Click();
+                viewSelectorContainer.ClickWait()
 
                 Thread.Sleep(500);
 
@@ -93,7 +93,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     return false;
 
                 var entityItem = entities[entityName];
-                entityItem.Click();
+                entityItem.ClickWait()
 
                 return true;
             });
@@ -115,7 +115,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 if (!views.ContainsKey(viewName))
                     return false;
 
-                views[viewName].Click();
+                views[viewName].ClickWait()
 
                 return true;
             });
@@ -212,7 +212,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 var item = items[index + 1];
                 var checkbox = item.FindElements(By.TagName("td"))[0];
 
-                checkbox.Click();
+                checkbox.ClickWait()
              
                 return true;
             });
@@ -247,7 +247,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         var checkbox = item.FindElements(By.TagName("td"))[0];
 
                         if(item.GetAttribute("selected") != "true")
-                            checkbox.Click();
+                            checkbox.ClickWait()
                         break;
                     }
                 }

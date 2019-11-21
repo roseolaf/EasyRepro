@@ -43,10 +43,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Office365.DisplayName])).SendKeys(displayname,true);
                 driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Office365.UserName])).SendKeys(username, true);
 
-                //Click the Microsoft Dynamics CRM Online Professional License
+                //ClickWait the Microsoft Dynamics CRM Online Professional License
                 driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Office365.License]));
 
-                //Click Add
+                //ClickWait Add
                 driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Office365.Add]));
 
                 driver.LastWindow().Close();

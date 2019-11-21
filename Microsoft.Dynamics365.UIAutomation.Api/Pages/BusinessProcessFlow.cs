@@ -39,7 +39,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 {
                     var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.TextFieldContainer].Replace("[NAME]", field.ToLower())));
 
-                    fieldElement.Click();
+                    fieldElement.ClickWait()
 
                     if (fieldElement.FindElements(By.TagName("textarea")).Count > 0)
                     {
@@ -84,7 +84,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         {
                             if (((op.Text.ToLower() != label.ToLower() || op.GetAttribute("title").ToLower() != label.ToLower()) && op.GetAttribute("value") == "0"))
                             {
-                                fieldElement.Click(true);
+                                fieldElement.ClickWait(true);
                             }
                         }
                     }
@@ -120,8 +120,8 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     {
                         if (op.GetAttribute("value") == "")
                         {
-                            fieldElement.Click(true);
-                            op.Click(true);
+                            fieldElement.ClickWait(true);
+                            op.ClickWait(true);
                         }
                     }
                 }
@@ -163,7 +163,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                             lookupSearch = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.GetLookupSearchIcon].Replace("[NAME]", control.Name.ToLower())));
                         }
 
-                        lookupSearch.Click(true);
+                        lookupSearch.ClickWait(true);
 
                         var dialogName = $"Dialog_header_process_{control.Name}_IMenu";
                         var dialog = driver.WaitUntilAvailable(By.Id(dialogName));
@@ -173,12 +173,12 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         if (dialogItems.Any())
                         {
                             var dialogItem = dialogItems.Last();
-                            dialogItem.Element.Click();
+                            dialogItem.Element.ClickWait()
                         }
 
                         SwitchToDialog();
 
-                        driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.LookUp.Remove])).Click(true);
+                        driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.LookUp.Remove])).ClickWait(true);
 
                     }
                 }
@@ -205,11 +205,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     // Check whether the DateTime field has an existing value
                     if (fieldElement.GetAttribute("title") != "Select to enter data")
                     {
-                        fieldElement.Click(true);
+                        fieldElement.ClickWait(true);
                         var fieldInput = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.DateFieldInput].Replace("[NAME]", date.Name.ToLower())));
                         // Clear any existing values
                         fieldInput.Clear();
-                        fieldElement.Click(true);
+                        fieldElement.ClickWait(true);
                         fieldElement.SendKeys(Keys.Enter);
                     }
                 }
@@ -242,11 +242,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         //Remove Existing Values
                         var values = container.FindElements(By.ClassName(Elements.CssClass[Reference.SetValue.MultiSelectPicklistDeleteClass]));
                         foreach (var value in values)
-                            value.Click(true);
+                            value.ClickWait(true);
                     }
 
                     var input = container.FindElement(By.TagName("input"));
-                    input.Click();
+                    input.ClickWait();
                     input.SendKeys(" ");
 
                     var options = container.FindElements(By.TagName("li"));
@@ -256,10 +256,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         var label = op.FindElement(By.TagName("label"));
 
                         if (option.Values.Contains(op.Text) || option.Values.Contains(op.GetAttribute("value")) || option.Values.Contains(label.GetAttribute("title")))
-                            op.Click(true);
+                            op.ClickWait(true);
                     }
 
-                    container.Click();
+                    container.ClickWait();
                 }
                 else
                     throw new InvalidOperationException($"Field: {option.Name} Does not exist");
@@ -294,7 +294,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                     foreach (var field in control.Fields)
                     {
-                        compcntrl.FindElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.CompositionLinkControl] + field.Id)).Click();
+                        compcntrl.FindElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.CompositionLinkControl] + field.Id)).ClickWait();
 
                         var result = compcntrl.FindElements(By.TagName("input"))
                             .ToList()
@@ -305,7 +305,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         result?.SendKeys(field.Value);
                     }
 
-                    compcntrl.FindElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.Confirm])).Click();
+                    compcntrl.FindElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.Confirm])).ClickWait();
                 }
                 else
                     throw new InvalidOperationException($"Composite Control: {control.Id} Does not exist");
@@ -399,7 +399,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                     foreach (var field in control.Fields)
                     {
-                        compcntrl.FindElement(By.Id(Elements.ElementId[Reference.SetValue.CompositionLinkControl] + field.Id)).Click();
+                        compcntrl.FindElement(By.Id(Elements.ElementId[Reference.SetValue.CompositionLinkControl] + field.Id)).ClickWait();
 
                         var result = compcntrl.FindElements(By.TagName("input"))
                             .ToList()
@@ -407,7 +407,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         text += result.GetAttribute("value");
                     }
 
-                    compcntrl.FindElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.Confirm])).Click();
+                    compcntrl.FindElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.Confirm])).ClickWait();
                 }
                 else
                     throw new InvalidOperationException($"Composite Control: {control.Id} Does not exist");
@@ -602,7 +602,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 if (driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStageMenu])).GetAttribute("class").Contains("disabled"))
                     throw new Exception("Business Process Flow Next Stage Element is not enabled");
 
-                driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStageMenu])).Click(true);
+                driver.FindElement(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.NextStageMenu])).ClickWait(true);
 
                 //div class=navigateMenuSection
 
@@ -614,7 +614,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     throw new InvalidOperationException($"Next Stage Record List does not have {index + 1} items.");
 
                 var recordItem = records[index];
-                recordItem.Element.Click(true);
+                recordItem.Element.ClickWait(true);
 
                 return true;
             });
@@ -700,7 +700,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     }
 
                     if (element != null)
-                        element.Click();
+                        element.ClickWait()
                     else
                         throw new InvalidOperationException($"The Business Process with name: '{name}' does not exist");
 
@@ -732,7 +732,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                 if (stageButton.Any())
                 {
-                    stageButton.First().Click(true);
+                    stageButton.First().ClickWait(true);
                 }
                 else
                 { throw new Exception("Business Process Flow Select Stage Element does not exist"); }
@@ -788,7 +788,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 {
                     var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.BusinessProcessFlow.TextFieldContainer].Replace("[NAME]", field.ToLower())));
 
-                    fieldElement.Click();
+                    fieldElement.ClickWait()
                     
                     if (fieldElement.FindElements(By.TagName("textarea")).Count > 0)
                     {
@@ -827,7 +827,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                         if (label.Text != option.Value)
                         {
-                            fieldElement.Click(true);
+                            fieldElement.ClickWait(true);
                         }
                     }
                 }
@@ -862,8 +862,8 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     {
                         if (op.Text.ToLower() == option.Value.ToLower() || op.GetAttribute("title").ToLower() == option.Value.ToLower())
                         {
-                            fieldElement.Click(true);
-                            op.Click(true);
+                            fieldElement.ClickWait(true);
+                            op.ClickWait(true);
                         }
                     }
                 }
@@ -910,7 +910,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         var dialogItem = dialogItems.Where(x => x.Title.ToLower() == control.Value.ToLower()).First();
 
                         dialogItem.Element.Hover(driver,true);
-                        dialogItem.Element.Click(true);
+                        dialogItem.Element.ClickWait(true);
 
 
                     }
@@ -922,7 +922,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         var dialogItem = dialogItems[control.Index];
 
                         dialogItem.Element.Hover(driver, true);
-                        dialogItem.Element.Click(true);
+                        dialogItem.Element.ClickWait(true);
 
                     }
                 }
@@ -948,16 +948,16 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                     //Check to see if focus is on field already
                     if (fieldElement.FindElement(By.ClassName(Elements.CssClass[Reference.SetValue.EditClass])) != null)
-                        fieldElement.FindElement(By.ClassName(Elements.CssClass[Reference.SetValue.EditClass])).Click();
+                        fieldElement.FindElement(By.ClassName(Elements.CssClass[Reference.SetValue.EditClass])).ClickWait()
                     else
-                        fieldElement.FindElement(By.ClassName(Elements.CssClass[Reference.SetValue.ValueClass])).Click();
+                        fieldElement.FindElement(By.ClassName(Elements.CssClass[Reference.SetValue.ValueClass])).ClickWait()
 
                     var input = fieldElement.FindElement(By.TagName("input"));
 
                     if (input.GetAttribute("value").Length > 0)
                     {
                         input.Clear();
-                        fieldElement.Click();
+                        fieldElement.ClickWait()
                         input.SendKeys(date.Value.ToShortDateString());
                         input.SendKeys(Keys.Enter);
                     }
@@ -996,11 +996,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         //Remove Existing Values
                         var values = container.FindElements(By.ClassName(Elements.CssClass[Reference.SetValue.MultiSelectPicklistDeleteClass]));
                         foreach (var value in values)
-                            value.Click(true);
+                            value.ClickWait(true);
                     }
 
                     var input = container.FindElement(By.TagName("input"));
-                    input.Click();
+                    input.ClickWait();
                     input.SendKeys(" ");
 
                     var options = container.FindElements(By.TagName("li"));
@@ -1010,10 +1010,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         var label = op.FindElement(By.TagName("label"));
 
                         if (option.Values.Contains(op.Text) || option.Values.Contains(op.GetAttribute("value")) || option.Values.Contains(label.GetAttribute("title")))
-                            op.Click(true);
+                            op.ClickWait(true);
                     }
 
-                    container.Click();
+                    container.ClickWait();
                 }
                 else
                     throw new InvalidOperationException($"Field: {option.Name} Does not exist");
@@ -1048,7 +1048,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                     foreach (var field in control.Fields)
                     {
-                        compcntrl.FindElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.CompositionLinkControl] + field.Id)).Click();
+                        compcntrl.FindElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.CompositionLinkControl] + field.Id)).ClickWait();
 
                         var result = compcntrl.FindElements(By.TagName("input"))
                             .ToList()
@@ -1059,7 +1059,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         result?.SendKeys(field.Value);
                     }
 
-                    compcntrl.FindElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.Confirm])).Click();
+                    compcntrl.FindElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.Confirm])).ClickWait();
                 }
                 else
                     throw new InvalidOperationException($"Composite Control: {control.Id} Does not exist");

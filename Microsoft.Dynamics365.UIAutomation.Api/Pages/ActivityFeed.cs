@@ -66,7 +66,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
                 if (tab == null)
                     throw new InvalidOperationException("The Tab is not available.");
 
-                tab.Click();
+                tab.ClickWait();
 
                 return true;
             });
@@ -89,15 +89,15 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
 
                 var wall = driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.NotesWall]));
                 var text = wall.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.NotesText]));
-                text.Click();
+                text.ClickWait();
 
                 var textArea = wall.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.NotesText]));
-                textArea.Click();
+                textArea.ClickWait();
                 textArea.SendKeys(noteText);
 
                 var post = driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.NotesDone]));
                 var done = post.FindElement(By.Id("postButton"));
-                done.Click();
+                done.ClickWait();
 
                 return true;
             });
@@ -121,10 +121,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
                 var wall = driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.PostWall]));
                 var text = wall.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.PostText]));
 
-                text.Click();
+                text.ClickWait();
                 text.SendKeys(postText);
 
-                wall.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.PostButton])).Click();
+                wall.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.PostButton])).ClickWait();
 
                 return true;
             });
@@ -146,11 +146,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
                     throw new InvalidOperationException("The Activity Wall is not available. Please check that the Activities tab is selected.");
 
                 var wall = driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityWall]));
-                wall.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityStatusFilter])).Click();
+                wall.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityStatusFilter])).ClickWait();
 
                 var dialog = driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityStatusFilterDialog]));
                 var statusList = dialog.FindElements(By.TagName("li"));
-                statusList.Where(x => x.Text.ToLower().Replace(" ", "") == status.ToString().ToLower()).FirstOrDefault()?.Click();
+                statusList.Where(x => x.Text.ToLower().Replace(" ", "") == status.ToString().ToLower()).FirstOrDefault()?.ClickWait();
 
                 return true;
             });
@@ -284,7 +284,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
                 driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityMoreActivities]));
                 var activitiesList = driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityStatusFilterDialog]));
                 var appointment = activitiesList.FindElements(By.TagName("li"));
-                appointment.Where(x => x.Text.ToLower() == Activities.Email.ToString().ToLower()).FirstOrDefault()?.Click();
+                appointment.Where(x => x.Text.ToLower() == Activities.Email.ToString().ToLower()).FirstOrDefault()?.ClickWait();
 
                 return true;
             });
@@ -308,7 +308,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
                 var activitiesList = driver.FindElement(By.XPath(Elements.Xpath[Reference.ActivityFeed.ActivityStatusFilterDialog]));
 
                 var appointment = activitiesList.FindElements(By.TagName("li"));
-                appointment.Where(x => x.Text.ToLower() == Activities.Appointment.ToString().ToLower()).FirstOrDefault()?.Click();
+                appointment.Where(x => x.Text.ToLower() == Activities.Appointment.ToString().ToLower()).FirstOrDefault()?.ClickWait();
 
                 return true;
             });

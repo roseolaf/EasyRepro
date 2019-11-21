@@ -30,7 +30,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
 
         public void Click()
         {
-            _inputElement.Click(true);
+            _inputElement.ClickWait(true);
         }
 
         /// <summary>

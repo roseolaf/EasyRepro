@@ -116,7 +116,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 {
                     if (viewItem.Text == viewName)
                     {
-                        viewItem.Click();
+                        viewItem.ClickWait()
                     }
                 }
 
@@ -239,7 +239,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 if (sortCol == null)
                     throw new InvalidOperationException($"Column: {columnName} Does not exist");
                 else
-                    sortCol.Click();
+                    sortCol.ClickWait()
                 return true;
             });
         }
@@ -314,7 +314,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 var select = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.RowSelect].Replace("[INDEX]", index.ToString())),
                                                         $"Row with index {index.ToString()} is not found");
 
-                select?.Click();
+                select?.ClickWait()
                 
                 return false;
             });
@@ -342,7 +342,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 foreach (var letter in letterCells)
                 {
                     if (letter.Text == filter.ToString())
-                        letter.Click();
+                        letter.ClickWait()
                 }
                
                 return true;
@@ -362,7 +362,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 var showAll = driver.FindElement(By.XPath(Elements.Xpath[Reference.Grid.ShowAll]));
 
-                showAll?.Click();
+                showAll?.ClickWait()
 
                 return true;
             });
@@ -382,7 +382,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 var filter = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.Filter]),
                                                         "Filter option is not available");
 
-                filter?.Click();
+                filter?.ClickWait()
 
                 return true;
             });
@@ -420,7 +420,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 if (selectedItem == null)
                     throw new InvalidOperationException($"Chart with name {chartName} does not exist");
                 else
-                    selectedItem.Click();
+                    selectedItem.ClickWait()
 
                 return true;
             });

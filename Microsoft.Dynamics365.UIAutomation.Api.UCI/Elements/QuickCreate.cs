@@ -15,7 +15,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
         }
 
         /// <summary>
-        /// Click the Cancel button on the quick create form
+        /// ClickWait the Cancel button on the quick create form
         /// </summary>
         public void Cancel()
         {
@@ -167,7 +167,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
         }
 
         /// <summary>
-        /// Click the Save button on the quick create form
+        /// ClickWait the Save button on the quick create form
         /// </summary>
         public void Save()
         {

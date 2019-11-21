@@ -22,30 +22,16 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 {
     public static class SeleniumExtensions
     {
-        #region Click
+        #region ClickWait
 
-        public static IWebDriver ClickndWait(this IWebDriver driver, By by, TimeSpan timeout)
-        {
-            var element = driver.FindElement(by);
-
-            if (element != null)
-            {
-                driver.Wait();
-                element.Click();
-                driver.Wait();
-                System.Threading.Thread.Sleep((int)timeout.TotalMilliseconds);
-            }
-
-            return driver;
-        }
-
-        public static void Click(this IWebElement element, bool ignoreStaleElementException = true)
+        public static void ClickWait(this IWebElement element, bool ignoreStaleElementException = true)
         {
             try
             {
-                element.Wait();
+                element.WaitUntilInteractable();
                 element.Click();
-                element.Wait();
+                element.WaitForLoading();
+                element.WaitForSaving();
             }
             catch (StaleElementReferenceException ex)
             {
@@ -54,12 +40,13 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             }
         }
 
-        public static void Hover(this IWebElement Element, IWebDriver driver, bool ignoreStaleElementException = true)
+        public static void Hover(this IWebElement element, IWebDriver driver, bool ignoreStaleElementException = true)
         {
             try
             {
+                element.WaitUntilInteractable();
                 Actions action = new Actions(driver);
-                action.MoveToElement(Element).Build().Perform();
+                action.MoveToElement(element).Build().Perform();
             }
             catch (StaleElementReferenceException)
             {
@@ -68,40 +55,19 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             }
         }
 
-        public static IWebElement ClickWhenAvailable(this IWebDriver driver, By by)
-        {
-            driver.Wait();
-            return ClickWhenAvailable(driver, by, Constants.DefaultTimeout);
-        }
+        #endregion ClickWait
 
-        public static IWebElement ClickWhenAvailable(this IWebDriver driver, By by, TimeSpan timeout)
-        {
-            driver.Wait();
-            var element = driver.FindElement(by);
-
-            WaitUntilClickable(driver,
-                                by,
-                                timeout,
-                                d => { element.Click(true); },
-                                e => { throw new InvalidOperationException($"Unable to click element."); });
-
-
-
-            return element;
-        }
-
-        #endregion Click
-
-        #region Double Click
+        #region Double ClickWait
 
         public static void DoubleClick(this IWebDriver driver, IWebElement element, bool ignoreStaleElementException = false)
         {
             try
             {
-                driver.Wait();
+                element.WaitUntilInteractable();
                 Actions actions = new Actions(driver);
                 actions.DoubleClick(element).Perform();
-                driver.Wait();
+                driver.WaitForSaving();
+                driver.WaitForLoading();
             }
             catch (StaleElementReferenceException ex)
             {
@@ -114,10 +80,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             try
             {
-                driver.Wait();
-                var element = driver.FindElement(by);
+                var element = driver.WaitUntilAvailable(by);
                 driver.DoubleClick(element, ignoreStaleElementException);
-                driver.Wait();
+                driver.WaitForSaving();
+                driver.WaitForLoading();
             }
             catch (StaleElementReferenceException ex)
             {
@@ -266,7 +232,6 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             try
             {
-                driver.Wait();
                 driver.WaitUntilExists(by, TimeSpan.FromSeconds(1));
                 return driver.FindElements(by).Count > 0;
             }
@@ -280,7 +245,6 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             try
             {
-                element.Wait();
                 element.WaitUntilElement(e => e.Enabled,TimeSpan.FromSeconds(1));
                 return element.FindElements(by).Count > 0;
             }
@@ -403,35 +367,16 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         /// <param name="driver">The driver.</param>
         public static void ClearFocus(this IWebDriver driver)
         {
-            driver.FindElement(By.TagName("body")).Click();
+            driver.FindElement(By.TagName("body")).ClickWait();
         }
 
         #endregion Elements
 
         #region Waits
 
-        public static void Wait(this IWebDriver driver)
-        {
-            var start = DateTime.Now;
-            driver.WaitForLoading();
-            Console.WriteLine($"Driver Wait WaitForLoading: {DateTime.Now - start}");
-            driver.WaitForSaving();
-            Console.WriteLine($"Driver Wait WaitForSaving: {DateTime.Now - start}");
-            Thread.Sleep(150);
-            Console.WriteLine($"Driver Wait: {DateTime.Now - start}");
-        }
 
-        public static void Wait(this IWebElement element)
-        {
-            var start = DateTime.Now;
-            element.WaitForLoading();
-            Console.WriteLine($"Element Wait WaitForLoading: {DateTime.Now - start}");
-            element.WaitForSaving();
-            Console.WriteLine($"Element Wait WaitForSaving: {DateTime.Now - start}");
-            element.WaitUntilInteractable();
-            Thread.Sleep(150);
-            Console.WriteLine($"Element Wait: {DateTime.Now - start}");
-        }
+
+   
 
         public static void WaitForLoading(this IWebDriver driver)
         {

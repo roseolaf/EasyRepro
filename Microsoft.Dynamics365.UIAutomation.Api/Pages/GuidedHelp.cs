@@ -71,7 +71,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                             {
                                 driver.WaitUntilClickable(By.Id(buttonId), new TimeSpan(0, 0, 5));
 
-                                element.Click();
+                                element.ClickWait()
                             }
                         }
 

@@ -46,7 +46,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         var dismissButtonElement = row.FindElement(By.ClassName(Elements.CssClass[Reference.Notification.MessageBarButtonContainer]));
                         var dismissButton = dismissButtonElement.FindElement(By.TagName("a"));
 
-                        dismissButton.Click();
+                        dismissButton.ClickWait()
 
                         returnValue = true;
                     }
@@ -82,7 +82,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                         var dismissButtonElement = row.FindElement(By.ClassName(Elements.CssClass[Reference.Notification.MessageBarButtonContainer]));
                         var dismissButton = dismissButtonElement.FindElement(By.TagName("a"));
 
-                        dismissButton.Click();
+                        dismissButton.ClickWait()
 
                         returnValue = true;
                     }

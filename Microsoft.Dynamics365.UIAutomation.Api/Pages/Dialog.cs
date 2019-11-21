@@ -84,7 +84,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 {
                     var targetAddress = suggestedAddresses[index - 1].FindElement(By.TagName("a"));
 
-                    targetAddress.Click(true);
+                    targetAddress.ClickWait(true);
                 }
                 else
                     throw new InvalidOperationException($"Suggested Address List does not have {index} items.");
@@ -120,7 +120,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                     try
                     {
-                       driver.FindElement(By.XPath("//span[contains(text(),'" + roleName + "')]")).Click();
+                       driver.FindElement(By.XPath("//span[contains(text(),'" + roleName + "')]")).ClickWait()
                     }
                     catch (Exception ex)
                     {
@@ -211,7 +211,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 var deleteButton = driver.FindElements(By.XPath(Elements.Xpath[Reference.Dialogs.Delete.Ok]));
                 if(deleteButton.Any())
                 {
-                    deleteButton.First().Click(true);
+                    deleteButton.First().ClickWait(true);
                 }
                 else
                 {
@@ -273,11 +273,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                 if (continueButton.Any() && save)
                 {
-                    continueButton.First().Click(true);
+                    continueButton.First().ClickWait(true);
                 }
                 else if (cancelButton.Any() && !save)
                 {
-                    cancelButton.First().Click(true);
+                    cancelButton.First().ClickWait(true);
                 }
                 else
                 {
@@ -383,7 +383,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     !(dialogFooter?.FindElements(By.XPath(Elements.Xpath[Reference.Dialogs.WarningCloseButton])).Count >
                       0)) return true;
                 var closeBtn = dialogFooter.FindElement(By.XPath(Elements.Xpath[Reference.Dialogs.WarningCloseButton]));
-                closeBtn.Click();
+                closeBtn.ClickWait()
                 return true;
             });
         }

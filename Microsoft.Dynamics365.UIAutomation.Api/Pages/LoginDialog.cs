@@ -106,7 +106,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                 if (driver.IsVisible(By.Id("aadTile")))
                 {
-                    driver.FindElement(By.Id("aadTile")).Click(true);
+                    driver.FindElement(By.Id("aadTile")).ClickWait(true);
                 }
 
                 Thread.Sleep(1000);
@@ -135,7 +135,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     {
                         driver.ClickWhenAvailable(By.XPath(Elements.Xpath[Reference.Login.StaySignedIn]));
                         
-                        //Click didn't work so use submit
+                        //ClickWait didn't work so use submit
                         if(driver.HasElement(By.XPath(Elements.Xpath[Reference.Login.StaySignedIn])))
                             driver.FindElement(By.XPath(Elements.Xpath[Reference.Login.StaySignedIn])).Submit();
                     }

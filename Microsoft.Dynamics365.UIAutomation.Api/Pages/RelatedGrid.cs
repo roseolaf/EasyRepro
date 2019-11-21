@@ -41,7 +41,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 var viewSelectorContainer = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.ViewSelectorContainer]));
                 var viewLink = viewSelectorContainer.FindElement(By.TagName("a"));
 
-                viewLink.Click();
+                viewLink.ClickWait()
 
                 Thread.Sleep(500);
 
@@ -99,7 +99,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 {
                     if (viewItem.Text == viewName)
                     {
-                        viewItem.Click();
+                        viewItem.ClickWait()
                     }
                 }
 
@@ -125,7 +125,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                 input.SendKeys(searchCriteria);
                 var searchImg = driver.FindElement(By.Id(input.GetAttribute("id") + "Img"));
-                searchImg?.Click();
+                searchImg?.ClickWait()
                 return true;
             });
         }
@@ -148,7 +148,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 if (sortCol == null)
                     throw new InvalidOperationException($"Column: {columnName} Does not exist");
                 else
-                    sortCol.Click();
+                    sortCol.ClickWait()
                 return true;
             });
         }
@@ -178,7 +178,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     {
                         if (currentIndex == index)
                         {
-                            link.Click();
+                            link.ClickWait()
                             clicked = true;
 
                             break;
