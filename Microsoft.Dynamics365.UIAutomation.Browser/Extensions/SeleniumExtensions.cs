@@ -410,7 +410,6 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             driver.WaitForLoading();
             driver.WaitForSaving();
-            driver.WaitForTransaction(5);
             Thread.Sleep(150);
         }
 
