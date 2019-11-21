@@ -440,7 +440,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
         public static void WaitForSaving(this IWebElement element)
         {
-            element.WaitUntilElement(e => e.FindElements(By.XPath("//*[starts-with(text(),'Saving')]")).Any(), TimeSpan.FromSeconds(60));
+            element.WaitUntilElement(e => !e.FindElements(By.XPath("//*[starts-with(text(),'Saving')]")).Any(), TimeSpan.FromSeconds(60));
         }
 
         public static Func<IWebElement, T> WaitUntilElement<T>(this IWebElement element, Func<IWebElement, T> condition, TimeSpan time)
@@ -465,7 +465,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                 }
                 if (DateTime.Now > startTime.Add(time))
                 {
-                    string exceptionMessage = $"Timed out after {time} seconds for {element.Text}";
+                    string exceptionMessage = $"Timed out after {time} for {element.Text} and condition {condition.Method.Name}";
                     throw new WebDriverTimeoutException(exceptionMessage);
                 }
                 Thread.Sleep(500);
