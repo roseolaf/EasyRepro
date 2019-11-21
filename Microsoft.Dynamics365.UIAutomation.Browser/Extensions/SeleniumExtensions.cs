@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Web.Script.Serialization;
 using SeleniumExtras.WaitHelpers;
@@ -417,19 +418,25 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             element.WaitForLoading();
             element.WaitForSaving();
+            element.WaitUntilInteractable();
             Thread.Sleep(150);
         }
 
         public static void WaitForLoading(this IWebDriver driver)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
-            wait.Until(d => !d.FindElements(By.XPath("//div[@class='progressDot']")).Any(elem => int.Parse(elem.GetAttribute("clientHeight")) > 0));
+            wait.Until(d => !d.FindElements(By.XPath("//div[@class='progressDot']")).Any(elem =>  int.Parse(elem.GetAttribute("clientHeight")) > 0));
         }
 
         public static void WaitForSaving(this IWebDriver driver)
         {
             WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(60));
-            wait.Until(d => !d.FindElements(By.XPath("//*[starts-with(text(),'Saving')]")).Any());
+            wait.Until(d => !d.FindElements(By.XPath("//span[starts-with(text(),'Saving')]")).Any());
+        }
+
+        public static void WaitUntilInteractable(this IWebElement element)
+        {
+            element.WaitUntilElement(e => e.Displayed && e.Enabled, TimeSpan.FromSeconds(60));
         }
 
         public static void WaitForLoading(this IWebElement element)
@@ -439,7 +446,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
         public static void WaitForSaving(this IWebElement element)
         {
-            element.WaitUntilElement(e => !e.FindElements(By.XPath("//*[starts-with(text(),'Saving')]")).Any(), TimeSpan.FromSeconds(60));
+            element.WaitUntilElement(e => !e.FindElements(By.XPath("//span[starts-with(text(),'Saving')]")).Any(), TimeSpan.FromSeconds(60));
         }
 
         public static void WaitUntilElement(this IWebElement element, Func<IWebElement, bool> condition, TimeSpan time)
@@ -452,15 +459,16 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                     if (condition.Invoke(element))
                         return;
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Console.WriteLine(e);
                 }
                 if (DateTime.Now > startTime.Add(time))
                 {
                     string exceptionMessage = $"Timed out after {time} for {element.Text} and condition {condition.Method.Name}";
-                    throw new WebDriverTimeoutException(exceptionMessage);
+                    throw new TimeoutException(exceptionMessage);
                 }
-                Thread.Sleep(500);
+                Thread.Sleep(100);
             }
         }
 
@@ -664,9 +672,11 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             {
                 returnElement = wait.Until(d =>
                 {
+                    ExpectedConditions.ElementExists(by);
+                    ExpectedConditions.ElementToBeClickable(by);
                     var element = d.FindElement(by);
-                    driver.ExecuteScript("arguments[0].scrollIntoViewIfNeeded();", element);
-                    driver.IsElementInteractable(element);
+                    //driver.ExecuteScript("arguments[0].scrollIntoViewIfNeeded();", element);
+                    //driver.IsElementInteractable(element);
                     return element;
                 });
 
@@ -869,7 +879,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
             try
             {
-                wait.Until( d => ExpectedConditions.ElementToBeClickable(by) != null && d.IsElementInteractable(d.FindElement(by)));
+                wait.Until(d => ExpectedConditions.ElementToBeClickable(by)); //!= null && d.IsElementInteractable(d.FindElement(by)));
                 Thread.Sleep(250);
 
                 success = true;
