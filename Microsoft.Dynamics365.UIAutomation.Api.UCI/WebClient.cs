@@ -374,6 +374,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                 driver.WaitForPageToLoad();
 
                 driver.WaitForTransaction();
+                driver.WaitForLoading();
 
                 return true;
             });
@@ -993,12 +994,12 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                 IWebElement ribbon = null;
 
                 //Find the button in the CommandBar
-                if (driver.ElementExists(By.XPath(AppElements.Xpath[AppReference.CommandBar.Container])))
+                if (driver.ElementExists(By.XPath(AppElements.Xpath[AppReference.CommandBar.Container]),TimeSpan.FromSeconds(3)))
                     ribbon = driver.FindElement(By.XPath(AppElements.Xpath[AppReference.CommandBar.Container]));
 
                 if (ribbon == null)
                 {
-                    if (driver.ElementExists(By.XPath(AppElements.Xpath[AppReference.CommandBar.ContainerGrid])))
+                    if (driver.ElementExists(By.XPath(AppElements.Xpath[AppReference.CommandBar.ContainerGrid]), TimeSpan.FromSeconds(25)))
                         ribbon = driver.FindElement(By.XPath(AppElements.Xpath[AppReference.CommandBar.ContainerGrid]));
                     else
                         throw new InvalidOperationException("Unable to find the ribbon.");
