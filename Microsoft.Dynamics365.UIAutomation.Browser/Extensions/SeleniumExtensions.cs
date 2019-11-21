@@ -463,7 +463,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                 catch (Exception)
                 {
                 }
-                if (DateTime.Now < startTime.Add(time))
+                if (DateTime.Now > startTime.Add(time))
                 {
                     string exceptionMessage = $"Timed out after {time} seconds for {element.Text}";
                     throw new WebDriverTimeoutException(exceptionMessage);
