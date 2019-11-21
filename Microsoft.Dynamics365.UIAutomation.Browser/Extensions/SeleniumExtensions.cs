@@ -411,7 +411,9 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             var start = DateTime.Now;
             driver.WaitForLoading();
+            Console.WriteLine($"Driver Wait WaitForLoading: {DateTime.Now - start}");
             driver.WaitForSaving();
+            Console.WriteLine($"Driver Wait WaitForSaving: {DateTime.Now - start}");
             Thread.Sleep(150);
             Console.WriteLine($"Driver Wait: {DateTime.Now - start}");
         }
@@ -420,7 +422,9 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             var start = DateTime.Now;
             element.WaitForLoading();
+            Console.WriteLine($"Element Wait WaitForLoading: {DateTime.Now - start}");
             element.WaitForSaving();
+            Console.WriteLine($"Element Wait WaitForSaving: {DateTime.Now - start}");
             element.WaitUntilInteractable();
             Thread.Sleep(150);
             Console.WriteLine($"Element Wait: {DateTime.Now - start}");
