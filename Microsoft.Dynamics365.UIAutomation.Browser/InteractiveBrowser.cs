@@ -288,7 +288,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                 var command = new DelegateBrowserCommand<bool>(options, d =>
                 {
                     //wait for the content panel to render
-                    driver.WaitUntilAvailable(By.Id("crmContentPanel"));
+                    driver.WaitForElement(By.Id("crmContentPanel"));
 
                     //find the crmContentPanel and find out what the current content frame ID is - then navigate to the current content frame
                     var currentContentFrame = driver.FindElement(By.Id("crmContentPanel")).GetAttribute("currentcontentid");
@@ -315,7 +315,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                     {
                         var currentFrameId = frame.GetAttribute("id");
 
-                        driver.WaitUntilAvailable(By.Id(currentFrameId));
+                        driver.WaitForElement(By.Id(currentFrameId));
                         d.SwitchTo().Frame(currentFrameId);
                         InjectRecordingScript();
                         //CheckFrames(driver); //Child Frames

@@ -58,7 +58,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     if (!_performanceMarkersVisible)
                     {
                         driver.SwitchTo().ParentFrame();
-                        driver.WaitUntilAvailable(By.Id("perfDiv"));
+                        driver.WaitForElement(By.Id("perfDiv"));
 
                         _performanceMarkersVisible = true;
                     }

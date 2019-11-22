@@ -37,7 +37,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 SwitchToDialogFrame();
 
-                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Process.Name]))
+                driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Process.Name]))
                       .SendKeysWait(name);
 
                 SetValue(new OptionSet() { Name = Elements.ElementId[Reference.Process.Category], Value = type.ToString() });

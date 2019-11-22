@@ -44,7 +44,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 var viewId = dashboards[dashBoardName];
 
                 // Get the LI element with the ID {guid} for the ViewId.
-                var viewContainer = driver.WaitUntilAvailable(By.Id(viewId.ToString("B")));
+                var viewContainer = driver.WaitForElement(By.Id(viewId.ToString("B")));
                 var viewItems = viewContainer.FindElements(By.TagName("a"));
 
                 foreach (var viewItem in viewItems)
@@ -71,16 +71,16 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 var dictionary = new Dictionary<string, Guid>();
 
-                var dashboardSelectorContainer = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.DashBoard.Selector]));
+                var dashboardSelectorContainer = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.DashBoard.Selector]));
                 dashboardSelectorContainer.FindElement(By.TagName("a")).ClickWait();
 
                 //Handle Firefox not clicking the viewpicker the first time
-                driver.WaitUntilAvailable(By.ClassName(Elements.CssClass[Reference.DashBoard.ViewContainerClass]),
+                driver.WaitForElement(By.ClassName(Elements.CssClass[Reference.DashBoard.ViewContainerClass]),
                                         new TimeSpan(0, 0, 2),
                                         null,
                                         d => { dashboardSelectorContainer.FindElement(By.TagName("a")).ClickWait(); });
 
-                var viewContainer = driver.WaitUntilAvailable(By.ClassName(Elements.CssClass[Reference.DashBoard.ViewContainerClass]));
+                var viewContainer = driver.WaitForElement(By.ClassName(Elements.CssClass[Reference.DashBoard.ViewContainerClass]));
                 var viewItems = viewContainer.FindElements(By.TagName("li"));
 
                 foreach (var viewItem in viewItems)

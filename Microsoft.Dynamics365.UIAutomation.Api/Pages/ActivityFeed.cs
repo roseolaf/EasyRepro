@@ -254,7 +254,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.Pages
             {
                 if (driver.ElementExists(By.Id(field)))
                 {
-                    driver.WaitUntilAvailable(By.Id(field));
+                    driver.WaitForElement(By.Id(field));
 
                     var fieldElement = driver.FindElement(By.Id(field)).ClickWait();;
 

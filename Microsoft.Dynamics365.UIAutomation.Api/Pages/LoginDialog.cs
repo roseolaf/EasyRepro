@@ -95,7 +95,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 if (driver.IsVisible(By.Id("use_another_account_link")))
                     driver.FindElement(By.Id("use_another_account_link")).ClickWait();
 
-                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Login.UserId]),
+                driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Login.UserId]),
                     $"The Office 365 sign in page did not return the expected result and the user '{username}' could not be signed in.");
 
                 driver.FindElement(By.XPath(Elements.Xpath[Reference.Login.UserId])).SendKeysWait(username.ToUnsecureString());
@@ -140,7 +140,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                             driver.FindElement(By.XPath(Elements.Xpath[Reference.Login.StaySignedIn])).Submit();
                     }
 
-                    driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Login.CrmMainPage])
+                    driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Login.CrmMainPage])
                         , new TimeSpan(0, 0, 60),
                         e => 
                         {
@@ -172,12 +172,12 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             var d = args.Driver;
 
             d.FindElement(By.Id("passwordInput")).SendKeysWait(args.Password.ToUnsecureString());
-            d.WaitUntilAvailable(By.Id("submitButton"), new TimeSpan(0, 0, 2)).ClickWait();
+            d.WaitForElement(By.Id("submitButton"), new TimeSpan(0, 0, 2)).ClickWait();
 
             //Insert any additional code as required for the SSO scenario
 
             //Wait for CRM Page to load
-            d.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Login.CrmMainPage])
+            d.WaitForElement(By.XPath(Elements.Xpath[Reference.Login.CrmMainPage])
                 , new TimeSpan(0, 0, 60),
             e =>
             {

@@ -38,14 +38,14 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 var dictionary = new Dictionary<string, Guid>();
 
-                var viewSelectorContainer = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.ViewSelectorContainer]));
+                var viewSelectorContainer = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Grid.ViewSelectorContainer]));
                 var viewLink = viewSelectorContainer.FindElement(By.TagName("a"));
 
                 viewLink.ClickWait();
 
                 Thread.Sleep(500);
 
-                var viewContainer = driver.WaitUntilAvailable(By.ClassName(Elements.CssClass[Reference.Grid.ViewContainer]));
+                var viewContainer = driver.WaitForElement(By.ClassName(Elements.CssClass[Reference.Grid.ViewContainer]));
                 var viewItems = viewContainer.FindElements(By.TagName("li"));
 
                 foreach (var viewItem in viewItems)
@@ -92,7 +92,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 var viewId = views[viewName];
 
                 // Get the LI element with the ID {guid} for the ViewId.
-                var viewContainer = driver.WaitUntilAvailable(By.Id(viewId.ToString("B").ToUpper()));
+                var viewContainer = driver.WaitForElement(By.Id(viewId.ToString("B").ToUpper()));
                 var viewItems = viewContainer.FindElements(By.TagName("a"));
 
                 foreach (var viewItem in viewItems)
@@ -164,7 +164,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Open Grid Item"), driver =>
             {
-                var itemsTable = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.GridBodyTable]));
+                var itemsTable = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Grid.GridBodyTable]));
                 var links = itemsTable.FindElements(By.TagName("a"));
 
                 var currentIndex = 0;
@@ -192,7 +192,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 {
                     SwitchToContent();
                     driver.WaitForPageToLoad();
-                    driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.Form]),
+                    driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Entity.Form]),
                         new TimeSpan(0, 0, 60),
                         null,
                         d => { throw new Exception("CRM Record is Unavailable or not finished loading. Timeout Exceeded"); }

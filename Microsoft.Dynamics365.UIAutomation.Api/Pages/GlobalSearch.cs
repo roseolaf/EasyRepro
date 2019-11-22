@@ -68,7 +68,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions($"Open Global Search Record for Entity: {entity} and record position {index}"), driver =>
             {
-                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchResults]));
+                driver.WaitForElement(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchResults]));
 
                 if (!driver.ElementExists(By.XPath(Elements.Xpath[Reference.GlobalSearch.SearchResults])))
                     throw new InvalidOperationException("Search Results is not available");
@@ -93,7 +93,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                 SwitchToContent();
                 driver.WaitForPageToLoad();
-                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.Form]),
+                driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Entity.Form]),
                     new TimeSpan(0, 0, 60),
                     null,
                     d => { throw new Exception("CRM Record is Unavailable or not finished loading. Timeout Exceeded"); }

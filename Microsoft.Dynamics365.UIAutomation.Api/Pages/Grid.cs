@@ -26,7 +26,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             SwitchToContent();
 
-            browser.Driver.WaitUntilAvailable(By.Id(Elements.ElementId[Reference.Frames.ViewFrameId]),
+            browser.Driver.WaitForElement(By.Id(Elements.ElementId[Reference.Frames.ViewFrameId]),
                                             new TimeSpan(0, 0, 1),
                                             x=> { SwitchToView(); });
         }
@@ -42,19 +42,19 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 var dictionary = new Dictionary<string, Guid>();
 
-                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.ViewSelector]),
+                driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Grid.ViewSelector]),
                                          new TimeSpan(0,0,20),
                                          d=> { d.FindElement(By.XPath(Elements.Xpath[Reference.Grid.ViewSelector])).ClickWait(); },
                                          d=> { throw new Exception("Unable to click the View Picker"); });                
 
-                driver.WaitUntilAvailable(By.ClassName(Elements.CssClass[Reference.Grid.ViewContainer]),
+                driver.WaitForElement(By.ClassName(Elements.CssClass[Reference.Grid.ViewContainer]),
                                         new TimeSpan(0, 0, 20),
                                         null,
                                         d => 
                                         {
                                             //Fix for Firefox not clicking the element in the event above. Issue with the driver. 
                                             d.FindElement(By.XPath(Elements.Xpath[Reference.Grid.ViewSelector])).ClickWait();
-                                            driver.WaitUntilAvailable(By.ClassName(Elements.CssClass[Reference.Grid.ViewContainer]), new TimeSpan(0, 0, 3), null, e => { throw new Exception("View Picker menu is not avilable"); });
+                                            driver.WaitForElement(By.ClassName(Elements.CssClass[Reference.Grid.ViewContainer]), new TimeSpan(0, 0, 3), null, e => { throw new Exception("View Picker menu is not avilable"); });
 
                                         });
 
@@ -109,7 +109,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 var viewId = views[viewName];
 
                 // Get the LI element with the ID {guid} for the ViewId.
-                var viewContainer = driver.WaitUntilAvailable(By.Id(viewId.ToString("B").ToUpper()));
+                var viewContainer = driver.WaitForElement(By.Id(viewId.ToString("B").ToUpper()));
                 var viewItems = viewContainer.FindElements(By.TagName("a"));
 
                 foreach (var viewItem in viewItems)
@@ -189,7 +189,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Search"), driver =>
             {
-                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.FindCriteria]));
+                driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Grid.FindCriteria]));
 
                 if (clearByDefault)
                 {
@@ -214,7 +214,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Search"), driver =>
             {
-                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.FindCriteria]));
+                driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Grid.FindCriteria]));
 
                 driver.FindElement(By.XPath(Elements.Xpath[Reference.Grid.FindCriteria])).Clear();
 
@@ -258,7 +258,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 var rowType = driver.FindElement(By.XPath(Elements.Xpath[Reference.Grid.FirstRow])).GetAttribute("otypename");
 
-                var itemsTable = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.GridBodyTable]));
+                var itemsTable = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Grid.GridBodyTable]));
                 var rows = itemsTable.FindElements(By.XPath(Elements.Xpath[Reference.Grid.GridBodyTableRow]));
 
                 var clicked = false;
@@ -281,7 +281,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     {
                         SwitchToContent();
                         driver.WaitForPageToLoad();
-                        driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.Form]),
+                        driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Entity.Form]),
                                                     new TimeSpan(0, 0, 30),
                                                     null,
                                                     d => { throw new Exception("CRM Record is Unavailable or not finished loading. Timeout Exceeded"); }
@@ -311,7 +311,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 //index parameter will be 0 based but the Xpath is 1 based. So we need to increment.
                 index++;
 
-                var select = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.RowSelect].Replace("[INDEX]", index.ToString())),
+                var select = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Grid.RowSelect].Replace("[INDEX]", index.ToString())),
                                                         $"Row with index {index.ToString()} is not found");
 
                 select?.ClickWait();
@@ -379,7 +379,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Enable Filter"), driver =>
             {
-                var filter = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.Filter]),
+                var filter = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Grid.Filter]),
                                                         "Filter option is not available");
 
                 filter?.ClickWait();

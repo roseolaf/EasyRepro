@@ -53,7 +53,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.Entity.TextFieldContainer].Replace("[NAME]", field.ToLower()))))
                 {
-                    var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.TextFieldContainer].Replace("[NAME]", field.ToLower())));
+                    var fieldElement = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Entity.TextFieldContainer].Replace("[NAME]", field.ToLower())));
 
                     fieldElement.ClickWait(true);
 
@@ -84,7 +84,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.Entity.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower()))))
                 {
-                    var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower())));
+                    var fieldElement = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Entity.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower())));
 
                     if (fieldElement.FindElements(By.TagName("label")).Count > 0)
                     {
@@ -124,7 +124,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                 if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.Entity.OptionSetFieldContainer].Replace("[NAME]", option.Name.ToLower()))))
                 {
-                    var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower())));
+                    var fieldElement = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Entity.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower())));
                     var select = fieldElement;
 
                     if (fieldElement.TagName != "select")
@@ -159,7 +159,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.Entity.LookupFieldContainer].Replace("[NAME]", control.Name.ToLower()))))
                 {
-                    var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.LookupFieldContainer].Replace("[NAME]", control.Name.ToLower())));
+                    var fieldElement = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Entity.LookupFieldContainer].Replace("[NAME]", control.Name.ToLower())));
 
                     if (fieldElement.Text != "")
                     {
@@ -169,20 +169,20 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                             throw new InvalidOperationException($"Field: {control.Name} is not Lookup control");
 
                         driver.Manage().Window.Maximize();
-                        var lookupSearch = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.GetLookupSearchIcon].Replace("[NAME]", control.Name.ToLower())));
+                        var lookupSearch = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Entity.GetLookupSearchIcon].Replace("[NAME]", control.Name.ToLower())));
 
                         if (!lookupSearch.Displayed)
                         {
                             driver.Manage().Window.Minimize();
                             driver.Manage().Window.Maximize();
                             fieldElement.Hover(driver, true);
-                            lookupSearch = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.GetLookupSearchIcon].Replace("[NAME]", control.Name.ToLower())));
+                            lookupSearch = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Entity.GetLookupSearchIcon].Replace("[NAME]", control.Name.ToLower())));
                         }
 
                         lookupSearch.ClickWait(true);
 
                         var dialogName = $"Dialog_{control.Name}_IMenu";
-                        var dialog = driver.WaitUntilAvailable(By.Id(dialogName));
+                        var dialog = driver.WaitForElement(By.Id(dialogName));
 
                         var dialogItems = OpenDialog(dialog).Value;
 
@@ -194,7 +194,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                         SwitchToDialog();
 
-                        driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.LookUp.Remove])).ClickWait(true);
+                        driver.WaitForElement(By.XPath(Elements.Xpath[Reference.LookUp.Remove])).ClickWait(true);
 
                     }
                 }
@@ -216,13 +216,13 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.Entity.DateFieldContainer].Replace("[NAME]", date.Name.ToLower()))))
                 {
-                    var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.DateFieldContainer].Replace("[NAME]", date.Name.ToLower())));
+                    var fieldElement = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Entity.DateFieldContainer].Replace("[NAME]", date.Name.ToLower())));
 
                     // Check whether the DateTime field has an existing value
                     if (fieldElement.GetAttribute("title") != "Select to enter data")
                     {
                         fieldElement.ClickWait(true);
-                        var fieldInput = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.DateFieldInput].Replace("[NAME]", date.Name.ToLower())));
+                        var fieldInput = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Entity.DateFieldInput].Replace("[NAME]", date.Name.ToLower())));
                         // Clear any existing values
                         fieldInput.Clear();
                         fieldElement.ClickWait(true);
@@ -247,7 +247,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
 
                 /*
-                driver.WaitUntilAvailable(By.Id(option.Name));
+                driver.WaitForElement(By.Id(option.Name));
 
                 if (driver.ElementExists(By.Id(option.Name)))
                 {
@@ -295,7 +295,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute(GetOptions($"Clear QuickCreate ConpositeControl Value: {control.Id}"), driver =>
             {
-                driver.WaitUntilAvailable(By.Id(control.Id));
+                driver.WaitForElement(By.Id(control.Id));
 
                 if (!driver.ElementExists(By.Id(control.Id)))
                     return false;
@@ -344,12 +344,12 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute($"Get QuickCreate Text Field Value: {field}", driver =>
             {
-                driver.WaitUntilAvailable(By.Id(field));
+                driver.WaitForElement(By.Id(field));
 
                 string text = string.Empty;
                 if (driver.ElementExists(By.Id(field)))
                 {
-                    driver.WaitUntilAvailable(By.Id(field));
+                    driver.WaitForElement(By.Id(field));
                     var fieldElement = driver.FindElement(By.Id(field));
 
                     if (fieldElement.FindElements(By.TagName("textarea")).Count > 0)
@@ -380,14 +380,14 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 string text = string.Empty;
 
-                driver.WaitUntilAvailable(By.Id(control.Id));
+                driver.WaitForElement(By.Id(control.Id));
 
                 driver.FindElement(By.Id(control.Id)).ClickWait();
 
                 if (driver.ElementExists(By.Id(control.Id + Elements.ElementId[Reference.SetValue.FlyOut])))
                 {
                     var compcntrl =
-                        driver.WaitUntilAvailable(By.Id(control.Id + Elements.ElementId[Reference.SetValue.FlyOut]));
+                        driver.WaitForElement(By.Id(control.Id + Elements.ElementId[Reference.SetValue.FlyOut]));
 
                     foreach (var field in control.Fields)
                     {
@@ -417,7 +417,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute($"Get QuickCreate OptionSet Value: {option.Name}", driver =>
             {
-                driver.WaitUntilAvailable(By.Id(option.Name));
+                driver.WaitForElement(By.Id(option.Name));
                 string text = string.Empty;
                 if (driver.ElementExists(By.Id(option.Name)))
                 {
@@ -440,7 +440,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute($"Get QuickCreate Lookup Value: {control.Name}", driver =>
             {
-                driver.WaitUntilAvailable(By.Id(control.Name));
+                driver.WaitForElement(By.Id(control.Name));
 
                 string lookupValue = string.Empty;
                 if (driver.ElementExists(By.Id(control.Name)))
@@ -468,7 +468,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                 if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.Entity.DateFieldContainer].Replace("[NAME]", date.Name.ToLower()))))
                 {
 
-                    var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.DateFieldContainer].Replace("[NAME]", date.Name.ToLower())));
+                    var fieldElement = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Entity.DateFieldContainer].Replace("[NAME]", date.Name.ToLower())));
 
                     // Check whether the DateTime field has an existing value
                     if (fieldElement.FindElements(By.TagName("label")).Count > 0)
@@ -497,7 +497,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                 if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.Entity.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower()))))
                 {
-                    var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower())));
+                    var fieldElement = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Entity.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower())));
                     var select = fieldElement;
                     var text = "";
 
@@ -563,7 +563,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 if (driver.ElementExists(By.Id(field.Name)))
                 {
-                    var fieldContainer = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.FieldContainer].Replace("[NAME]", field.Name)));
+                    var fieldContainer = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Entity.FieldContainer].Replace("[NAME]", field.Name)));
 
                     if (fieldContainer.Text != "" && clearFieldValue)
                     {
@@ -584,7 +584,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                     Browser.ThinkTime(1000);
                     var dialogName = $"Dialog_{field.Name}_IMenu";
-                    var dialog = driver.WaitUntilAvailable(By.Id(dialogName));
+                    var dialog = driver.WaitForElement(By.Id(dialogName));
 
                     var dialogItems = OpenDialog(dialog).Value;
 
@@ -636,7 +636,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 if (driver.ElementExists(By.XPath(Elements.Xpath[Reference.Entity.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower()))))
                 {
-                    var fieldElement = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Entity.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower())));
+                    var fieldElement = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Entity.CheckboxFieldContainer].Replace("[NAME]", option.Name.ToLower())));
 
                     if (fieldElement.FindElements(By.TagName("label")).Count > 0)
                     {
@@ -775,7 +775,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute(GetOptions($"Set QuickCreate OptionSet Value: {option.Name}"), driver =>
             {
-                driver.WaitUntilAvailable(By.Id(option.Name));
+                driver.WaitForElement(By.Id(option.Name));
 
                 if (driver.ElementExists(By.Id(option.Name)))
                 {
@@ -808,7 +808,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute(GetOptions($"Set QuickCreate ConpositeControl Value: {control.Id}"), driver =>
             {
-                driver.WaitUntilAvailable(By.Id(control.Id));
+                driver.WaitForElement(By.Id(control.Id));
 
                 if (!driver.ElementExists(By.Id(control.Id)))
                     return false;
@@ -853,7 +853,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 if (driver.ElementExists(By.Id(control.Name)))
                 {
-                    driver.WaitUntilAvailable(By.Id(control.Name));
+                    driver.WaitForElement(By.Id(control.Name));
 
                     var input = driver.FindElement(By.Id(control.Name)).ClickWait();
 
@@ -863,7 +863,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     input.FindElement(By.ClassName(Elements.CssClass[Reference.SetValue.LookupRenderClass])).ClickWait();
 
                     var dialogName = $"Dialog_{control.Name}_IMenu";
-                    var dialog = driver.WaitUntilAvailable(By.Id(dialogName));
+                    var dialog = driver.WaitForElement(By.Id(dialogName));
 
                     var dialogItems = OpenDialog(dialog).Value;
 

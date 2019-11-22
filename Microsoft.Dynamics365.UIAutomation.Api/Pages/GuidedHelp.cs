@@ -57,7 +57,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                 if (IsEnabled)
                 {
-                    driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.GuidedHelp.MarsOverlay]), new TimeSpan(0, 0, 15), d =>
+                    driver.WaitForElement(By.XPath(Elements.Xpath[Reference.GuidedHelp.MarsOverlay]), new TimeSpan(0, 0, 15), d =>
                     {
                         var allMarsElements = driver
                             .FindElement(By.XPath(Elements.Xpath[Reference.GuidedHelp.MarsOverlay]))
@@ -69,7 +69,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
                             if (buttonId.Equals(Elements.ElementId[Reference.GuidedHelp.Close], StringComparison.InvariantCultureIgnoreCase))
                             {
-                                driver.WaitUntilAvailable(By.Id(buttonId), new TimeSpan(0, 0, 5)).ClickWait();
+                                driver.WaitForElement(By.Id(buttonId), new TimeSpan(0, 0, 5)).ClickWait();
 
                                 element.ClickWait();
                             }

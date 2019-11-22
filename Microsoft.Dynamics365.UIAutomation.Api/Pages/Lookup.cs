@@ -59,7 +59,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 var dictionary = new Dictionary<string, IWebElement>();
 
-                var viewSelectorContainer = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.LookUp.SavedQuerySelector]));
+                var viewSelectorContainer = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.LookUp.SavedQuerySelector]));
                 viewSelectorContainer.ClickWait();
 
                 Thread.Sleep(500);
@@ -206,7 +206,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Select Item"), driver =>
             {
-                var itemsTable = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.GridBodyTable]));
+                var itemsTable = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Grid.GridBodyTable]));
                 var items = itemsTable.FindElements(By.TagName("tr"));
 
                 var item = items[index + 1];
@@ -230,7 +230,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Select Item"), driver =>
             {
-                var itemsTable = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Grid.GridBodyTable]));
+                var itemsTable = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Grid.GridBodyTable]));
 
                 if(itemsTable.GetAttribute("totalrecordcount") == "0")
                 {

@@ -52,7 +52,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             this.Browser.ThinkTime(thinkTime);
             return this.Execute(GetOptions("Close Opportunity"), driver =>
             {
-                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.Header]),
+                driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Dialogs.Header]),
                                           new TimeSpan(0, 0, 10), 
                                           "The Close Opportunity dialog is not available.");
 
@@ -102,7 +102,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             var bcr = this.Execute(GetOptions("Add Connection"), driver =>
             {
 
-                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.AddConnectionHeader]),
+                driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Dialogs.AddConnectionHeader]),
                                           new TimeSpan(0, 0, 10),
                                           "The Add Connection dialog is not available.");
 
@@ -116,7 +116,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
                     driver.FindElement(By.XPath(Elements.Xpath[Reference.Dialogs.AddConnection.RoleLookupButton])).ClickWait();
 
                     // wait till role table is available
-                    driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.AddConnection.RoleLookupTable]));
+                    driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Dialogs.AddConnection.RoleLookupTable]));
 
                     try
                     {
@@ -161,7 +161,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Assign"), driver =>
             {
-                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.Header]),
+                driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Dialogs.Header]),
                                           new TimeSpan(0, 0, 10),
                                           "The Assign dialog is not available.");
 
@@ -234,7 +234,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Duplicate Detection"), driver =>
             {
-                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.Header]), 
+                driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Dialogs.Header]), 
                                             new TimeSpan(0, 0, 5), 
                                             d => //If duplicate detection dialog shows up
                  {
@@ -302,7 +302,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Run Workflow"), driver =>
             {
-                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.WorkflowHeader]),
+                driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Dialogs.WorkflowHeader]),
                                           new TimeSpan(0, 0, 10),
                                           "The RunWorkflow dialog is not available.");
 
@@ -331,7 +331,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
 
             return this.Execute(GetOptions("Run Report"), driver =>
             {
-                driver.WaitUntilAvailable(By.Name(Elements.Name[Reference.Dialogs.RunReport.Header]),
+                driver.WaitForElement(By.Name(Elements.Name[Reference.Dialogs.RunReport.Header]),
                                           new TimeSpan(0, 0, 10),
                                           "The Run Report dialog is not available.");
                 switch (records)
@@ -363,7 +363,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
             {
                 SwitchToWizard();
 
-                driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.AddUser.Header]),
+                driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Dialogs.AddUser.Header]),
                     new TimeSpan(0, 0, 10),
                     "The Add User dialog is not available.");
 
@@ -377,7 +377,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api
         {
             return this.Execute(GetOptions($"Close Warning Dialog"), driver =>
             {
-                var dialogFooter = driver.WaitUntilAvailable(By.XPath(Elements.Xpath[Reference.Dialogs.WarningFooter]));
+                var dialogFooter = driver.WaitForElement(By.XPath(Elements.Xpath[Reference.Dialogs.WarningFooter]));
 
                 if (
                     !(dialogFooter?.FindElements(By.XPath(Elements.Xpath[Reference.Dialogs.WarningCloseButton])).Count >
