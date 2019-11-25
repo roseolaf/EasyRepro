@@ -220,6 +220,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
             return this.Execute(GetOptions("Open App"), driver =>
             {
 
+                driver.WaitForLoading();
                 driver.SwitchTo().DefaultContent();
 
                 //Handle left hand Nav
@@ -1818,6 +1819,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                 {
                     input.SendKeysWait(Keys.Control + "a");
                     input.SendKeysWait(Keys.Backspace);
+                    this.Browser.ThinkTime(100);
                     input.SendKeysWait(control.Value, true);
 
                     //No longer needed, the search dialog opens when you enter the value
@@ -3322,16 +3324,21 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                 moreTabsButton.ClickWait();
                 searchScope = Browser.Driver.FindElement(By.XPath(AppElements.Xpath[AppReference.Entity.MoreTabsMenu]));
             }
-            
 
-            if (searchScope.TryFindElement(By.XPath(string.Format(xpath, name)), out listItem))
+            try
             {
-                listItem.ClickWait(true);
+                if (searchScope.TryFindElement(By.XPath(string.Format(xpath, name)), out listItem))
+                {
+                    listItem.ClickWait(true);
+                }
             }
-            else
+            catch(Exception)
             {
-                throw new Exception($"The tab with name: {name} does not exist");
+
+               throw new NotFoundException($"The tab with name: {name} does not exist");
+                
             }
+            
             
         }
 
