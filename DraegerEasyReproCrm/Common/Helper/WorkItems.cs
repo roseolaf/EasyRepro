@@ -213,7 +213,9 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
 
             var title = $"{exceptionType}: {step} - {msg}";
             title = title.Length > 255 ? title.Substring(0, 255) : title;
-            var existingBug = workItems.FirstOrDefault(x => x.Fields["System.Title"].ToString() == title);
+
+            var removeStep = new Regex(@"Step\d+");
+            var existingBug = workItems.FirstOrDefault(x => removeStep.Replace(x.Fields["System.Title"].ToString(), "") == removeStep.Replace(title,""));
 
             if (existingBug != null)
             {
