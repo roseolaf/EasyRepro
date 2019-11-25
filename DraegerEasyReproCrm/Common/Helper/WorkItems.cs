@@ -170,8 +170,49 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
 
             var workItems = GetWorkItems(workItemsList);
 
-            var title = exception.InnerException != null ? exception.InnerException.Message : exception.Message;
+            var rxTime = new Regex(regxTimeAndLogType);
+            var rxSteps = new Regex(regxStepsAndMessage);
+            var rxMessage = new Regex(regxTimeAndLogTypeAndMessage);
 
+            var failedLine = loggerSinkList.Find(s => s.Contains("Failed"));
+            var failedLineIndex = loggerSinkList.IndexOf(failedLine);
+            var step = "";
+            var msg = "";
+            var time = "";
+            var logType = "";
+            var logmsgModified = loggerSinkList[failedLineIndex - 1].Replace("\r\n", " ");
+            if (rxMessage.IsMatch(logmsgModified))
+            {
+                var match = rxMessage.Match(logmsgModified);
+                time = match.Groups[1].Value;
+                logType = match.Groups[2].Value;
+                msg = match.Groups[3].Value;
+
+            }
+            else
+            {
+                var match = rxTime.Match(logmsgModified);
+                time = match.Groups[1].Value;
+                logType = match.Groups[2].Value;
+            }
+
+            if (rxSteps.IsMatch(logmsgModified))
+            {
+                var match = rxSteps.Match(logmsgModified);
+                step = match.Groups[1].Value;
+                msg = match.Groups[2].Value;
+            }
+
+
+            var exceptionType = exception.InnerException != null
+                ? exception.InnerException.GetType().Name
+                : exception.GetType().Name;
+
+            exceptionType = exceptionType.Replace("Exception", "");
+            exceptionType = Regex.Replace(exceptionType, @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1");
+
+            var title = $"{exceptionType}: {step} - {msg}";
+            title = title.Length > 255 ? title.Substring(0, 255) : title;
             var existingBug = workItems.FirstOrDefault(x => x.Fields["System.Title"].ToString() == title);
 
             if (existingBug != null)
