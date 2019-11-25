@@ -28,7 +28,7 @@ using Serilog.Formatting.Json;
 using Serilog.Sinks.ListOfString;
 using WebClient = Microsoft.Dynamics365.UIAutomation.Api.UCI.WebClient;
 
-[assembly: Parallelize(Workers = 10, Scope = ExecutionScope.MethodLevel)]
+[assembly: Parallelize(Workers = 4, Scope = ExecutionScope.MethodLevel)]
 
 namespace Draeger.Dynamics365.Testautomation.Common
 {
