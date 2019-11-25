@@ -92,7 +92,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
         public void TestCleanUp()
         {
             logger.TestResult("{TestResult}", TestContext.CurrentTestOutcome);
-#if DEBUG
+#if !DEBUG
             if (exception != null)
             {
                 
