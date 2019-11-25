@@ -23,6 +23,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
         public const string azureDevOpsOrganizationUrl = "https://dev.azure.com/draeger";
         public const string azureDevOpsProjectName = "CRM";
         private static readonly object Lock = new object();
+        private static readonly object workitemLock = new object();
         private const string pat = "6opssjduepken5jciswfhpsywohwyng3lfzcr5tbtti54vilfjya";
 
         private static VssConnection NewVssConnection()
@@ -115,117 +116,121 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
 
         public static void CreateOrUpdateBug(int testCaseId, List<string> loggerSinkList, Exception exception, string screenshotPath = "")
         {
-            var testCase = GetWorkItem(testCaseId);
-
-            List<int> relationsList = new List<int>();
-            foreach (var relation in testCase.Relations)
+            lock (workitemLock)
             {
-                relationsList.Add(int.Parse(Regex.Match(relation.Url, @"\d+$").Value));
+
+                var testCase = GetWorkItem(testCaseId);
+
+                List<int> relationsList = new List<int>();
+                foreach (var relation in testCase.Relations)
+                {
+                    relationsList.Add(int.Parse(Regex.Match(relation.Url, @"\d+$").Value));
+                }
+
+                var relatedWorkItems = WorkItems.GetWorkItems(relationsList);
+                var featureWorkItem = relatedWorkItems.FirstOrDefault(x => x.Fields["System.WorkItemType"].ToString() == "Feature");
+                var featureOwner = featureWorkItem != null ? featureWorkItem.Fields["System.AssignedTo"] : "";
+
+                var vssConn = NewVssConnection();
+                //create http client and query for results
+                WorkItemTrackingHttpClient witClient = vssConn.GetClient<WorkItemTrackingHttpClient>();
+
+
+                // TODO:  Save creds in key vault???
+                var creds = new VssCredentials(new VssBasicCredential("AutomatedClient", pat));
+                //Prompt user for credential
+                var connection = new TeamHttpClient(new Uri(azureDevOpsOrganizationUrl), creds);
+
+                var allTeams = connection.GetAllTeamsAsync().Result;
+
+                // TODO ProjectName as const?
+                var project = allTeams.First(x => x.ProjectName == azureDevOpsProjectName);
+                var teamMembers = connection.GetTeamMembersWithExtendedPropertiesAsync(project.ProjectId.ToString(), project.Id.ToString()).Result;
+                // TODO Fail to feature owner
+                var bugResponsible = teamMembers.First(x => x.Identity.UniqueName == "malte.fries@draeger.com").Identity;
+
+                var relationTypes = witClient.GetRelationTypesAsync().Result;
+
+                var relationTestedBy = relationTypes.First(x => x.Name == "Tested By");
+
+                var relationAttachedFile = relationTypes.First(x => x.Name == "Attached File");
+
+                Wiql wiql = new Wiql()
+                {
+                    Query = "Select [Title] " +
+                        "From WorkItems " +
+                        "Where [Work Item Type] = 'Bug' " +
+                        "And [System.TeamProject] = '" + azureDevOpsProjectName + "' " +
+                        "Order By [Changed Date] Desc"
+                };
+
+                WorkItemQueryResult workItemQueryResult = witClient.QueryByWiqlAsync(wiql).Result;
+                List<int> workItemsList = new List<int>();
+                foreach (var item in workItemQueryResult.WorkItems)
+                {
+                    workItemsList.Add(item.Id);
+                }
+
+
+                var workItems = GetWorkItems(workItemsList);
+
+                var rxTime = new Regex(regxTimeAndLogType);
+                var rxSteps = new Regex(regxStepsAndMessage);
+                var rxMessage = new Regex(regxTimeAndLogTypeAndMessage);
+
+                var failedLine = loggerSinkList.Find(s => s.Contains("Failed"));
+                var failedLineIndex = loggerSinkList.IndexOf(failedLine);
+                var step = "";
+                var msg = "";
+                var time = "";
+                var logType = "";
+                var logmsgModified = loggerSinkList[failedLineIndex - 1].Replace("\r\n", " ");
+                if (rxMessage.IsMatch(logmsgModified))
+                {
+                    var match = rxMessage.Match(logmsgModified);
+                    time = match.Groups[1].Value;
+                    logType = match.Groups[2].Value;
+                    msg = match.Groups[3].Value;
+
+                }
+                else
+                {
+                    var match = rxTime.Match(logmsgModified);
+                    time = match.Groups[1].Value;
+                    logType = match.Groups[2].Value;
+                }
+
+                if (rxSteps.IsMatch(logmsgModified))
+                {
+                    var match = rxSteps.Match(logmsgModified);
+                    step = match.Groups[1].Value;
+                    msg = match.Groups[2].Value;
+                }
+
+
+                var exceptionType = exception.InnerException != null
+                    ? exception.InnerException.GetType().Name
+                    : exception.GetType().Name;
+
+                exceptionType = exceptionType.Replace("Exception", "");
+                exceptionType = Regex.Replace(exceptionType, @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1");
+
+                var title = $"{exceptionType}: {step} - {msg}";
+                title = title.Length > 255 ? title.Substring(0, 255) : title;
+
+                var removeStep = new Regex(@"Step\d+");
+                var existingBug = workItems.FirstOrDefault(x => removeStep.Replace(x.Fields["System.Title"].ToString(), "") == removeStep.Replace(title, ""));
+
+                if (existingBug != null)
+                {
+                    UpdateBug(testCaseId, loggerSinkList, screenshotPath, testCase, witClient, project, bugResponsible, relationTestedBy, title, existingBug);
+                }
+                else
+                {
+                    CreateBug(testCaseId, loggerSinkList, screenshotPath, testCase, witClient, project, bugResponsible, relationTestedBy, title);
+                }
+
             }
-
-            var relatedWorkItems = WorkItems.GetWorkItems(relationsList);
-            var featureWorkItem = relatedWorkItems.FirstOrDefault(x => x.Fields["System.WorkItemType"].ToString() == "Feature");
-            var featureOwner = featureWorkItem != null ? featureWorkItem.Fields["System.AssignedTo"] : "";
-
-            var vssConn = NewVssConnection();
-            //create http client and query for results
-            WorkItemTrackingHttpClient witClient = vssConn.GetClient<WorkItemTrackingHttpClient>();
-
-
-            // TODO:  Save creds in key vault???
-            var creds = new VssCredentials(new VssBasicCredential("AutomatedClient", pat));
-            //Prompt user for credential
-            var connection = new TeamHttpClient(new Uri(azureDevOpsOrganizationUrl), creds);
-
-            var allTeams = connection.GetAllTeamsAsync().Result;
-
-            // TODO ProjectName as const?
-            var project = allTeams.First(x => x.ProjectName == azureDevOpsProjectName);
-            var teamMembers = connection.GetTeamMembersWithExtendedPropertiesAsync(project.ProjectId.ToString(), project.Id.ToString()).Result;
-            // TODO Fail to feature owner
-            var bugResponsible = teamMembers.First(x => x.Identity.UniqueName == "malte.fries@draeger.com").Identity;
-
-            var relationTypes = witClient.GetRelationTypesAsync().Result;
-
-            var relationTestedBy = relationTypes.First(x => x.Name == "Tested By");
-
-            var relationAttachedFile = relationTypes.First(x => x.Name == "Attached File");
-
-            Wiql wiql = new Wiql()
-            {
-                Query = "Select [Title] " +
-                    "From WorkItems " +
-                    "Where [Work Item Type] = 'Bug' " +
-                    "And [System.TeamProject] = '" + azureDevOpsProjectName + "' " +
-                    "Order By [Changed Date] Desc"
-            };
-
-            WorkItemQueryResult workItemQueryResult = witClient.QueryByWiqlAsync(wiql).Result;
-            List<int> workItemsList = new List<int>();
-            foreach (var item in workItemQueryResult.WorkItems)
-            {
-                workItemsList.Add(item.Id);
-            }
-
-
-            var workItems = GetWorkItems(workItemsList);
-
-            var rxTime = new Regex(regxTimeAndLogType);
-            var rxSteps = new Regex(regxStepsAndMessage);
-            var rxMessage = new Regex(regxTimeAndLogTypeAndMessage);
-
-            var failedLine = loggerSinkList.Find(s => s.Contains("Failed"));
-            var failedLineIndex = loggerSinkList.IndexOf(failedLine);
-            var step = "";
-            var msg = "";
-            var time = "";
-            var logType = "";
-            var logmsgModified = loggerSinkList[failedLineIndex - 1].Replace("\r\n", " ");
-            if (rxMessage.IsMatch(logmsgModified))
-            {
-                var match = rxMessage.Match(logmsgModified);
-                time = match.Groups[1].Value;
-                logType = match.Groups[2].Value;
-                msg = match.Groups[3].Value;
-
-            }
-            else
-            {
-                var match = rxTime.Match(logmsgModified);
-                time = match.Groups[1].Value;
-                logType = match.Groups[2].Value;
-            }
-
-            if (rxSteps.IsMatch(logmsgModified))
-            {
-                var match = rxSteps.Match(logmsgModified);
-                step = match.Groups[1].Value;
-                msg = match.Groups[2].Value;
-            }
-
-
-            var exceptionType = exception.InnerException != null
-                ? exception.InnerException.GetType().Name
-                : exception.GetType().Name;
-
-            exceptionType = exceptionType.Replace("Exception", "");
-            exceptionType = Regex.Replace(exceptionType, @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1");
-
-            var title = $"{exceptionType}: {step} - {msg}";
-            title = title.Length > 255 ? title.Substring(0, 255) : title;
-
-            var removeStep = new Regex(@"Step\d+");
-            var existingBug = workItems.FirstOrDefault(x => removeStep.Replace(x.Fields["System.Title"].ToString(), "") == removeStep.Replace(title,""));
-
-            if (existingBug != null)
-            {
-                UpdateBug(testCaseId, loggerSinkList, screenshotPath, testCase, witClient, project, bugResponsible, relationTestedBy, existingBug);
-            }
-            else
-            {
-                CreateBug(testCaseId, loggerSinkList, screenshotPath, testCase, witClient, project, bugResponsible, relationTestedBy, title);
-            }
-
 
 
         }
@@ -311,10 +316,17 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
             var result = witClient.CreateWorkItemAsync(jsonPatchDocument, project.ProjectId, "Bug").Result;
         }
 
-        private static void UpdateBug(int testCaseId, List<string> loggerSinkList, string screenshotPath, WorkItem testCase, WorkItemTrackingHttpClient witClient, WebApiTeam project, IdentityRef bugResponsible, WorkItemRelationType relationTestedBy, WorkItem existingBug)
+        private static void UpdateBug(int testCaseId, List<string> loggerSinkList, string screenshotPath, WorkItem testCase, WorkItemTrackingHttpClient witClient, WebApiTeam project, IdentityRef bugResponsible, WorkItemRelationType relationTestedBy, string title, WorkItem existingBug)
         {
             var addRelation = existingBug.Relations.Any(x => !x.Url.Contains(testCaseId.ToString()));
             var jsonPatchDocument = new JsonPatchDocument();
+            jsonPatchDocument.Add(
+                new JsonPatchOperation()
+                {
+                    Path = "/fields/System.Title",
+                    Operation = Operation.Add,
+                    Value = title,
+                });
             jsonPatchDocument.Add(
                 new JsonPatchOperation()
                 {
