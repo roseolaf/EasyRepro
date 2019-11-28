@@ -303,6 +303,8 @@
     <Compile Include="Common\Enums\Requirement.cs" />
     <Compile Include="Common\Locators\CaseConstants.cs" />
     <Compile Include="Common\Locators\CaseLocators.cs" />
+    <Compile Include="Common\Logger\ListSink.cs" />
+    <Compile Include="Common\Logger\ListSinkConfiguration.cs" />
     <Compile Include="Common\Logger\MSTestSinkConfiguration.cs" />
     <Compile Include="Common\Logger\MSTestSink.cs" />
     <Compile Include="Common\Logger\SerilogExtensions.cs" />

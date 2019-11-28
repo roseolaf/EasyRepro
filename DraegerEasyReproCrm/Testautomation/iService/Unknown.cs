@@ -45,8 +45,8 @@ namespace Draeger.Dynamics365.Testautomation.Testautomation.iService
                 case "64837":
                     testData.Add("64837Serviceorder", 
                         new SpecificAttributeDecorator("dw_serviceordernumber", "5XXXXXTC64837", ReplaceType.Number, 'X',
-                            new BaseComponent(logger)).CreateEntityRecord(this, 
-                                new BaseComponent(logger).CloneEntityRecord(Serviceorder.EntityLogicalName,  new KeyValuePair<string, object>("dw_serviceordernumber", "118854979"))));
+                            new BaseComponent(Logger)).CreateEntityRecord(this, 
+                                new BaseComponent(Logger).CloneEntityRecord(Serviceorder.EntityLogicalName,  new KeyValuePair<string, object>("dw_serviceordernumber", "118854979"))));
                     break;
 
             }
@@ -74,35 +74,35 @@ namespace Draeger.Dynamics365.Testautomation.Testautomation.iService
             {
                 var serviceOrder = testData["64837Serviceorder"] as Serviceorder;
 
-                Login(xrmApp, UserAlias);
-                logger.Log<Action<string>>(
-                    xrmApp.Navigation.OpenApp, "Dräger Sales App");
-                logger.Log<Action<string,string>>(
-                    xrmApp.Navigation.OpenSubArea, "Service", "Service Orders");
-                logger.NextStep();
-                logger.Log<Action<string>>(
-                    xrmApp.Grid.SwitchView,"Non-dispatched Service Orders");
+                Login(XrmApp, UserAlias);
+                Logger.Log<Action<string>>(
+                    XrmApp.Navigation.OpenApp, "Dräger Sales App");
+                Logger.Log<Action<string,string>>(
+                    XrmApp.Navigation.OpenSubArea, "Service", "Service Orders");
+                Logger.NextStep();
+                Logger.Log<Action<string>>(
+                    XrmApp.Grid.SwitchView,"Non-dispatched Service Orders");
 
-                xrmApp.ThinkTime(2000);
-                GridElement grid = new GridElement(xrmApp,XrmBrowser);
+                XrmApp.ThinkTime(2000);
+                GridElement grid = new GridElement(XrmApp,XrmBrowser);
 
                 var expectedResultStep2 = "List of 'Non-dispatched Service Orders' appears";
-                var check = logger.LogExpectedResultCheck<Func<string>,string>(
+                var check = Logger.LogExpectedResultCheck<Func<string>,string>(
                     grid.GridLabel, "Non-dispatched Service Orders", expectedResultStep2);
                 Assert.IsTrue(check, expectedResultStep2);
 
-                var gridItem = logger.Log<Func<Guid, GridItemInfo>,GridItemInfo>(
+                var gridItem = Logger.Log<Func<Guid, GridItemInfo>,GridItemInfo>(
                      grid.SelectGridItem, serviceOrder.Id);
 
-                logger.Log<Action<string, string,bool>>(
-                    xrmApp.CommandBar.ClickCommand, "Dispatch", "Create Dispatch");
+                Logger.Log<Action<string, string,bool>>(
+                    XrmApp.CommandBar.ClickCommand, "Dispatch", "Create Dispatch");
 
 
 
             }
             catch (Exception e)
             {
-                exception = e;
+                Exception = e;
                 throw;
             }
         }

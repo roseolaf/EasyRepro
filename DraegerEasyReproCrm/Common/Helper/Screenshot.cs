@@ -18,6 +18,23 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
         public string SaveScreenshot(WebClient webClient, TestContext testContext)
         {
             var driver = webClient.Browser.Driver;
+
+            var screenshot = driver.TakeScreenshot().AsByteArray;
+
+            using (var image = Image.FromStream(new MemoryStream(screenshot)))
+            {
+                var name = Guid.NewGuid();
+                var path = $"{Directory.GetCurrentDirectory()}{name}.png";
+                image.Save(path, ImageFormat.Png);
+                testContext.AddResultFile(path);
+                return path;
+            }
+        }
+
+
+        public string SaveScreenshotFullPage(WebClient webClient, TestContext testContext)
+        {
+            var driver = webClient.Browser.Driver;
             var footer = By.XPath(@"//div[@data-id = 'form-footer']");
             var elementWithScrollBar = driver.GetElementWithActiveScrollBar();
             int footerHeight = 0;

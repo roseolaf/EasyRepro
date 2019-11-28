@@ -13,7 +13,11 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
+using HtmlAgilityPack;
+using Microsoft.TeamFoundation.Common;
+using Serilog.Events;
 
 namespace Draeger.Dynamics365.Testautomation.Common.Helper
 {
@@ -114,17 +118,20 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
             }
         }
 
-        public static void CreateOrUpdateBug(int testCaseId, List<string> loggerSinkList, Exception exception, string screenshotPath = "")
+        public static void CreateOrUpdateBug(int testCaseId, List<ListSinkInfo> loggerSinkList, Exception exception, string screenshotPath = "")
         {
             lock (workitemLock)
             {
 
                 var testCase = GetWorkItem(testCaseId);
 
+                // Relations can also be attachments
                 List<int> relationsList = new List<int>();
                 foreach (var relation in testCase.Relations)
                 {
-                    relationsList.Add(int.Parse(Regex.Match(relation.Url, @"\d+$").Value));
+                    if (!int.TryParse(Regex.Match(relation.Url, @"\d+$").Value, out var result))
+                        continue;
+                    relationsList.Add(result);
                 }
 
                 var relatedWorkItems = WorkItems.GetWorkItems(relationsList);
@@ -148,6 +155,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
                 var teamMembers = connection.GetTeamMembersWithExtendedPropertiesAsync(project.ProjectId.ToString(), project.Id.ToString()).Result;
                 // TODO Fail to feature owner
                 var bugResponsible = teamMembers.First(x => x.Identity.UniqueName == "malte.fries@draeger.com").Identity;
+
 
                 var relationTypes = witClient.GetRelationTypesAsync().Result;
 
@@ -174,38 +182,8 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
 
                 var workItems = GetWorkItems(workItemsList);
 
-                var rxTime = new Regex(regxTimeAndLogType);
-                var rxSteps = new Regex(regxStepsAndMessage);
-                var rxMessage = new Regex(regxTimeAndLogTypeAndMessage);
-
-                var failedLine = loggerSinkList.Find(s => s.Contains("Failed"));
-                var failedLineIndex = loggerSinkList.IndexOf(failedLine);
-                var step = "";
-                var msg = "";
-                var time = "";
-                var logType = "";
-                var logmsgModified = loggerSinkList[failedLineIndex - 1].Replace("\r\n", " ");
-                if (rxMessage.IsMatch(logmsgModified))
-                {
-                    var match = rxMessage.Match(logmsgModified);
-                    time = match.Groups[1].Value;
-                    logType = match.Groups[2].Value;
-                    msg = match.Groups[3].Value;
-
-                }
-                else
-                {
-                    var match = rxTime.Match(logmsgModified);
-                    time = match.Groups[1].Value;
-                    logType = match.Groups[2].Value;
-                }
-
-                if (rxSteps.IsMatch(logmsgModified))
-                {
-                    var match = rxSteps.Match(logmsgModified);
-                    step = match.Groups[1].Value;
-                    msg = match.Groups[2].Value;
-                }
+                var failedLine = loggerSinkList.First(s => s.State.Contains("Failed") || s.State.Contains("Error"));
+                var actionFailedIndex = loggerSinkList.IndexOf(failedLine) - 1;
 
 
                 var exceptionType = exception.InnerException != null
@@ -215,7 +193,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
                 exceptionType = exceptionType.Replace("Exception", "");
                 exceptionType = Regex.Replace(exceptionType, @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1");
 
-                var title = $"{exceptionType}: {step} - {msg}";
+                var title = $"{exceptionType}: {loggerSinkList[actionFailedIndex].Message}";
                 title = title.Length > 255 ? title.Substring(0, 255) : title;
 
                 var removeStep = new Regex(@"Step\d+");
@@ -223,11 +201,11 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
 
                 if (existingBug != null)
                 {
-                    UpdateBug(testCaseId, loggerSinkList, screenshotPath, testCase, witClient, project, bugResponsible, relationTestedBy, title, existingBug);
+                    UpdateBug(testCaseId, loggerSinkList, screenshotPath, testCase, witClient, project, bugResponsible, relationTestedBy, title, actionFailedIndex, existingBug);
                 }
                 else
                 {
-                    CreateBug(testCaseId, loggerSinkList, screenshotPath, testCase, witClient, project, bugResponsible, relationTestedBy, title);
+                    CreateBug(testCaseId, loggerSinkList, screenshotPath, testCase, witClient, project, bugResponsible, relationTestedBy, title, actionFailedIndex);
                 }
 
             }
@@ -235,16 +213,16 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
 
         }
 
-        private static void CreateBug(int testCaseId, List<string> loggerSinkList, string screenshotPath, WorkItem testCase, WorkItemTrackingHttpClient witClient, WebApiTeam project, IdentityRef bugResponsible, WorkItemRelationType relationTestedBy, string title)
+        private static void CreateBug(int testCaseId, List<ListSinkInfo> loggerSinkList, string screenshotPath, WorkItem testCase, WorkItemTrackingHttpClient witClient, WebApiTeam project, IdentityRef bugResponsible, WorkItemRelationType relationTestedBy, string title, int actionFailedIndex)
         {
             var jsonPatchDocument = new JsonPatchDocument();
             jsonPatchDocument.Add(
-                        new JsonPatchOperation()
-                        {
-                            Path = "/fields/System.Title",
-                            Operation = Operation.Add,
-                            Value = title,
-                        });
+                new JsonPatchOperation()
+                {
+                    Path = "/fields/System.Title",
+                    Operation = Operation.Add,
+                    Value = title,
+                });
             jsonPatchDocument.Add(
                 new JsonPatchOperation()
                 {
@@ -253,27 +231,26 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
                     Value = testCase.Fields["System.AreaPath"],
                 });
             jsonPatchDocument.Add(
-             new JsonPatchOperation()
-             {
-                 Path = "/fields/System.WorkItemType",
-                 Operation = Operation.Add,
-                 Value = "Bug",
-             });
+                 new JsonPatchOperation()
+                 {
+                     Path = "/fields/System.WorkItemType",
+                     Operation = Operation.Add,
+                     Value = "Bug",
+                 });
             jsonPatchDocument.Add(
-             new JsonPatchOperation()
-             {
-                 Path = "/fields/System.State",
-                 Operation = Operation.Add,
-                 Value = "Active",
-             });
+                 new JsonPatchOperation()
+                 {
+                     Path = "/fields/System.State",
+                     Operation = Operation.Add,
+                     Value = "Active",
+                 });
             jsonPatchDocument.Add(
-             new JsonPatchOperation()
-             {
-                 Path = "/fields/System.AssignedTo",
-                 Operation = Operation.Add,
-                 Value = bugResponsible,
-             });
-
+                 new JsonPatchOperation()
+                 {
+                     Path = "/fields/System.AssignedTo",
+                     Operation = Operation.Add,
+                     Value = bugResponsible,
+                 });
             jsonPatchDocument.Add(
               new JsonPatchOperation()
               {
@@ -286,38 +263,88 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
                       Url = $"{azureDevOpsOrganizationUrl}/{project.ProjectId.ToString()}/_apis/wit/workItems/{testCaseId}"
                   },
               });
-            if (screenshotPath != "")
-            {
-                using (FileStream attStream = new FileStream(screenshotPath, FileMode.Open, FileAccess.Read))
+
+
+
+            var newSystemInfo = SystemInfoHTML(loggerSinkList);
+            jsonPatchDocument.Add(
+                new JsonPatchOperation()
                 {
-                    var att = witClient.CreateAttachmentAsync(attStream).Result; // upload the file
-                    jsonPatchDocument.Add(
+                    Path = "/fields/Microsoft.VSTS.TCM.SystemInfo",
+                    Operation = Operation.Replace,
+                    Value = newSystemInfo,
+                });
+
+
+            FileStream attStream = new FileStream(screenshotPath, FileMode.Open, FileAccess.Read);
+            var screenshotFullPage = witClient.CreateAttachmentAsync(attStream).Result; // upload the file
+            attStream.Dispose();
+            jsonPatchDocument.Add(
                      new JsonPatchOperation()
                      {
 
                          Path = "/fields/Microsoft.VSTS.TCM.ReproSteps",
                          Operation = Operation.Add,
-                         Value = LoggerToReproStepsHTML(loggerSinkList, att)
+                         Value = LoggerToReproStepsHTML(loggerSinkList, witClient, screenshotFullPage, actionFailedIndex, testCase)
 
                      }); ;
-                }
-            }
-            else
-            {
-                jsonPatchDocument.Add(
-               new JsonPatchOperation()
-               {
-                   Path = "/fields/Microsoft.VSTS.TCM.ReproSteps",
-                   Operation = Operation.Add,
-                   Value = LoggerToReproStepsHTML(loggerSinkList),
-               });
-            }
+
+
 
             var result = witClient.CreateWorkItemAsync(jsonPatchDocument, project.ProjectId, "Bug").Result;
         }
 
-        private static void UpdateBug(int testCaseId, List<string> loggerSinkList, string screenshotPath, WorkItem testCase, WorkItemTrackingHttpClient witClient, WebApiTeam project, IdentityRef bugResponsible, WorkItemRelationType relationTestedBy, string title, WorkItem existingBug)
+        private static void UpdateBug(int testCaseId, List<ListSinkInfo> loggerSinkList, string screenshotPath, WorkItem testCase, WorkItemTrackingHttpClient witClient, WebApiTeam project, IdentityRef bugResponsible, WorkItemRelationType relationTestedBy, string title, int actionFailedIndex, WorkItem existingBug)
         {
+
+
+            // Full page screenshot
+            FileStream attStream = new FileStream(screenshotPath, FileMode.Open, FileAccess.Read);
+            var screenshotFullPage = witClient.CreateAttachmentAsync(attStream).Result; // upload file
+            attStream.Dispose();
+            var reproStepsHtml = LoggerToReproStepsHTML(loggerSinkList, witClient, screenshotFullPage, actionFailedIndex, testCase);
+            String newReproStepsHtml;
+
+            // Repro Steps to add
+            var htmlReproDoc = new HtmlDocument();
+            htmlReproDoc.LoadHtml(reproStepsHtml);
+            var newTestCaseNode = htmlReproDoc.DocumentNode.SelectSingleNode($"//div[@id=\"{testCaseId}\"]");
+
+            // already existing ReproSteps from bug
+            var oldReproSteps = existingBug.Fields["Microsoft.VSTS.TCM.ReproSteps"];
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(oldReproSteps.ToString());
+            var oldTestCaseNode = htmlDoc.DocumentNode.SelectSingleNode($"//div[@id=\"{testCaseId}\"]");
+
+            // old Repro Steps does not contain steps for testcase
+            if (oldTestCaseNode != null)
+            {
+                htmlDoc.DocumentNode.ReplaceChild(newTestCaseNode, oldTestCaseNode);
+                newReproStepsHtml = htmlDoc.DocumentNode.OuterHtml;
+            }
+            else
+            {
+                // in case the bug exists without repro steps, handle it
+                var parentNode = htmlDoc.DocumentNode;
+                if (parentNode != null)
+                {
+                    parentNode.AppendChild(newTestCaseNode);
+                    newReproStepsHtml = htmlDoc.DocumentNode.OuterHtml;
+                }
+                else
+                    newReproStepsHtml = htmlReproDoc.DocumentNode.OuterHtml;
+
+            }
+
+
+            var solutionVersion = loggerSinkList[0].TestContext.Properties["SolutionVersion"];
+
+
+            var oldSystemInfo = existingBug.Fields["Microsoft.VSTS.TCM.SystemInfo"].ToString();
+
+            var newSystemInfo = SystemInfoHTML(loggerSinkList, oldSystemInfo);
+
+
             var addRelation = existingBug.Relations.Any(x => !x.Url.Contains(testCaseId.ToString()));
             var jsonPatchDocument = new JsonPatchDocument();
             jsonPatchDocument.Add(
@@ -326,6 +353,13 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
                     Path = "/fields/System.Title",
                     Operation = Operation.Add,
                     Value = title,
+                });
+            jsonPatchDocument.Add(
+                new JsonPatchOperation()
+                {
+                    Path = "/fields/Microsoft.VSTS.TCM.SystemInfo",
+                    Operation = Operation.Replace,
+                    Value = newSystemInfo,
                 });
             jsonPatchDocument.Add(
                 new JsonPatchOperation()
@@ -348,32 +382,15 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
                      Operation = Operation.Replace,
                      Value = bugResponsible,
                  });
-            if (screenshotPath != "")
-            {
-                using (FileStream attStream = new FileStream(screenshotPath, FileMode.Open, FileAccess.Read))
-                {
-                    var att = witClient.CreateAttachmentAsync(attStream).Result; // upload the file
-                    jsonPatchDocument.Add(
-                     new JsonPatchOperation()
-                     {
+            jsonPatchDocument.Add(
+                 new JsonPatchOperation()
+                 {
 
-                         Path = "/fields/Microsoft.VSTS.TCM.ReproSteps",
-                         Operation = Operation.Add,
-                         Value = LoggerToReproStepsHTML(loggerSinkList, att)
+                     Path = "/fields/Microsoft.VSTS.TCM.ReproSteps",
+                     Operation = Operation.Add,
+                     Value = newReproStepsHtml
 
-                     }); ;
-                }
-            }
-            else
-            {
-                jsonPatchDocument.Add(
-               new JsonPatchOperation()
-               {
-                   Path = "/fields/Microsoft.VSTS.TCM.ReproSteps",
-                   Operation = Operation.Add,
-                   Value = LoggerToReproStepsHTML(loggerSinkList),
-               });
-            }
+                 });
 
 
             if (addRelation)
@@ -393,65 +410,182 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
             }
 
             var result = witClient.UpdateWorkItemAsync(jsonPatchDocument, existingBug.Id.Value).Result;
+            workItemDict[existingBug.Id.Value] = result;
         }
 
-        private const string regxTimeAndLogType = @"(\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}.+\d\s)(?=\[)\[(\w+)";
-        private const string regxStepsAndMessage = @"(Step\d+):(.+)";
-        private const string regxTimeAndLogTypeAndMessage = @"(\d{4}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}.+\d\s)(?=\[)\[(\w+)\](.+)";
-        private static string LoggerToReproStepsHTML(List<string> loggerSinkList)
+        private static string LoggerToReproStepsHTML(List<ListSinkInfo> loggerSinkList, WorkItemTrackingHttpClient witClient, AttachmentReference screenshotFullPage, int actionFailedIndex, WorkItem testCase)
         {
+            String reproStepsHTML;
+            var testcaseInfo = loggerSinkList[0].Properties["TestCaseInfo"] as DictionaryValue;
+            var title = testcaseInfo.Elements[new ScalarValue(DevOpsPropertyKeys.Title)];
+            var url = testcaseInfo.Elements[new ScalarValue(DevOpsPropertyKeys.Url)];
+            var testcaseId = loggerSinkList[0].TestContext.Properties["TestCaseId"];
+            var solutionVersion = loggerSinkList[0].TestContext.Properties["SolutionVersion"];
+            var duration = loggerSinkList.Last().DateTime - loggerSinkList.First().DateTime;
 
 
-            String reproStepsHTML = "<table width:100%  style='border-collapse:collapse; padding:3px; border-color:#c0c0c0; border-width: 1px; border-style:solid'><thead style='background-color: #c0c0c0; padding:3px'><tr><th> Time </th><th> LogType </th><th> Step </th><th> Message </th></tr></thead><tbody>";
+            var steps = testCase.Fields["Microsoft.VSTS.TCM.Steps"].ToString();
+            var stepDict = new Dictionary<int, string>();
 
-            var rxTime = new Regex(regxTimeAndLogType);
-            var rxSteps = new Regex(regxStepsAndMessage);
-            var rxMessage = new Regex(regxTimeAndLogTypeAndMessage);
+            var htmlstepsDoc = new HtmlDocument();
+            htmlstepsDoc.LoadHtml(steps);
+            var stepsNode = htmlstepsDoc.DocumentNode.SelectNodes("//step");
 
-
-            foreach (var logmsg in loggerSinkList)
+            var i = 1;
+            foreach (var step in stepsNode)
             {
-                var step = "";
-                var msg = "";
-                var time = "";
-                var logType = "";
-                var logmsgModified = logmsg.Replace("\r\n", "<br>");
+                var text = step.InnerText;
+                text = text.Replace("&lt;", "<");
+                text = text.Replace("&gt;", ">");
+                text = text.Replace("\"", "'");
+                var tmpDoc = new HtmlDocument();
+                tmpDoc.LoadHtml(text);
+                text = tmpDoc.DocumentNode.InnerText;
+                text = text.Replace("&amp;nbsp;", Environment.NewLine);
 
-
-
-                if (rxMessage.IsMatch(logmsgModified))
-                {
-                    var match = rxMessage.Match(logmsgModified);
-                    time = match.Groups[1].Value;
-                    logType = match.Groups[2].Value;
-                    msg = match.Groups[3].Value;
-
-                }
-                else
-                {
-                    var match = rxTime.Match(logmsgModified);
-                    time = match.Groups[1].Value;
-                    logType = match.Groups[2].Value;
-                }
-                if (rxSteps.IsMatch(logmsgModified))
-                {
-                    var match = rxSteps.Match(logmsgModified);
-                    step = match.Groups[1].Value;
-                    msg = match.Groups[2].Value;
-                }
-
-                reproStepsHTML += $"<tr style=\"padding:10px\" ><td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid \"><i>{time}</i></td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\"><td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">{logType}</td><td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">{step}</td><td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">{msg}</td></tr>";
+                stepDict.Add(i, text);
+                i++;
             }
 
-            reproStepsHTML += "</tbody></table>";
+            reproStepsHTML = $"<div id='{testcaseId}'>" +
+                             $"<span><b>TestCase:</b> <a href=\"{url}\"> {testcaseId} - {title}</a></span>" +
+                             $"<br/>" +
+                             $"<span><b>Duration:</b> {duration}</span>" +
+                             $"<br/>" +
+                             $"<span><b>Solution Version:</b> {solutionVersion}</span>" +
+                             $"<br/>" +
+                             $"<br/>" +
+                             $"<table width:100%  style='border-collapse:collapse; padding:3px; border-color:#c0c0c0; border-width: 1px; border-style:solid'>" +
+                             $"<thead style='background-color: #c0c0c0; padding:3px'>" +
+                             $"<tr>" +
+                             $"<th> Time </th>" +
+                             $"<th> Level </th>" +
+                             $"<th> Step </th>" +
+                             $"<th> Description </th>" +
+                             $"<th> Url </th>" +
+                             $"<th> Screenshot </th>" +
+                             $"</tr></thead><tbody>";
 
+            foreach (var log in loggerSinkList)
+            {
+                var logmsgModified = log.Message.Replace("\r\n", "<br>");
+                if (log.EntityUrl.IsNullOrEmpty())
+                {
+                    var htmlLink = new Regex(@"(http[^\s""']+)");
+                    var linkValue = htmlLink.Match(logmsgModified).Value;
+                    logmsgModified = htmlLink.Replace(logmsgModified, $"<a href=\"{linkValue}\">{linkValue}</a>");
+                }
+
+                AttachmentReference screenshot = null;
+
+                if (!log.Screenshot.ToString().IsNullOrEmpty())
+                {
+                    FileStream attStream = new FileStream(log.Screenshot.ToString(), FileMode.Open, FileAccess.Read);
+                    screenshot = witClient.CreateAttachmentAsync(attStream).Result; // upload file
+                    attStream.Dispose();
+                }
+                var stepNrRegEx = new Regex(@"\d+");
+
+                int actualStep = -1;
+                if (!log.Step.IsNullOrEmpty())
+                    actualStep = int.Parse(stepNrRegEx.Match(log.Step).Value);
+
+
+                reproStepsHTML +=
+                        $"<tr style=\"padding:10px\" >" +
+                        $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid \">" +
+                        $"<i>{log.DateTime:dd/MM/yyyy HH:mm:ss.fff}</i></td>" +
+                        $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
+                        $"{log.Level}</td>" +
+                        $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\"" + (!log.Step.IsNullOrEmpty() ? $"title=\"'{stepDict[actualStep]}'\">" : ">") +
+                        $"{log.Step}</td>" +
+                        $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
+                        (loggerSinkList.IndexOf(log) == actionFailedIndex ? $"❌ {logmsgModified}</td>" : $"{logmsgModified}</td>") +
+                        $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
+                        (log.Url.IsNullOrEmpty() ? "</td>" : $"<a href=\"{log.Url}\" target=\"_blank\">🌍</a></td>") +
+                        $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
+                        (screenshot == null ? $"</td>" : $"<a href=\"{screenshot.Url}\" target=\"_blank\"><img src=\"{screenshot.Url}\"></a></td>") +
+                        $"</tr>";
+
+
+
+            }
+            reproStepsHTML += "</tbody></table>" +
+                              "<br/>" +
+                              "<br/>" +
+                              $"<img src=\"{screenshotFullPage.Url}\">" +
+                              "</div>" +
+                              "<br/>" +
+                              "<br/>" +
+                              "<br/>" +
+                              "<br/>";
 
             return reproStepsHTML;
         }
 
-        private static string LoggerToReproStepsHTML(List<string> loggerSinkList, AttachmentReference screenshotUrl)
+        private static string SystemInfoHTML(List<ListSinkInfo> loggerSinkList, string oldSystemInfo = null)
         {
-            return LoggerToReproStepsHTML(loggerSinkList) + $"<br><br><img src=\"{screenshotUrl.Url}\">";
+            var testcaseInfo = loggerSinkList[0].Properties["TestCaseInfo"] as DictionaryValue;
+            var title = testcaseInfo.Elements[new ScalarValue(DevOpsPropertyKeys.Title)];
+            var url = testcaseInfo.Elements[new ScalarValue(DevOpsPropertyKeys.Url)];
+            var testcaseId = loggerSinkList[0].TestContext.Properties["TestCaseId"];
+            var solutionVersion = loggerSinkList[0].TestContext.Properties["SolutionVersion"];
+            var foundDateTime = loggerSinkList.First().DateTime;
+
+            HtmlNode solutionNode = null;
+            HtmlDocument systemHtmlDocument = null;
+
+            if (!oldSystemInfo.IsNullOrEmpty())
+            {
+                systemHtmlDocument = new HtmlDocument();
+                systemHtmlDocument.LoadHtml(oldSystemInfo);
+
+                solutionNode = systemHtmlDocument.DocumentNode.SelectSingleNode($"//table[@id='{solutionVersion}']/tbody");
+            }
+
+            var tCHtml = $"<tr id='{testcaseId}' style=\"padding:10px\" >" +
+                             $"<td  style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid \">" +
+                             $"<a href=\"{url}\">{testcaseId}-{title}</a></td>" + 
+                             $"<td  style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid \">" +
+                             $"{foundDateTime.DateTime:dd/MM/yyyy HH:mm}</td>" +
+                             $"</tr>";
+
+            if (solutionNode != null)
+            {
+                var testCaseNode = solutionNode.SelectSingleNode($"//tr[@id='{testcaseId}']");
+
+                var tempDocument = new HtmlDocument();
+                tempDocument.LoadHtml(tCHtml);
+                if (testCaseNode == null)
+                    solutionNode.AppendChild(tempDocument.DocumentNode);
+
+            }
+            else
+            {
+                var systemInfoHTML = $"<table id='{solutionVersion}' width:100%  style='border-collapse:collapse; padding:3px; border-color:#c0c0c0; border-width: 1px; border-style:solid'>" +
+                                 $"<thead style='background-color: #c0c0c0; padding:3px'>" +
+                                 $"<tr>" +
+                                 $"<th> {solutionVersion} </th>" +
+                                 $"<th> First Seen </th>" +
+                                 $"</tr></thead><tbody>" +
+                                 tCHtml +
+                                 "</tbody></table>" +
+                                 "<br/>" +
+                                 "<br/>";
+                var tempHtmlDoc = new HtmlDocument();
+                tempHtmlDoc.LoadHtml(systemInfoHTML);
+
+                if (systemHtmlDocument != null)
+                    systemHtmlDocument.DocumentNode.AppendChild(tempHtmlDoc.DocumentNode);
+                else
+                    systemHtmlDocument = tempHtmlDoc;
+
+            }
+
+            return systemHtmlDocument.DocumentNode.OuterHtml;
         }
+
+
+
     }
 }

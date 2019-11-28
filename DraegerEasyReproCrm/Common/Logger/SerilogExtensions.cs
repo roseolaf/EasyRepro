@@ -12,6 +12,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
 {
     static class SerilogExtensions
     {
+     
         public static void Step(
             this LoggerWrapper logger,
             string messageTemplate,
@@ -61,7 +62,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
         {
             var paramRawName = method.Method.GetParameters();
             
-
+            
             var @params = new Dictionary<ParameterInfo, object>();
             var extendedMethodParameters = methodParameters.ToList();
             for (int i = 0; i < paramRawName.Length; i++)
@@ -249,7 +250,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
             var propertyOwnerExpression = (MemberExpression)memberExpression.Expression;
             var propertyOwner = Expression.Lambda(propertyOwnerExpression).Compile().DynamicInvoke();
 
-            logger.Step("Set {ClassName} {Property} to {Value}", propertyInfo.DeclaringType.Name,propertyInfo.Name, value);
+            logger.Step("Set {ClassName} {Properties} to {Value}", propertyInfo.DeclaringType.Name,propertyInfo.Name, value);
             propertyInfo.SetValue(propertyOwner, value, null);
             return value;
         }
@@ -262,7 +263,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
             var propertyOwner = Expression.Lambda(propertyOwnerExpression).Compile().DynamicInvoke();
 
             var value = propertyInfo.GetValue(propertyOwner, null);
-            logger.Step("Get {ClassName} {Property} with value {Value}", propertyInfo.DeclaringType.Name,propertyInfo.Name, value);
+            logger.Step("Get {ClassName} {Properties} with value {Value}", propertyInfo.DeclaringType.Name,propertyInfo.Name, value);
             return (T)value;
         }
 
@@ -274,7 +275,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
             var propertyOwner = Expression.Lambda(propertyOwnerExpression).Compile().DynamicInvoke();
 
             var value = propertyInfo.GetValue(propertyOwner, null);
-            logger.ExpectedResult("Get {ClassName} {Property} with value {@Value} expected result {@expectedResult} ({expectedResultMessage})", propertyInfo.DeclaringType.Name, propertyInfo.Name, value, expectedResult, expectedResultMsg);
+            logger.ExpectedResult("Get {ClassName} {Properties} with value {@Value} expected result {@expectedResult} ({expectedResultMessage})", propertyInfo.DeclaringType.Name, propertyInfo.Name, value, expectedResult, expectedResultMsg);
             
             return (T)value;
         }
@@ -290,7 +291,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
             
 
             var value = propertyInfo.GetValue(propertyOwner, null);
-            logger.ExpectedResult("Get {ClassName} {Property} with value {@Value} expected result {@expectedResult} ({expectedResultMessage})", propertyInfo.DeclaringType.Name, propertyInfo.Name, value, expectedResult, expectedResultMsg);
+            logger.ExpectedResult("Get {ClassName} {Properties} with value {@Value} expected result {@expectedResult} ({expectedResultMessage})", propertyInfo.DeclaringType.Name, propertyInfo.Name, value, expectedResult, expectedResultMsg);
 
             return value.Equals(expectedResult);
         }

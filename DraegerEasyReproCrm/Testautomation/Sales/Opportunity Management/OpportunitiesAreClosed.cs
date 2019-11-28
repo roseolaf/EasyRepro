@@ -42,91 +42,91 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
             switch (TestCaseId)
             {
                 case "33318":
-                    testData.Add("33318Institution", new OwnerDecorator(users[UserAlias].Username.ToUnsecureString(),
+                    testData.Add("33318Institution", new OwnerDecorator(Users[UserAlias].Username.ToUnsecureString(),
                             new SoldToDecorator(
                                 new TestcaseNameDecorator(
-                                    new BaseComponent(logger))))
+                                    new BaseComponent(Logger))))
                         .CreateEntityRecord(this, new Account()));
                     testData.Add("33318Competitor1",
                         new TestcaseNameDecorator(
-                                new BaseComponent(logger))
+                                new BaseComponent(Logger))
                             .CreateEntityRecord(this, new Competitor()));
                     testData.Add("33318Competitor2",
                         new TestcaseNameDecorator(
-                                new BaseComponent(logger))
+                                new BaseComponent(Logger))
                             .CreateEntityRecord(this, new Competitor()));
                     testData.Add("33318Competitor3",
                         new TestcaseNameDecorator(
-                                new BaseComponent(logger))
+                                new BaseComponent(Logger))
                             .CreateEntityRecord(this, new Competitor()));
 
                     break;
                 case "38264":
-                    testData.Add("38264Institution", new OwnerDecorator(users[UserAlias].Username.ToUnsecureString(),
+                    testData.Add("38264Institution", new OwnerDecorator(Users[UserAlias].Username.ToUnsecureString(),
                         new SoldToDecorator(
                             new TestcaseNameDecorator(
-                                new BaseComponent(logger))))
+                                new BaseComponent(Logger))))
                         .CreateEntityRecord(this, new Account()));
                     break;
 
                 case "33383":
-                    testData.Add("33383Institution", new OwnerDecorator(users[UserAlias].Username.ToUnsecureString(),
+                    testData.Add("33383Institution", new OwnerDecorator(Users[UserAlias].Username.ToUnsecureString(),
                         new SoldToDecorator(
                             new TestcaseNameDecorator(
-                                new BaseComponent(logger))))
+                                new BaseComponent(Logger))))
                         .CreateEntityRecord(this, new Account()));
 
                     testData.Add("33383Opportunity",
                             new TestcaseNameDecorator(
-                                new BaseComponent(logger))
+                                new BaseComponent(Logger))
                         .CreateEntityRecord(this, new Opportunity()));
                     break;
 
                 case "33326":
-                    testData.Add("33326Institution", new OwnerDecorator(users[UserAlias].Username.ToUnsecureString(),
+                    testData.Add("33326Institution", new OwnerDecorator(Users[UserAlias].Username.ToUnsecureString(),
                         new SoldToDecorator(
                             new TestcaseNameDecorator(
-                                new BaseComponent(logger))))
+                                new BaseComponent(Logger))))
                         .CreateEntityRecord(this, new Account()));
                     break;
                 case "63479":
-                    testData.Add("63479Institution", new OwnerDecorator(users[UserAlias].Username.ToUnsecureString(),
+                    testData.Add("63479Institution", new OwnerDecorator(Users[UserAlias].Username.ToUnsecureString(),
                                                         new SoldToDecorator(
                                                             new TestcaseNameDecorator(
-                                                                new BaseComponent(logger))))
+                                                                new BaseComponent(Logger))))
                                                         .CreateEntityRecord(this, new Account()));
-                    testData.Add("63479CustomerSolution", new OwnerDecorator(users[UserAlias].Username.ToUnsecureString(),
+                    testData.Add("63479CustomerSolution", new OwnerDecorator(Users[UserAlias].Username.ToUnsecureString(),
                                                             new ReferenceToDecorator("dw_operatinginstitutionid", testData["63479Institution"],
                                                             new TestcaseNameDecorator(
-                                                                new BaseComponent(logger))))
+                                                                new BaseComponent(Logger))))
                                                         .CreateEntityRecord(this, new Customersolution()));
                     break;
                 case "63419":
-                    testData.Add("63419Institution", new OwnerDecorator(users[UserAlias].Username.ToUnsecureString(),
+                    testData.Add("63419Institution", new OwnerDecorator(Users[UserAlias].Username.ToUnsecureString(),
                                                         new SoldToDecorator(
                                                             new TestcaseNameDecorator(
-                                                                new BaseComponent(logger))))
+                                                                new BaseComponent(Logger))))
                                                         .CreateEntityRecord(this, new Account()));
-                    testData.Add("63419CustomerSolution", new OwnerDecorator(users[UserAlias].Username.ToUnsecureString(),
+                    testData.Add("63419CustomerSolution", new OwnerDecorator(Users[UserAlias].Username.ToUnsecureString(),
                                                             new ReferenceToDecorator("dw_operatinginstitutionid", testData["63419Institution"],
                                                             new TestcaseNameDecorator(
-                                                                new BaseComponent(logger))))
+                                                                new BaseComponent(Logger))))
                                                         .CreateEntityRecord(this, new Customersolution()));
                     break;
                 case "63526":
-                    testData.Add("63526Institution", new OwnerDecorator(users[UserAlias].Username.ToUnsecureString(),
+                    testData.Add("63526Institution", new OwnerDecorator(Users[UserAlias].Username.ToUnsecureString(),
                                                         new SoldToDecorator(
                                                             new TestcaseNameDecorator(
-                                                                new BaseComponent(logger))))
+                                                                new BaseComponent(Logger))))
                                                         .CreateEntityRecord(this, new Account()));
-                    testData.Add("63526CustomerSolution", new OwnerDecorator(users[UserAlias].Username.ToUnsecureString(),
+                    testData.Add("63526CustomerSolution", new OwnerDecorator(Users[UserAlias].Username.ToUnsecureString(),
                                                             new ReferenceToDecorator("dw_operatinginstitutionid", testData["63526Institution"],
                                                             new TestcaseNameDecorator(
-                                                                new BaseComponent(logger))))
+                                                                new BaseComponent(Logger))))
                                                         .CreateEntityRecord(this, new Customersolution()));
                     testData.Add("63526Competitor",
                                         new TestcaseNameDecorator(
-                                            new BaseComponent(logger))
+                                            new BaseComponent(Logger))
                                     .CreateEntityRecord(this, new Competitor()));
                     break;
             }
@@ -159,50 +159,50 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
 
             try
             {
-                logger.NextStep();
-                Login(xrmApp, UserAlias);
+                Logger.NextStep();
+                Login(XrmApp, UserAlias);
 
-                logger.NextStep();
-                logger.Log<Action<string>>(xrmApp.Navigation.OpenApp, "Dräger Sales App");
-                logger.Log<Action<string, string>>(xrmApp.Navigation.OpenSubArea, "Sales", "Opportunities");
-                logger.Log<Action<string, string, bool>>(xrmApp.CommandBar.ClickCommand, "New");
+                Logger.NextStep();
+                Logger.Log<Action<string>>(XrmApp.Navigation.OpenApp, "Dräger Sales App");
+                Logger.Log<Action<string, string>>(XrmApp.Navigation.OpenSubArea, "Sales", "Opportunities");
+                Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, "New");
 
-                logger.NextStep();
-                var newOpportunityPage = new OpportunityEntity(xrmApp, XrmBrowser);
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Logger.NextStep();
+                var newOpportunityPage = new OpportunityEntity(XrmApp, XrmBrowser);
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, false,
                         "In the opportunity record, button 'Close as Won' is not available",
                         OpportunityLocators.CloseAsWon));
 
                 var selectedOpportunityProbability = OpportunityConstants.Probability.FewChances;
 
-                logger.LogSet(() => newOpportunityPage.Topic, "Test Case 38264 Topic");
-                logger.LogSet(() => newOpportunityPage.SoldToParty, institution.Attributes["name"]);
-                logger.LogSet(() => newOpportunityPage.Value, "500");
-                logger.LogSet(() => newOpportunityPage.Currency, "Euro");
-                logger.LogSet(() => newOpportunityPage.Probability, selectedOpportunityProbability);
-                logger.LogSet(() => newOpportunityPage.OrderEntryDate, DateTime.Today.AddDays(14));
-                logger.LogSet(() => newOpportunityPage.CustomerDeliveryDate, DateTime.Today.AddDays(30));
-                logger.LogSet(() => newOpportunityPage.TimingAccuracy, OpportunityConstants.TimingAccuracy.Poor);
+                Logger.LogSet(() => newOpportunityPage.Topic, "Test Case 38264 Topic");
+                Logger.LogSet(() => newOpportunityPage.SoldToParty, institution.Attributes["name"]);
+                Logger.LogSet(() => newOpportunityPage.Value, "500");
+                Logger.LogSet(() => newOpportunityPage.Currency, "Euro");
+                Logger.LogSet(() => newOpportunityPage.Probability, selectedOpportunityProbability);
+                Logger.LogSet(() => newOpportunityPage.OrderEntryDate, DateTime.Today.AddDays(14));
+                Logger.LogSet(() => newOpportunityPage.CustomerDeliveryDate, DateTime.Today.AddDays(30));
+                Logger.LogSet(() => newOpportunityPage.TimingAccuracy, OpportunityConstants.TimingAccuracy.Poor);
                 //logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Details");
 
 
                 Assert.IsTrue(
-                    logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, true,
+                    Logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, true,
                         "'Is Funnel Relevant' is set to 'Yes' (default value)"), "funnel relevant is false");
 
-                logger.NextStep();
-                logger.Log<Action>(xrmApp.Entity.Save);
+                Logger.NextStep();
+                Logger.Log<Action>(XrmApp.Entity.Save);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, true,
                         "Button 'Close as Won' occurs to the right of button 'Refresh'.",
                         OpportunityLocators.CloseAsWon), "Button 'Close as Won' should occur to the right of button 'Refresh'.");
 
-                logger.NextStep();
+                Logger.NextStep();
                 //logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Summary");
 
-                logger.LogSet(() => newOpportunityPage.AdditionalInformation, "38264 Additional Information");
+                Logger.LogSet(() => newOpportunityPage.AdditionalInformation, "38264 Additional Information");
                 XrmBrowser.Browser.Driver.WaitForTransaction();
 
                 var endTime = DateTime.Now.AddSeconds(30);
@@ -210,142 +210,142 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
                 do
                     if (newOpportunityPage.GetUnsavedChangesFooterVisible())
                     {
-                        logger.Log<Action<string, string>>(newOpportunityPage.ClickCommand, "Close as Won");
+                        Logger.Log<Action<string, string>>(newOpportunityPage.ClickCommand, "Close as Won");
                         success = true;
                     }
                     else
                     {
                         newOpportunityPage.AdditionalInformation = "";
-                        xrmApp.Entity.Save();
+                        XrmApp.Entity.Save();
                         newOpportunityPage.AdditionalInformation = "38264 Additional Information";
-                        xrmApp.ThinkTime(100);
+                        XrmApp.ThinkTime(100);
                     }
                 while (!success && DateTime.Now < endTime);
 
                 Assert.IsTrue(success, "Didn't get 'unsaved changes' footer");
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetUnsavedChangesNotificationVisible, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetUnsavedChangesNotificationVisible, true,
                     "A notification occurs: 'You have unsaved changes. Please save/refresh the opportunity to close it.'"), "No notification");
 
-                logger.NextStep();
-                logger.Log<Action>(xrmApp.Entity.Save);
+                Logger.NextStep();
+                Logger.Log<Action>(XrmApp.Entity.Save);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetUnsavedChangesNotificationVisible, false,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetUnsavedChangesNotificationVisible, false,
                     "The notification disappears"), "Notification still visible");
 
-                logger.NextStep();
-                logger.Log<Action<string, string, bool>>(xrmApp.CommandBar.ClickCommand, "Close as Won");
+                Logger.NextStep();
+                Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, "Close as Won");
 
-                var closingDialog = new OpportunityClosingDialog(xrmApp, XrmBrowser);
+                var closingDialog = new OpportunityClosingDialog(XrmApp, XrmBrowser);
 
       
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, true, "The closing dialog occurs.", true));
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, true, "The closing dialog occurs.", true));
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<By, bool>, bool>(closingDialog.GetIsMandatory, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<By, bool>, bool>(closingDialog.GetIsMandatory, true,
                     "Field 'Select a reason for closing as won:' is mandatory = marked with a red border.",
                     OpportunityLocators.ClosingDialog.ReasonForClosingField), "Field not marked as mandatory");
 
 
-                logger.NextStep();
-                logger.Log<Action>(closingDialog.Finish);
+                Logger.NextStep();
+                Logger.Log<Action>(closingDialog.Finish);
 
-                var validationFailedDialog = new OpportunityClosingValidationErrorDialog(xrmApp, XrmBrowser);
+                var validationFailedDialog = new OpportunityClosingValidationErrorDialog(XrmApp, XrmBrowser);
 
            
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, true,
                         "A notification window occurs: 'Validation error Please fill in all mandatory fields to close the Opportunity'", true),
                     "Validation error dialog not shown after 5 seconds");
 
-                logger.NextStep();
-                logger.Log<Func<bool>>(validationFailedDialog.PressOk);
+                Logger.NextStep();
+                Logger.Log<Func<bool>>(validationFailedDialog.PressOk);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, false,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, false,
                         "The notification is closed.", false),
                     "The notification is shown.");
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, true,
                     "The closing dialog occurs.", true), "Closing dialog not shown");
                 var longText = StringExtensions.Random(2002);
 
-                logger.LogSet(() => closingDialog.CommentWonOrCanceled, longText);
+                Logger.LogSet(() => closingDialog.CommentWonOrCanceled, longText);
 
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, string, int>, int>(string.Compare, 0,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, string, int>, int>(string.Compare, 0,
                     "Maximum 2000 characters can be filled in. All further filled in characters are discarded without any notification. " +
                     "The field shows 4 rows of the text.", longText.Substring(0, 2000), closingDialog.CommentWonOrCanceled));
 
-                logger.NextStep();
-                logger.Log<Action>(closingDialog.Finish);
+                Logger.NextStep();
+                Logger.Log<Action>(closingDialog.Finish);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, true,
                         "A notification window occurs again: 'Validation error Please fill in all mandatory fields to close the Opportunity'", true),
                     "Validation error dialog not shown after 5 seconds");
 
-                logger.NextStep();
-                logger.Log<Func<bool>>(validationFailedDialog.PressOk);
+                Logger.NextStep();
+                Logger.Log<Func<bool>>(validationFailedDialog.PressOk);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, string, int>, int>(string.Compare, 0,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, string, int>, int>(string.Compare, 0,
                     "Field 'Insert a comment for closing as won:'' is still filled in.", longText.Substring(0, 2000), closingDialog.CommentWonOrCanceled));
 
                 var picklist = closingDialog.GetOptionsForMultiOptionField(OpportunityLocators.ClosingDialog.ReasonForClosingField).ToList();
 
-                logger.LogSet(() => closingDialog.ReasonForClosing, picklist[picklist.Count - 1]);
+                Logger.LogSet(() => closingDialog.ReasonForClosing, picklist[picklist.Count - 1]);
 
-                logger.NextStep();
-                logger.Log<Action>(closingDialog.Cancel);
+                Logger.NextStep();
+                Logger.Log<Action>(closingDialog.Cancel);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, false, "The dialog is closed.", false));
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, false, "The dialog is closed.", false));
 
 
-                Assert.IsTrue(logger.LogGetExpectedResultCheck(() => newOpportunityPage.Probability,
+                Assert.IsTrue(Logger.LogGetExpectedResultCheck(() => newOpportunityPage.Probability,
                     selectedOpportunityProbability, "The opportunity is not changed."), "Opportunity probability changed");
 
-                logger.NextStep();
+                Logger.NextStep();
 
-                logger.Log<Action<string, string, bool>>(xrmApp.CommandBar.ClickCommand, "Close as Won");
+                Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, "Close as Won");
 
                 Assert.IsTrue(closingDialog.DialogIsOpen(true),
                     "Closing dialog not shown after 5 seconds");
 
 
-                Assert.IsTrue(logger.LogGetExpectedResultCheck(() => closingDialog.CommentWonOrCanceled, "",
+                Assert.IsTrue(Logger.LogGetExpectedResultCheck(() => closingDialog.CommentWonOrCanceled, "",
                     "The dialog opens up with the fields not filled in."));
 
-                logger.NextStep();
+                Logger.NextStep();
 
-                logger.LogSet(() => closingDialog.ReasonForClosing, picklist[picklist.Count - 1]);
-                logger.LogSet(() => closingDialog.CommentWonOrCanceled, "Comment for Won test case 38264");
+                Logger.LogSet(() => closingDialog.ReasonForClosing, picklist[picklist.Count - 1]);
+                Logger.LogSet(() => closingDialog.CommentWonOrCanceled, "Comment for Won test case 38264");
 
-                logger.NextStep();
-                logger.Log<Action>(closingDialog.Finish);
+                Logger.NextStep();
+                Logger.Log<Action>(closingDialog.Finish);
 
                 Assert.IsTrue(
-                    logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, false,
+                    Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, false,
                         "The closing dialog is closed.", false), "closing dialog not closed");
-                Assert.IsTrue(logger.LogGetExpectedResultCheck(() => newOpportunityPage.Probability,
+                Assert.IsTrue(Logger.LogGetExpectedResultCheck(() => newOpportunityPage.Probability,
                     OpportunityConstants.Probability.OrderReceived, "Field 'Probability (%)' is set to '100% - Order Received'."),
                     "Opportunity probability changed");
                 //logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Details");
-                Assert.IsTrue(logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, true,
+                Assert.IsTrue(Logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, true,
                         "On tab 'Details', -field 'Is Funnel Relevant' is still set to 'Yes'"), "funnel relevant is false");
-                logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Administration");
+                Logger.Log<Action<string, string>>(XrmApp.Entity.SelectTab, "Administration");
                 Func<string> getOpportunityStatus = () => newOpportunityPage.Status;
                 Assert.IsTrue(
-                    logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityStatus, "Won",
+                    Logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityStatus, "Won",
                         "On tab 'Administration', - Field 'Status' equals 'Won'."), "status is not won");
                 Func<string> getOpportunityStatusReason = () => newOpportunityPage.StatusReason;
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityStatusReason, picklist[picklist.Count - 1],
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityStatusReason, picklist[picklist.Count - 1],
                         "On tab 'Administration', - Field 'Status Reason' is set to the value that has been selected in the closing dialog."),
                     "status reason differs from input");
                 Func<string> getOpportunityClosingComment = () => newOpportunityPage.ClosingComment;
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityClosingComment, "Comment for Won test case 38264",
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityClosingComment, "Comment for Won test case 38264",
                         "On tab 'Administration', - Field 'Closing Comment' is filled in with the content of dialog field 'Insert a comment for closing as won:' correctly."),
                     "Closing comment differs from input");
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetReadOnlyNotificationVisible, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetReadOnlyNotificationVisible, true,
                     "The opportunity is read-only."), "Read only Notification not found");
 
-                logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Funnel");
+                Logger.Log<Action<string, string>>(XrmApp.Entity.SelectTab, "Funnel");
                 XrmBrowser.Browser.Driver.WaitForTransaction();
 
                 Func<string> getLatestOpportunityTimelineContent =
@@ -353,22 +353,22 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
                 if (getLatestOpportunityTimelineContent() == "Won Opportunity")
                     getLatestOpportunityTimelineContent =
                         () => newOpportunityPage.TimelineControl[1].Content;
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string>, string>(getLatestOpportunityTimelineContent, $"won Opportunity for Institution {institution.Name}",
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string>, string>(getLatestOpportunityTimelineContent, $"won Opportunity for Institution {institution.Name}",
                     "A new Auto Post is generated saying that the Opportunity is won for the Institution recorded in field 'Sold-To Party'."));
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, false,
                     "In the opportunity record, button 'Close as Won' is not available",
                     OpportunityLocators.CloseAsWon));
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, false,
                     "In the opportunity record, button 'Close as Lost' is not available",
                     OpportunityLocators.CloseAsLost));
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, false,
                     "In the opportunity record, button 'Close as Cancelled' is not available",
                     OpportunityLocators.CloseAsCanceled));
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, true,
                     "In the opportunity record, button 'Reopen Opportunity' is available.",
                     OpportunityLocators.ReopenOpportunity));
@@ -376,7 +376,7 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
             }
             catch (Exception e)
             {
-                exception = e;
+                Exception = e;
 
                 throw;
             }
@@ -401,72 +401,72 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
 
             try
             {
-                logger.NextStep(); //Step 2
-                Login(xrmApp, UserAlias);
+                Logger.NextStep(); //Step 2
+                Login(XrmApp, UserAlias);
 
-                logger.NextStep(); //Step 3
-                logger.Log<Action<string>>(xrmApp.Navigation.OpenApp, "Dräger Sales App");
-                logger.Log<Action<string, string>>(xrmApp.Navigation.OpenSubArea, "Sales", "Opportunities");
-                logger.Log<Action<string, string, bool>>(xrmApp.CommandBar.ClickCommand, "New");
+                Logger.NextStep(); //Step 3
+                Logger.Log<Action<string>>(XrmApp.Navigation.OpenApp, "Dräger Sales App");
+                Logger.Log<Action<string, string>>(XrmApp.Navigation.OpenSubArea, "Sales", "Opportunities");
+                Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, "New");
 
-                logger.NextStep(); //Step 4
-                var newOpportunityPage = new OpportunityEntity(xrmApp, XrmBrowser);
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Logger.NextStep(); //Step 4
+                var newOpportunityPage = new OpportunityEntity(XrmApp, XrmBrowser);
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, false,
                     "In the opportunity record, button 'Close as Lost' is not available",
                     OpportunityLocators.CloseAsLost));
 
                 var selectedOpportunityProbability = OpportunityConstants.Probability.FewChances;
 
-                logger.LogSet(() => newOpportunityPage.Topic, "Test Case 33318 Topic");
-                logger.LogSet(() => newOpportunityPage.SoldToParty, institution.Attributes["name"]);
-                logger.LogSet(() => newOpportunityPage.Value, "500");
-                logger.LogSet(() => newOpportunityPage.Currency, "Euro");
-                logger.LogSet(() => newOpportunityPage.Probability, selectedOpportunityProbability);
-                logger.LogSet(() => newOpportunityPage.OrderEntryDate, DateTime.Today.AddDays(14));
-                logger.LogSet(() => newOpportunityPage.CustomerDeliveryDate, DateTime.Today.AddDays(30));
-                logger.LogSet(() => newOpportunityPage.TimingAccuracy, OpportunityConstants.TimingAccuracy.Poor);
+                Logger.LogSet(() => newOpportunityPage.Topic, "Test Case 33318 Topic");
+                Logger.LogSet(() => newOpportunityPage.SoldToParty, institution.Attributes["name"]);
+                Logger.LogSet(() => newOpportunityPage.Value, "500");
+                Logger.LogSet(() => newOpportunityPage.Currency, "Euro");
+                Logger.LogSet(() => newOpportunityPage.Probability, selectedOpportunityProbability);
+                Logger.LogSet(() => newOpportunityPage.OrderEntryDate, DateTime.Today.AddDays(14));
+                Logger.LogSet(() => newOpportunityPage.CustomerDeliveryDate, DateTime.Today.AddDays(30));
+                Logger.LogSet(() => newOpportunityPage.TimingAccuracy, OpportunityConstants.TimingAccuracy.Poor);
                 //logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Details");
 
 
                 Assert.IsTrue(
-                    logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, true,
+                    Logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, true,
                         "'Is Funnel Relevant' is set to 'Yes' (default value)"), "funnel relevant is false");
 
-                logger.NextStep(); //Step 5
-                logger.Log<Action>(xrmApp.Entity.Save);
+                Logger.NextStep(); //Step 5
+                Logger.Log<Action>(XrmApp.Entity.Save);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                         newOpportunityPage.GetCommandBarButtonAvailability, true,
                         "Button 'Close as Lost' occurs to the right of button 'Close as Won'.",
                         OpportunityLocators.CloseAsLost),
                     "Button 'Close as Lost' should occur to the right of button 'Close as Won'.");
 
-                logger.NextStep(); //Step 6
+                Logger.NextStep(); //Step 6
                 //logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Details");
 
-                logger.Log<Action<string, string>>(newOpportunityPage.SectionMoreCommands, "Competitors", "Add Existing Competitor");
+                Logger.Log<Action<string, string>>(newOpportunityPage.SectionMoreCommands, "Competitors", "Add Existing Competitor");
 
-                xrmApp.ThinkTime(200);
+                XrmApp.ThinkTime(200);
 
-                logger.LogSet(() => newOpportunityPage.SelectRecord, competitor1.Attributes["name"]);
-                logger.Log<Action>(newOpportunityPage.ClickAddRecord);
+                Logger.LogSet(() => newOpportunityPage.SelectRecord, competitor1.Attributes["name"]);
+                Logger.Log<Action>(newOpportunityPage.ClickAddRecord);
                 XrmBrowser.Browser.Driver.WaitForTransaction();
 
-                logger.Log<Action<string, string>>(newOpportunityPage.SectionMoreCommands, "Competitors", "Add Existing Competitor");
+                Logger.Log<Action<string, string>>(newOpportunityPage.SectionMoreCommands, "Competitors", "Add Existing Competitor");
 
-                xrmApp.ThinkTime(200);
+                XrmApp.ThinkTime(200);
 
-                logger.LogSet(() => newOpportunityPage.SelectRecord, competitor2.Attributes["name"]);
-                logger.Log<Action>(newOpportunityPage.ClickAddRecord);
+                Logger.LogSet(() => newOpportunityPage.SelectRecord, competitor2.Attributes["name"]);
+                Logger.Log<Action>(newOpportunityPage.ClickAddRecord);
                 XrmBrowser.Browser.Driver.WaitForTransaction();
 
-                logger.Log<Action<string, string>>(newOpportunityPage.SectionMoreCommands, "Competitors", "Add Existing Competitor");
+                Logger.Log<Action<string, string>>(newOpportunityPage.SectionMoreCommands, "Competitors", "Add Existing Competitor");
 
-                xrmApp.ThinkTime(200);
+                XrmApp.ThinkTime(200);
 
-                logger.LogSet(() => newOpportunityPage.SelectRecord, competitor3.Attributes["name"]);
-                logger.Log<Action>(newOpportunityPage.ClickAddRecord);
+                Logger.LogSet(() => newOpportunityPage.SelectRecord, competitor3.Attributes["name"]);
+                Logger.Log<Action>(newOpportunityPage.ClickAddRecord);
                 XrmBrowser.Browser.Driver.WaitForTransaction();
 
                 //TODO: check if competitors in subgrid
@@ -477,9 +477,9 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
                     competitor2.Attributes["name"].ToString(),
                     competitor3.Attributes["name"].ToString(),
                 };
-                var grid = new GridElement(xrmApp, XrmBrowser);
+                var grid = new GridElement(XrmApp, XrmBrowser);
                 var cellTitles =
-                    logger.LogExpectedResult<Func<string, int, List<string>>, List<string>>(grid.GetCellTitles,
+                    Logger.LogExpectedResult<Func<string, int, List<string>>, List<string>>(grid.GetCellTitles,
                         competitorNames,
                         "The selected competitors are available in subgrid \"Competitors\" correctly.",
                         "dataSetRoot_Competitors", 2);
@@ -487,10 +487,10 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
                 Assert.IsTrue(cellTitles.All(competitorNames.Contains), "The selected competitors are available in subgrid \"Competitors\" correctly.");
 
 
-                logger.NextStep(); //Step 7
+                Logger.NextStep(); //Step 7
                 //logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Summary");
 
-                logger.LogSet(() => newOpportunityPage.AdditionalInformation, "33318 Additional Information");
+                Logger.LogSet(() => newOpportunityPage.AdditionalInformation, "33318 Additional Information");
                 XrmBrowser.Browser.Driver.WaitForTransaction();
 
                 var endTime = DateTime.Now.AddSeconds(30);
@@ -498,181 +498,181 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
                 do
                     if (newOpportunityPage.GetUnsavedChangesFooterVisible())
                     {
-                        logger.Log<Action<string, string>>(newOpportunityPage.ClickCommand, "Close as Lost");
+                        Logger.Log<Action<string, string>>(newOpportunityPage.ClickCommand, "Close as Lost");
                         success = true;
                     }
                     else
                     {
                         newOpportunityPage.AdditionalInformation = "";
-                        xrmApp.Entity.Save();
+                        XrmApp.Entity.Save();
                         newOpportunityPage.AdditionalInformation = "33318 Additional Information";
-                        xrmApp.ThinkTime(100);
+                        XrmApp.ThinkTime(100);
                     }
                 while (!success && DateTime.Now < endTime);
 
                 Assert.IsTrue(success, "Didn't get 'unsaved changes' footer");
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetUnsavedChangesNotificationVisible, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetUnsavedChangesNotificationVisible, true,
                     "A notification occurs: 'You have unsaved changes. Please save/refresh the opportunity to close it.'"), "No notification");
 
-                logger.NextStep(); //Step 8
-                logger.Log<Action>(xrmApp.Entity.Save);
+                Logger.NextStep(); //Step 8
+                Logger.Log<Action>(XrmApp.Entity.Save);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetUnsavedChangesNotificationVisible, false,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetUnsavedChangesNotificationVisible, false,
                     "The notification disappears"), "Notification still visible");
 
-                logger.NextStep(); //Step 9
-                logger.Log<Action<string, string, bool>>(xrmApp.CommandBar.ClickCommand, "Close as Lost");
+                Logger.NextStep(); //Step 9
+                Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, "Close as Lost");
 
-                var closingDialog = new OpportunityClosingDialog(xrmApp, XrmBrowser);
+                var closingDialog = new OpportunityClosingDialog(XrmApp, XrmBrowser);
 
            
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, true,
                         "The closing dialog occurs.", true), "Closing dialog not shown");
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<By, bool>, bool>(closingDialog.GetIsMandatory, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<By, bool>, bool>(closingDialog.GetIsMandatory, true,
                     "Field 'Select a reason for closing as lost:' is mandatory = marked with a red border.",
                     OpportunityLocators.ClosingDialog.ReasonForClosingField), "Reason field not marked as mandatory");
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<By, bool>, bool>(closingDialog.GetIsMandatory, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<By, bool>, bool>(closingDialog.GetIsMandatory, true,
                     "Field 'Select the main competitor that won the deal:' is mandatory = marked with a red border.",
                     OpportunityLocators.ClosingDialog.MainCompetitorThatWonTheDealField), "Competitor field not marked as mandatory");
 
-                logger.NextStep(); //Step 10
-                logger.Log<Action>(closingDialog.Finish);
+                Logger.NextStep(); //Step 10
+                Logger.Log<Action>(closingDialog.Finish);
 
-                var validationFailedDialog = new OpportunityClosingValidationErrorDialog(xrmApp, XrmBrowser);
+                var validationFailedDialog = new OpportunityClosingValidationErrorDialog(XrmApp, XrmBrowser);
 
          
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, true,
                         "A notification window occurs: 'Validation error Please fill in all mandatory fields to close the Opportunity'", true),
                     "Validation error dialog not shown after 5 seconds");
 
-                logger.NextStep(); //Step 11
-                logger.Log<Func<bool>>(validationFailedDialog.PressOk);
+                Logger.NextStep(); //Step 11
+                Logger.Log<Func<bool>>(validationFailedDialog.PressOk);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, false,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, false,
                         "The notification is closed.", false),
                     "The notification is shown.");
 
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, true,
                     "The closing dialog occurs.", true), "Closing dialog not shown");
 
-                logger.NextStep(); //Step 12
+                Logger.NextStep(); //Step 12
                 var picklist = closingDialog.GetOptionsForMultiOptionField(OpportunityLocators.ClosingDialog.ReasonForClosingField).ToList();
 
-                logger.LogSet(() => closingDialog.ReasonForClosing, picklist[picklist.Count - 1]);
+                Logger.LogSet(() => closingDialog.ReasonForClosing, picklist[picklist.Count - 1]);
 
-                logger.NextStep(); //Step 13
+                Logger.NextStep(); //Step 13
 
-                logger.Log<Action>(closingDialog.Finish);
+                Logger.Log<Action>(closingDialog.Finish);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, true,
                         "A notification window occurs: 'Validation error Please fill in all mandatory fields to close the Opportunity'", true),
                     "Validation error dialog not shown after 5 seconds");
 
-                logger.NextStep(); //Step 14
-                logger.Log<Func<bool>>(validationFailedDialog.PressOk);
+                Logger.NextStep(); //Step 14
+                Logger.Log<Func<bool>>(validationFailedDialog.PressOk);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, string, int>, int>(string.Compare, 0,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, string, int>, int>(string.Compare, 0,
                     "Field 'Insert a comment for closing as won:'' is still filled in.", picklist[picklist.Count - 1], closingDialog.ReasonForClosing));
 
-                logger.NextStep(); //Step 15
+                Logger.NextStep(); //Step 15
 
-                logger.Log<Action>(closingDialog.Cancel);
+                Logger.Log<Action>(closingDialog.Cancel);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, false, "The dialog is closed.", false));
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, false, "The dialog is closed.", false));
 
 
-                Assert.IsTrue(logger.LogGetExpectedResultCheck(()=>newOpportunityPage.Probability,
+                Assert.IsTrue(Logger.LogGetExpectedResultCheck(()=>newOpportunityPage.Probability,
                     selectedOpportunityProbability, "The opportunity is not changed."), "Opportunity probability changed");
 
-                logger.NextStep(); //Step 16
-                logger.Log<Action<string, string, bool>>(xrmApp.CommandBar.ClickCommand, "Close as Lost");
+                Logger.NextStep(); //Step 16
+                Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, "Close as Lost");
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, true, "The closing dialog opens up again.", true));
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, true, "The closing dialog opens up again.", true));
 
 
-                logger.NextStep(); //Step 17
+                Logger.NextStep(); //Step 17
                 var competitorList =
                     closingDialog.GetOptionsForMultiOptionField(OpportunityLocators.ClosingDialog
                         .MainCompetitorThatWonTheDealField).ToList();
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<IEnumerable<string>, string, bool>, bool>(Enumerable.Contains, true, "The picklist shows exactly the competitors that have been associated to the opportunity.", competitorList, competitor1.Attributes["name"]), "Competitor1 mising");
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<IEnumerable<string>, string, bool>, bool>(Enumerable.Contains, true, "The picklist shows exactly the competitors that have been associated to the opportunity.", competitorList, competitor2.Attributes["name"]), "Competitor2 mising");
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<IEnumerable<string>, string, bool>, bool>(Enumerable.Contains, true, "The picklist shows exactly the competitors that have been associated to the opportunity.", competitorList, competitor3.Attributes["name"]), "Competitor3 mising");
-                logger.LogSet(() => closingDialog.MainCompetitorThatWonTheDeal, competitorList[0]);
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<IEnumerable<string>, string, bool>, bool>(Enumerable.Contains, true, "The picklist shows exactly the competitors that have been associated to the opportunity.", competitorList, competitor1.Attributes["name"]), "Competitor1 mising");
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<IEnumerable<string>, string, bool>, bool>(Enumerable.Contains, true, "The picklist shows exactly the competitors that have been associated to the opportunity.", competitorList, competitor2.Attributes["name"]), "Competitor2 mising");
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<IEnumerable<string>, string, bool>, bool>(Enumerable.Contains, true, "The picklist shows exactly the competitors that have been associated to the opportunity.", competitorList, competitor3.Attributes["name"]), "Competitor3 mising");
+                Logger.LogSet(() => closingDialog.MainCompetitorThatWonTheDeal, competitorList[0]);
 
-                logger.NextStep(); //Step 18
+                Logger.NextStep(); //Step 18
 
-                logger.Log<Action>(closingDialog.Finish);
+                Logger.Log<Action>(closingDialog.Finish);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, true,
                         "A notification window occurs again: 'Validation error Please fill in all mandatory fields to close the Opportunity'", true),
                     "Validation error dialog not shown after 5 seconds");
 
-                logger.NextStep(); //Step 19
-                logger.Log<Func<bool>>(validationFailedDialog.PressOk);
+                Logger.NextStep(); //Step 19
+                Logger.Log<Func<bool>>(validationFailedDialog.PressOk);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, string, int>, int>(string.Compare, 0,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, string, int>, int>(string.Compare, 0,
                     "Field 'Select a main competitor that won the deal' is still filled in.", competitorList[0], closingDialog.MainCompetitorThatWonTheDeal));
 
-                logger.NextStep(); //Step 20
-                logger.LogSet(() => closingDialog.SalesAbandoned, true);
+                Logger.NextStep(); //Step 20
+                Logger.LogSet(() => closingDialog.SalesAbandoned, true);
                 var commentLost = "Comment for Lost 33318";
-                logger.LogSet(() => closingDialog.CommentLost, commentLost);
-                logger.LogSet(() => closingDialog.ReasonForClosing, picklist[picklist.Count - 1]);
+                Logger.LogSet(() => closingDialog.CommentLost, commentLost);
+                Logger.LogSet(() => closingDialog.ReasonForClosing, picklist[picklist.Count - 1]);
 
-                logger.NextStep();
-                logger.Log<Action>(closingDialog.Finish);
+                Logger.NextStep();
+                Logger.Log<Action>(closingDialog.Finish);
 
                 Assert.IsTrue(
-                    logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, false,
+                    Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, false,
                         "The closing dialog is closed.", false), "closing dialog not closed");
-                Assert.IsTrue(logger.LogGetExpectedResultCheck(()=>newOpportunityPage.Probability,
+                Assert.IsTrue(Logger.LogGetExpectedResultCheck(()=>newOpportunityPage.Probability,
                     OpportunityConstants.Probability.OrderLost, "Field 'Probability(%)' is set to '0 % -Order Lost'."), "Opportunity probability not 0%");
 
                 //logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Details");
-                Assert.IsTrue(logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, true,
+                Assert.IsTrue(Logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, true,
                     "On tab 'Details', -field 'Is Funnel Relevant' is still set to 'Yes'"), "funnel relevant is false");
 
-                logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Administration");
+                Logger.Log<Action<string, string>>(XrmApp.Entity.SelectTab, "Administration");
                 Assert.IsTrue(
-                    logger.LogGetExpectedResultCheck(()=>newOpportunityPage.Status, "Lost",
+                    Logger.LogGetExpectedResultCheck(()=>newOpportunityPage.Status, "Lost",
                         "On tab 'Administration', - Field 'Status' equals 'Lost'."), "status is not lost");
                 Func<string> getOpportunityStatusReason = () => newOpportunityPage.StatusReason;
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityStatusReason, picklist[picklist.Count - 1],
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityStatusReason, picklist[picklist.Count - 1],
                         "On tab 'Administration', - Field 'Status Reason' is set to the value that has been selected in the closing dialog."),
                     "status reason differs from input");
                 Func<string> getOpportunityClosingComment = () => newOpportunityPage.ClosingComment;
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityClosingComment, commentLost,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityClosingComment, commentLost,
                         "On tab 'Administration', - Field 'Closing Comment' is filled in with the content of dialog field 'Insert a comment for closing as lost:' correctly."),
                     "Closing comment differs from input");
                 Func<bool> getOpportunitySalesAbandoned = () => newOpportunityPage.SalesAbandoned;
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool>, bool>(getOpportunitySalesAbandoned, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool>, bool>(getOpportunitySalesAbandoned, true,
                         "On tab 'Administration', - Field 'Sales Abandoned' is set to'Yes'"),
                     "Sales abandoned not set");
                 Func<string> getOpportunityCompetitorThatWon = () => newOpportunityPage.MainCompetitor;
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityCompetitorThatWon,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityCompetitorThatWon,
                         competitorList[0], "On tab 'Administration', - Field 'Main Competitor' is filled with the value selected in the dialog"),
                     "Main competitor differs from selection");
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetReadOnlyNotificationVisible, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetReadOnlyNotificationVisible, true,
                     "The opportunity is read-only."), "Read only Notification not found");
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, false,
                     "In the opportunity record, button 'Close as Won' is not available",
                     OpportunityLocators.CloseAsWon));
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, false,
                     "In the opportunity record, button 'Close as Lost' is not available",
                     OpportunityLocators.CloseAsLost));
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, false,
                     "In the opportunity record, button 'Close as Cancelled' is not available",
                     OpportunityLocators.CloseAsCanceled));
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, true,
                     "In the opportunity record, button 'Reopen Opportunity' is available.",
                     OpportunityLocators.ReopenOpportunity));
@@ -681,7 +681,7 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
             }
             catch (Exception e)
             {
-                exception = e;
+                Exception = e;
                 throw;
             }
         }
@@ -706,15 +706,15 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
 
             try
             {
-                logger.NextStep();
-                Login(xrmApp, UserAlias);
-                logger.NextStep();
+                Logger.NextStep();
+                Login(XrmApp, UserAlias);
+                Logger.NextStep();
 
-                logger.Log<Action<string, Guid>>(
-                    xrmApp.Entity.OpenEntity, opportunity.LogicalName, opportunity.Id);
+                Logger.Log<Action<string, Guid>>(
+                    XrmApp.Entity.OpenEntity, opportunity.LogicalName, opportunity.Id);
 
-                var commandValues = logger.Log<Func<bool, int, BrowserCommandResult<List<string>>>, BrowserCommandResult<List<string>>>(
-                    xrmApp.CommandBar.GetCommandValues);
+                var commandValues = Logger.Log<Func<bool, int, BrowserCommandResult<List<string>>>, BrowserCommandResult<List<string>>>(
+                    XrmApp.CommandBar.GetCommandValues);
 
 
                 List<string> expectedResultList = new List<string>
@@ -725,7 +725,7 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
                 };
 
                 var expectedResult = "The buttons \"Close as Won\", \"Close as Lost\" and \"Close as Cancel\" are not available.";
-                var result = logger.LogGetExpectedResult(() =>
+                var result = Logger.LogGetExpectedResult(() =>
                     commandValues.Value, expectedResultList, expectedResult);
 
                 Assert.IsFalse(result.Any(x => expectedResultList.Contains(x)), expectedResult);
@@ -733,7 +733,7 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
             }
             catch (Exception e)
             {
-                exception = e;
+                Exception = e;
                 throw;
             }
 
@@ -757,51 +757,52 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
 
             try
             {
-                logger.NextStep(); // 2
-                Login(xrmApp, UserAlias);
+                Logger.NextStep(); // 2
+                Login(XrmApp, UserAlias);
 
-                logger.NextStep();// 3
-                logger.Log<Action<string>>(xrmApp.Navigation.OpenApp, "Dräger Sales App");
-                logger.Log<Action<string, string>>(xrmApp.Navigation.OpenSubArea, "Sales", "Opportunities");
+                Logger.NextStep();// 3
+                Logger.Log<Action<string>>(XrmApp.Navigation.OpenApp, "Dräger Sales App");
+                Logger.Log<Action<string, string>>(XrmApp.Navigation.OpenSubArea, "Sales", "Opportunities");
 
-                logger.NextStep();// 4
-                logger.Log<Action<string, string, bool>>(xrmApp.CommandBar.ClickCommand, "New");
 
-                var newOpportunityPage = new OpportunityEntity(xrmApp, XrmBrowser);
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Logger.NextStep();// 4
+                Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, "New");
+
+                var newOpportunityPage = new OpportunityEntity(XrmApp, XrmBrowser);
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, false,
                         "In the opportunity record, button 'Close as Canceled' is not available",
                         OpportunityLocators.CloseAsCanceled));
 
                 var selectedOpportunityProbability = OpportunityConstants.Probability.FewChances;
 
-                logger.LogSet(() => newOpportunityPage.Topic, "Test Case 33326 Topic");
-                logger.LogSet(() => newOpportunityPage.SoldToParty, institution.Attributes["name"]);
-                logger.LogSet(() => newOpportunityPage.Value, "500");
-                logger.LogSet(() => newOpportunityPage.Currency, "Euro");
-                logger.LogSet(() => newOpportunityPage.Probability, selectedOpportunityProbability);
-                logger.LogSet(() => newOpportunityPage.OrderEntryDate, DateTime.Today.AddDays(14));
-                logger.LogSet(() => newOpportunityPage.CustomerDeliveryDate, DateTime.Today.AddDays(30));
-                logger.LogSet(() => newOpportunityPage.TimingAccuracy, OpportunityConstants.TimingAccuracy.Poor);
+                Logger.LogSet(() => newOpportunityPage.Topic, "Test Case 33326 Topic");
+                Logger.LogSet(() => newOpportunityPage.SoldToParty, institution.Attributes["name"]);
+                Logger.LogSet(() => newOpportunityPage.Value, "500");
+                Logger.LogSet(() => newOpportunityPage.Currency, "Euro");
+                Logger.LogSet(() => newOpportunityPage.Probability, selectedOpportunityProbability);
+                Logger.LogSet(() => newOpportunityPage.OrderEntryDate, DateTime.Today.AddDays(14));
+                Logger.LogSet(() => newOpportunityPage.CustomerDeliveryDate, DateTime.Today.AddDays(30));
+                Logger.LogSet(() => newOpportunityPage.TimingAccuracy, OpportunityConstants.TimingAccuracy.Poor);
                 //logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Details");
 
 
                 Assert.IsTrue(
-                    logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, true,
+                    Logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, true,
                         "'Is Funnel Relevant' is set to 'Yes' (default value)"), "funnel relevant is false");
 
-                logger.NextStep();// 5
-                logger.Log<Action>(xrmApp.Entity.Save);
+                Logger.NextStep();// 5
+                Logger.Log<Action>(XrmApp.Entity.Save);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, true,
                         "Button 'Close as Canceled' occurs to the right of button 'Refresh'.",
                         OpportunityLocators.CloseAsCanceled), "Button 'Close as Canceled' should occur to the right of button 'Refresh'.");
 
-                logger.NextStep();// 6
+                Logger.NextStep();// 6
                 //logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Summary");
 
-                logger.LogSet(() => newOpportunityPage.AdditionalInformation, "33326 Additional Information");
+                Logger.LogSet(() => newOpportunityPage.AdditionalInformation, "33326 Additional Information");
                 XrmBrowser.Browser.Driver.WaitForTransaction();
 
                 var endTime = DateTime.Now.AddSeconds(30);
@@ -809,147 +810,147 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
                 do
                     if (newOpportunityPage.GetUnsavedChangesFooterVisible())
                     {
-                        logger.Log<Action<string, string>>(newOpportunityPage.ClickCommand, "Close as Canceled");
+                        Logger.Log<Action<string, string>>(newOpportunityPage.ClickCommand, "Close as Canceled");
                         success = true;
                     }
                     else
                     {
                         newOpportunityPage.AdditionalInformation = "";
-                        xrmApp.Entity.Save();
+                        XrmApp.Entity.Save();
                         newOpportunityPage.AdditionalInformation = "33326 Additional Information";
-                        xrmApp.ThinkTime(100);
+                        XrmApp.ThinkTime(100);
                     }
                 while (!success && DateTime.Now < endTime);
 
                 Assert.IsTrue(success, "Didn't get 'unsaved changes' footer");
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetUnsavedChangesNotificationVisible, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetUnsavedChangesNotificationVisible, true,
                     "A notification occurs: 'You have unsaved changes. Please save/refresh the opportunity to close it.'"), "No notification");
 
-                logger.NextStep();// 7
-                logger.Log<Action>(xrmApp.Entity.Save);
+                Logger.NextStep();// 7
+                Logger.Log<Action>(XrmApp.Entity.Save);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetUnsavedChangesNotificationVisible, false,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetUnsavedChangesNotificationVisible, false,
                     "The notification disappears"), "Notification still visible");
 
-                logger.NextStep();// 8
-                logger.Log<Action<string, string, bool>>(xrmApp.CommandBar.ClickCommand, "Close as Canceled");
+                Logger.NextStep();// 8
+                Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, "Close as Canceled");
 
-                var closingDialog = new OpportunityClosingDialog(xrmApp, XrmBrowser);
+                var closingDialog = new OpportunityClosingDialog(XrmApp, XrmBrowser);
 
      
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, true, "A closing dialog occurs.", true));
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, true, "A closing dialog occurs.", true));
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<By, bool>, bool>(closingDialog.GetIsMandatory, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<By, bool>, bool>(closingDialog.GetIsMandatory, true,
                     "Field 'Select a reason for closing as canceled:' is mandatory = marked with a red border.",
                     OpportunityLocators.ClosingDialog.ReasonForClosingField), "Field not marked as mandatory");
 
 
-                logger.NextStep();// 9
-                logger.Log<Action>(closingDialog.Finish);
+                Logger.NextStep();// 9
+                Logger.Log<Action>(closingDialog.Finish);
 
-                var validationFailedDialog = new OpportunityClosingValidationErrorDialog(xrmApp, XrmBrowser);
+                var validationFailedDialog = new OpportunityClosingValidationErrorDialog(XrmApp, XrmBrowser);
 
              
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, true,
                         "A notification window occurs: 'Validation error Please fill in all mandatory fields to close the Opportunity'", true),
                     "Validation error dialog not shown after 5 seconds");
 
-                logger.NextStep();// 10
-                logger.Log<Func<bool>>(validationFailedDialog.PressOk);
+                Logger.NextStep();// 10
+                Logger.Log<Func<bool>>(validationFailedDialog.PressOk);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, false,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, false,
                         "The notification is closed.", false),
                     "The notification is shown.");
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, true,
                     "The closing dialog occurs.", true), "Closing dialog not shown");
 
-                logger.NextStep(); // 11
+                Logger.NextStep(); // 11
                 var longText = StringExtensions.Random(2002);
 
-                logger.LogSet(() => closingDialog.CommentWonOrCanceled, longText);
+                Logger.LogSet(() => closingDialog.CommentWonOrCanceled, longText);
 
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, string, int>, int>(string.Compare, 0,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, string, int>, int>(string.Compare, 0,
                     "Maximum 2000 characters can be filled in. All further filled in characters are discarded without any notification. " +
                     "The field shows 4 rows of the text.", longText.Substring(0, 2000), closingDialog.CommentWonOrCanceled));
 
-                logger.NextStep();// 12
-                logger.Log<Action>(closingDialog.Finish);
+                Logger.NextStep();// 12
+                Logger.Log<Action>(closingDialog.Finish);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(validationFailedDialog.DialogIsOpen, true,
                         "A notification window occurs again: 'Validation error Please fill in all mandatory fields to close the Opportunity'", true),
                     "Validation error dialog not shown after 5 seconds");
 
-                logger.NextStep();// 13
-                logger.Log<Func<bool>>(validationFailedDialog.PressOk);
+                Logger.NextStep();// 13
+                Logger.Log<Func<bool>>(validationFailedDialog.PressOk);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, string, int>, int>(string.Compare, 0,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, string, int>, int>(string.Compare, 0,
                     "Field 'Insert a comment for closing as canceled:'' is still filled in.", longText.Substring(0, 2000), closingDialog.CommentWonOrCanceled));
 
                 var picklist = closingDialog.GetOptionsForMultiOptionField(OpportunityLocators.ClosingDialog.ReasonForClosingField).ToList();
-                logger.NextStep(); // 14
-                logger.LogSet(() => closingDialog.ReasonForClosing, picklist[picklist.Count - 1]);
+                Logger.NextStep(); // 14
+                Logger.LogSet(() => closingDialog.ReasonForClosing, picklist[picklist.Count - 1]);
 
-                logger.NextStep();// 15
-                logger.Log<Action>(closingDialog.Cancel);
+                Logger.NextStep();// 15
+                Logger.Log<Action>(closingDialog.Cancel);
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, false, "The dialog is closed.", false));
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, false, "The dialog is closed.", false));
 
                 Func<string> getOpportunityProbability = () => newOpportunityPage.Probability;
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityProbability,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityProbability,
                     selectedOpportunityProbability, "The opportunity is not changed."), "Opportunity probability changed");
 
-                logger.NextStep();// 16
+                Logger.NextStep();// 16
 
-                logger.Log<Action<string, string, bool>>(xrmApp.CommandBar.ClickCommand, "Close as Canceled");
+                Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, "Close as Canceled");
 
                 Assert.IsTrue(closingDialog.DialogIsOpen(true),
                     "Closing dialog not shown after 5 seconds");
 
                 Func<string> getCloseAsWonDialogComment = () => closingDialog.CommentWonOrCanceled;
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string>, string>(getCloseAsWonDialogComment, "",
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string>, string>(getCloseAsWonDialogComment, "",
                     "The dialog opens up with the fields not filled in."));
 
-                logger.NextStep();// 17
+                Logger.NextStep();// 17
 
-                logger.LogSet(() => closingDialog.ReasonForClosing, picklist[picklist.Count - 1]);
-                logger.LogSet(() => closingDialog.CommentWonOrCanceled, "Comment for Canceled test case 33326");
+                Logger.LogSet(() => closingDialog.ReasonForClosing, picklist[picklist.Count - 1]);
+                Logger.LogSet(() => closingDialog.CommentWonOrCanceled, "Comment for Canceled test case 33326");
 
-                logger.NextStep();// 18
-                logger.Log<Action>(closingDialog.Finish);
+                Logger.NextStep();// 18
+                Logger.Log<Action>(closingDialog.Finish);
 
                 Assert.IsTrue(
-                    logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, false,
+                    Logger.LogExpectedResultCheck<Func<bool, bool>, bool>(closingDialog.DialogIsOpen, false,
                         "The closing dialog is closed.", false), "closing dialog not closed");
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityProbability,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityProbability,
                     OpportunityConstants.Probability.OrderLost, "Field 'Probability (%)' is set to '0% - Order Lost'."),
                     "Opportunity probability changed");
                 //logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Details");
-                Assert.IsTrue(logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, true,
+                Assert.IsTrue(Logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, true,
                         "On tab 'Details', -field 'Is Funnel Relevant' is still set to 'Yes'"), "funnel relevant is false");
-                logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Administration");
+                Logger.Log<Action<string, string>>(XrmApp.Entity.SelectTab, "Administration");
                 Func<string> getOpportunityStatus = () => newOpportunityPage.Status;
                 Assert.IsTrue(
-                    logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityStatus, "Lost",
+                    Logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityStatus, "Lost",
                         "On tab 'Administration', - Field 'Status' equals 'Lost'."), "status is not lost");
                 Func<string> getOpportunityStatusReason = () => newOpportunityPage.StatusReason;
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityStatusReason, picklist[picklist.Count - 1],
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityStatusReason, picklist[picklist.Count - 1],
                         "On tab 'Administration', - Field 'Status Reason' is set to the value that has been selected in the closing dialog."),
                     "status reason differs from input");
                 Func<string> getOpportunityClosingComment = () => newOpportunityPage.ClosingComment;
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityClosingComment, "Comment for Lost test case 33326",
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string>, string>(getOpportunityClosingComment, "Comment for Lost test case 33326",
                         "On tab 'Administration', - Field 'Closing Comment' is filled in with the content of dialog field 'Insert a comment for closing as won:' correctly."),
                     "Closing comment differs from input");
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetReadOnlyNotificationVisible, true,
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<bool>, bool>(newOpportunityPage.GetReadOnlyNotificationVisible, true,
                     "The opportunity is read-only."), "Read only Notification not found");
 
-                logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Funnel");
+                Logger.Log<Action<string, string>>(XrmApp.Entity.SelectTab, "Funnel");
                 XrmBrowser.Browser.Driver.WaitForTransaction();
 
                 //Func<string> getLatestOpportunityTimelineContent =
@@ -960,29 +961,29 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
                 //Assert.IsTrue(logger.LogExpectedResultCheck<Func<string>, string>(getLatestOpportunityTimelineContent, $"won Opportunity for Institution {institution.Name}",
                 //    "A new Auto Post is generated saying that the Opportunity is won for the Institution recorded in field 'Sold-To Party'."));
 
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, false,
                     "In the opportunity record, button 'Close as Won' is not available",
                     OpportunityLocators.CloseAsWon));
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, false,
                     "In the opportunity record, button 'Close as Lost' is not available",
                     OpportunityLocators.CloseAsLost));
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, false,
                     "In the opportunity record, button 'Close as Cancelled' is not available",
                     OpportunityLocators.CloseAsCanceled));
-                Assert.IsTrue(logger.LogExpectedResultCheck<Func<string, bool>, bool>(
+                Assert.IsTrue(Logger.LogExpectedResultCheck<Func<string, bool>, bool>(
                     newOpportunityPage.GetCommandBarButtonAvailability, true,
                     "In the opportunity record, button 'Reopen Opportunity' is available.",
                     OpportunityLocators.ReopenOpportunity));
-                logger.NextStep();
+                Logger.NextStep();
 
 
             }
             catch (Exception e)
             {
-                exception = e;
+                Exception = e;
                 throw;
             }
         }
@@ -1008,59 +1009,59 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
 
             try
             {
-                logger.NextStep();
-                Login(xrmApp, UserAlias);
+                Logger.NextStep();
+                Login(XrmApp, UserAlias);
 
-                logger.NextStep();
-                logger.Log<Action<string>>(xrmApp.Navigation.OpenApp, "Dräger Sales App");
-                logger.Log<Action<string, string>>(xrmApp.Navigation.OpenSubArea, "Sales", "Opportunities");
-                logger.Log<Action<string, string, bool>>(xrmApp.CommandBar.ClickCommand, "New");
+                Logger.NextStep();
+                Logger.Log<Action<string>>(XrmApp.Navigation.OpenApp, "Dräger Sales App");
+                Logger.Log<Action<string, string>>(XrmApp.Navigation.OpenSubArea, "Sales", "Opportunities");
+                Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, "New");
 
-                logger.NextStep();
-                var newOpportunityPage = new OpportunityEntity(xrmApp, XrmBrowser);
+                Logger.NextStep();
+                var newOpportunityPage = new OpportunityEntity(XrmApp, XrmBrowser);
 
 
-                logger.LogSet(() => newOpportunityPage.Topic, "Test Case 63479 Topic");
-                logger.LogSet(() => newOpportunityPage.SoldToParty, institution.Name);
-                logger.LogSet(() => newOpportunityPage.Value, "500");
-                logger.LogSet(() => newOpportunityPage.Currency, "Euro");
-                logger.LogSet(() => newOpportunityPage.Probability, OpportunityConstants.Probability.GoodChance);
-                logger.LogSet(() => newOpportunityPage.OrderEntryDate, DateTime.Today.AddDays(14));
-                logger.LogSet(() => newOpportunityPage.CustomerDeliveryDate, DateTime.Today.AddDays(30));
-                logger.LogSet(() => newOpportunityPage.TimingAccuracy, OpportunityConstants.TimingAccuracy.Poor);
+                Logger.LogSet(() => newOpportunityPage.Topic, "Test Case 63479 Topic");
+                Logger.LogSet(() => newOpportunityPage.SoldToParty, institution.Name);
+                Logger.LogSet(() => newOpportunityPage.Value, "500");
+                Logger.LogSet(() => newOpportunityPage.Currency, "Euro");
+                Logger.LogSet(() => newOpportunityPage.Probability, OpportunityConstants.Probability.GoodChance);
+                Logger.LogSet(() => newOpportunityPage.OrderEntryDate, DateTime.Today.AddDays(14));
+                Logger.LogSet(() => newOpportunityPage.CustomerDeliveryDate, DateTime.Today.AddDays(30));
+                Logger.LogSet(() => newOpportunityPage.TimingAccuracy, OpportunityConstants.TimingAccuracy.Poor);
                 //logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Details");
 
-                logger.LogSet(() => newOpportunityPage.CustomerSolution, customerSolution.Attributes["dw_name"]);
-                var isFunnelRelevant = logger.LogSet(() => newOpportunityPage.IsFunnelRelevant, false);
+                Logger.LogSet(() => newOpportunityPage.CustomerSolution, customerSolution.Attributes["dw_name"]);
+                var isFunnelRelevant = Logger.LogSet(() => newOpportunityPage.IsFunnelRelevant, false);
 
 
-                logger.NextStep();
-                logger.Log<Action>(xrmApp.Entity.Save);
+                Logger.NextStep();
+                Logger.Log<Action>(XrmApp.Entity.Save);
 
-                logger.NextStep();
-                logger.Log<Action<string, string, bool>>(xrmApp.CommandBar.ClickCommand, OpportunityLocators.CloseAsCanceled);
+                Logger.NextStep();
+                Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, OpportunityLocators.CloseAsCanceled);
 
-                var oppClosingDialog = new OpportunityClosingDialog(xrmApp, XrmBrowser);
+                var oppClosingDialog = new OpportunityClosingDialog(XrmApp, XrmBrowser);
 
-                xrmApp.ThinkTime(500);
-                logger.LogSet(() => oppClosingDialog.CommentWonOrCanceled, "Test 63479 Comment!");
-                logger.LogSet(() => oppClosingDialog.ReasonForClosing, OpportunityConstants.ClosingReasonsCanceled[0]);
-                logger.Log<Action>(oppClosingDialog.Finish);
+                XrmApp.ThinkTime(500);
+                Logger.LogSet(() => oppClosingDialog.CommentWonOrCanceled, "Test 63479 Comment!");
+                Logger.LogSet(() => oppClosingDialog.ReasonForClosing, OpportunityConstants.ClosingReasonsCanceled[0]);
+                Logger.Log<Action>(oppClosingDialog.Finish);
 
-                xrmApp.ThinkTime(500);
+                XrmApp.ThinkTime(500);
                 expectedResult = "The closing dialog is closed." +
                     "The opportunity is shown again." +
                     "On tab \"Details\", field \"Is Funnel Relevant\" is set to \"No\".";
-                var check1 = logger.LogExpectedResultCheck<Func<bool,bool>,bool>(oppClosingDialog.DialogIsOpen, false, expectedResult,false);
+                var check1 = Logger.LogExpectedResultCheck<Func<bool,bool>,bool>(oppClosingDialog.DialogIsOpen, false, expectedResult,false);
                 //logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Details");
-                var check2 = logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, false, expectedResult);
+                var check2 = Logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, false, expectedResult);
 
                 Assert.IsTrue(check1 && check2, expectedResult);
 
             }
             catch (Exception e)
             {
-                exception = e;
+                Exception = e;
                 throw;
             }
 
@@ -1087,71 +1088,71 @@ UserGroup = UserGroup.Sales)]
 
             try
             {
-                logger.NextStep();
-                Login(xrmApp, UserAlias);
+                Logger.NextStep();
+                Login(XrmApp, UserAlias);
 
-                logger.NextStep();
-                logger.Log<Action<string>>(xrmApp.Navigation.OpenApp, "Dräger Sales App");
-                logger.Log<Action<string, string>>(xrmApp.Navigation.OpenSubArea, "Sales", "Opportunities");
-                logger.Log<Action<string, string, bool>>(xrmApp.CommandBar.ClickCommand, "New");
+                Logger.NextStep();
+                Logger.Log<Action<string>>(XrmApp.Navigation.OpenApp, "Dräger Sales App");
+                Logger.Log<Action<string, string>>(XrmApp.Navigation.OpenSubArea, "Sales", "Opportunities");
+                Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, "New");
 
-                logger.NextStep();
-                var newOpportunityPage = new OpportunityEntity(xrmApp, XrmBrowser);
+                Logger.NextStep();
+                var newOpportunityPage = new OpportunityEntity(XrmApp, XrmBrowser);
 
 
-                logger.LogSet(() => newOpportunityPage.Topic, "Test Case 63526 Topic");
-                logger.LogSet(() => newOpportunityPage.SoldToParty, institution.Name);
-                logger.LogSet(() => newOpportunityPage.Value, "500");
-                logger.LogSet(() => newOpportunityPage.Currency, "Euro");
-                logger.LogSet(() => newOpportunityPage.Probability, OpportunityConstants.Probability.GoodChance);
-                logger.LogSet(() => newOpportunityPage.OrderEntryDate, DateTime.Today.AddDays(14));
-                logger.LogSet(() => newOpportunityPage.CustomerDeliveryDate, DateTime.Today.AddDays(30));
-                logger.LogSet(() => newOpportunityPage.TimingAccuracy, OpportunityConstants.TimingAccuracy.Poor);
+                Logger.LogSet(() => newOpportunityPage.Topic, "Test Case 63526 Topic");
+                Logger.LogSet(() => newOpportunityPage.SoldToParty, institution.Name);
+                Logger.LogSet(() => newOpportunityPage.Value, "500");
+                Logger.LogSet(() => newOpportunityPage.Currency, "Euro");
+                Logger.LogSet(() => newOpportunityPage.Probability, OpportunityConstants.Probability.GoodChance);
+                Logger.LogSet(() => newOpportunityPage.OrderEntryDate, DateTime.Today.AddDays(14));
+                Logger.LogSet(() => newOpportunityPage.CustomerDeliveryDate, DateTime.Today.AddDays(30));
+                Logger.LogSet(() => newOpportunityPage.TimingAccuracy, OpportunityConstants.TimingAccuracy.Poor);
                 //logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Details");
 
-                logger.LogSet(() => newOpportunityPage.CustomerSolution, customerSolution.Attributes["dw_name"]);
-                var isFunnelRelevant = logger.LogSet(() => newOpportunityPage.IsFunnelRelevant, false);
-                logger.NextStep();
-                logger.Log<Action>(xrmApp.Entity.Save);
+                Logger.LogSet(() => newOpportunityPage.CustomerSolution, customerSolution.Attributes["dw_name"]);
+                var isFunnelRelevant = Logger.LogSet(() => newOpportunityPage.IsFunnelRelevant, false);
+                Logger.NextStep();
+                Logger.Log<Action>(XrmApp.Entity.Save);
 
-                logger.NextStep();
-                logger.Log<Action<string, string>>(newOpportunityPage.SectionMoreCommands, "Competitors", "Add Existing Competitor");
+                Logger.NextStep();
+                Logger.Log<Action<string, string>>(newOpportunityPage.SectionMoreCommands, "Competitors", "Add Existing Competitor");
 
-                xrmApp.ThinkTime(200);
+                XrmApp.ThinkTime(200);
 
-                logger.LogSet(() => newOpportunityPage.SelectRecord, competitor.Name);
-                logger.Log<Action>(newOpportunityPage.ClickAddRecord);
+                Logger.LogSet(() => newOpportunityPage.SelectRecord, competitor.Name);
+                Logger.Log<Action>(newOpportunityPage.ClickAddRecord);
 
 
 
-                logger.NextStep();
-                logger.Log<Action<string, string, bool>>(xrmApp.CommandBar.ClickCommand, OpportunityLocators.CloseAsLost);
+                Logger.NextStep();
+                Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, OpportunityLocators.CloseAsLost);
 
-                logger.NextStep();
-                var oppClosingDialog = new OpportunityClosingDialog(xrmApp, XrmBrowser);
+                Logger.NextStep();
+                var oppClosingDialog = new OpportunityClosingDialog(XrmApp, XrmBrowser);
 
-                xrmApp.ThinkTime(500);
-                logger.LogSet(() => oppClosingDialog.CommentLost, "Test 63526 Comment!");
-                logger.LogSet(() => oppClosingDialog.ReasonForClosing, OpportunityConstants.ClosingReasonsLost[5]);
-                logger.LogSet(() => oppClosingDialog.MainCompetitorThatWonTheDeal, competitor.Name);
-                logger.Log<Action>(oppClosingDialog.Finish);
+                XrmApp.ThinkTime(500);
+                Logger.LogSet(() => oppClosingDialog.CommentLost, "Test 63526 Comment!");
+                Logger.LogSet(() => oppClosingDialog.ReasonForClosing, OpportunityConstants.ClosingReasonsLost[5]);
+                Logger.LogSet(() => oppClosingDialog.MainCompetitorThatWonTheDeal, competitor.Name);
+                Logger.Log<Action>(oppClosingDialog.Finish);
 
-                xrmApp.ThinkTime(500);
+                XrmApp.ThinkTime(500);
                 expectedResult = "The closing dialog is closed." +
                     "The opportunity is shown again." +
                     "On tab 'Details', field 'Is Funnel Relevant' is set to 'Yes'." +
                     "On tab Administration.field 'Sales Abandoned' is set to 'No'.";
-                var check1 = logger.LogExpectedResultCheck<Func<bool,bool>,bool>(oppClosingDialog.DialogIsOpen, false, expectedResult,false);
+                var check1 = Logger.LogExpectedResultCheck<Func<bool,bool>,bool>(oppClosingDialog.DialogIsOpen, false, expectedResult,false);
                 //logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Details");
-                var check2 = logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, true, expectedResult);
-                logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Administration");
-                var check3 = logger.LogGetExpectedResultCheck(() => newOpportunityPage.SalesAbandoned, false, expectedResult);
+                var check2 = Logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, true, expectedResult);
+                Logger.Log<Action<string, string>>(XrmApp.Entity.SelectTab, "Administration");
+                var check3 = Logger.LogGetExpectedResultCheck(() => newOpportunityPage.SalesAbandoned, false, expectedResult);
 
                 Assert.IsTrue(check1 && check2 && check3, expectedResult);
             }
             catch (Exception e)
             {
-                exception = e;
+                Exception = e;
                 throw;
             }
 
@@ -1177,59 +1178,59 @@ UserGroup = UserGroup.Sales)]
 
             try
             {
-                logger.NextStep();
-                Login(xrmApp, UserAlias);
+                Logger.NextStep();
+                Login(XrmApp, UserAlias);
 
-                logger.NextStep();
-                logger.Log<Action<string>>(xrmApp.Navigation.OpenApp, "Dräger Sales App");
-                logger.Log<Action<string, string>>(xrmApp.Navigation.OpenSubArea, "Sales", "Opportunities");
-                logger.Log<Action<string, string, bool>>(xrmApp.CommandBar.ClickCommand, "New");
+                Logger.NextStep();
+                Logger.Log<Action<string>>(XrmApp.Navigation.OpenApp, "Dräger Sales App");
+                Logger.Log<Action<string, string>>(XrmApp.Navigation.OpenSubArea, "Sales", "Opportunities");
+                Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, "New");
 
-                logger.NextStep();
-                var newOpportunityPage = new OpportunityEntity(xrmApp, XrmBrowser);
+                Logger.NextStep();
+                var newOpportunityPage = new OpportunityEntity(XrmApp, XrmBrowser);
 
 
-                logger.LogSet(() => newOpportunityPage.Topic, "Test Case 63419 Topic");
-                logger.LogSet(() => newOpportunityPage.SoldToParty, institution.Name);
-                logger.LogSet(() => newOpportunityPage.Value, "500");
-                logger.LogSet(() => newOpportunityPage.Currency, "Euro");
-                logger.LogSet(() => newOpportunityPage.Probability, OpportunityConstants.Probability.GoodChance);
-                logger.LogSet(() => newOpportunityPage.OrderEntryDate, DateTime.Today.AddDays(14));
-                logger.LogSet(() => newOpportunityPage.CustomerDeliveryDate, DateTime.Today.AddDays(30));
-                logger.LogSet(() => newOpportunityPage.TimingAccuracy, OpportunityConstants.TimingAccuracy.Poor);
+                Logger.LogSet(() => newOpportunityPage.Topic, "Test Case 63419 Topic");
+                Logger.LogSet(() => newOpportunityPage.SoldToParty, institution.Name);
+                Logger.LogSet(() => newOpportunityPage.Value, "500");
+                Logger.LogSet(() => newOpportunityPage.Currency, "Euro");
+                Logger.LogSet(() => newOpportunityPage.Probability, OpportunityConstants.Probability.GoodChance);
+                Logger.LogSet(() => newOpportunityPage.OrderEntryDate, DateTime.Today.AddDays(14));
+                Logger.LogSet(() => newOpportunityPage.CustomerDeliveryDate, DateTime.Today.AddDays(30));
+                Logger.LogSet(() => newOpportunityPage.TimingAccuracy, OpportunityConstants.TimingAccuracy.Poor);
                 //logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Details");
 
-                logger.LogSet(() => newOpportunityPage.CustomerSolution, customerSolution.Attributes["dw_name"]);
-                var isFunnelRelevant = logger.LogSet(() => newOpportunityPage.IsFunnelRelevant, false);
+                Logger.LogSet(() => newOpportunityPage.CustomerSolution, customerSolution.Attributes["dw_name"]);
+                var isFunnelRelevant = Logger.LogSet(() => newOpportunityPage.IsFunnelRelevant, false);
 
 
-                logger.NextStep();
-                logger.Log<Action>(xrmApp.Entity.Save);
+                Logger.NextStep();
+                Logger.Log<Action>(XrmApp.Entity.Save);
 
-                logger.NextStep();
-                logger.Log<Action<string, string, bool>>(xrmApp.CommandBar.ClickCommand, OpportunityLocators.CloseAsWon);
+                Logger.NextStep();
+                Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, OpportunityLocators.CloseAsWon);
 
-                var oppClosingDialog = new OpportunityClosingDialog(xrmApp, XrmBrowser);
+                var oppClosingDialog = new OpportunityClosingDialog(XrmApp, XrmBrowser);
 
-                xrmApp.ThinkTime(500);
-                logger.LogSet(() => oppClosingDialog.CommentWonOrCanceled, "Test 63419 Comment!");
-                logger.LogSet(() => oppClosingDialog.ReasonForClosing, OpportunityConstants.ClosingReasonsWon[5]);
-                logger.Log<Action>(oppClosingDialog.Finish);
+                XrmApp.ThinkTime(500);
+                Logger.LogSet(() => oppClosingDialog.CommentWonOrCanceled, "Test 63419 Comment!");
+                Logger.LogSet(() => oppClosingDialog.ReasonForClosing, OpportunityConstants.ClosingReasonsWon[5]);
+                Logger.Log<Action>(oppClosingDialog.Finish);
 
-                xrmApp.ThinkTime(500);
+                XrmApp.ThinkTime(500);
                 expectedResult = "The closing dialog is closed." +
                     "The opportunity is shown again." +
                     "On tab \"Details\", field \"Is Funnel Relevant\" is set to \"Yes\".";
-                var check1 = logger.LogExpectedResultCheck<Func<bool,bool>,bool>(oppClosingDialog.DialogIsOpen, false, expectedResult,false);
+                var check1 = Logger.LogExpectedResultCheck<Func<bool,bool>,bool>(oppClosingDialog.DialogIsOpen, false, expectedResult,false);
                 //logger.Log<Action<string, string>>(xrmApp.Entity.SelectTab, "Details");
-                var check2 = logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, true, expectedResult);
+                var check2 = Logger.LogGetExpectedResultCheck(() => newOpportunityPage.IsFunnelRelevant, true, expectedResult);
 
                 Assert.IsTrue(check1 && check2, expectedResult);
 
             }
             catch (Exception e)
             {
-                exception = e;
+                Exception = e;
                 throw;
             }
 

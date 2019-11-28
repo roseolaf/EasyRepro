@@ -20,12 +20,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
 
         public MSTestSink(MessageTemplateTextFormatter formatter, TestContext testContext)
         {
-            if (formatter == null)
-            {
-                throw new ArgumentNullException(nameof(formatter));
-            }
-
-            _formatter = formatter;
+            _formatter = formatter ?? throw new ArgumentNullException(nameof(formatter));
             _testContext = testContext;
         }
 

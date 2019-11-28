@@ -40,13 +40,13 @@ namespace Draeger.Dynamics365.Testautomation.Testautomation.Core.CaseManagement
             {
                 case "30033":
                     testData.Add("30033Institution", new TestcaseNameDecorator(
-                                                        new OwnerDecorator(users[UserAlias].Username.ToUnsecureString(),
-                                                        new BaseComponent(logger))).CreateEntityRecord(this, new Account()));
+                                                        new OwnerDecorator(Users[UserAlias].Username.ToUnsecureString(),
+                                                        new BaseComponent(Logger))).CreateEntityRecord(this, new Account()));
 
                     testData.Add("30033Contact", new TestcaseNameDecorator(
                                                         new ReferenceToDecorator("parentcustomerid", testData["30033Institution"],
-                                                        new OwnerDecorator(users[UserAlias].Username.ToUnsecureString(),
-                                                        new BaseComponent(logger))))
+                                                        new OwnerDecorator(Users[UserAlias].Username.ToUnsecureString(),
+                                                        new BaseComponent(Logger))))
                                                     .CreateEntityRecord(this, new Contact()));
 
 
@@ -84,30 +84,30 @@ namespace Draeger.Dynamics365.Testautomation.Testautomation.Core.CaseManagement
             {
                 
 
-                Login(xrmApp, UserAlias);
-                logger.Log<Action<string, Guid>>(xrmApp.Entity.OpenEntity, contact.LogicalName, contact.Id);
-                var newCase = new CaseEntity(xrmApp, XrmBrowser);
-                logger.Log<Action<string, string, bool>>(xrmApp.CommandBar.ClickCommand, "Create New Case");
-                xrmApp.ThinkTime(2000);
-                var existingInstitution = logger.LogGetExpectedResultCheck(() => newCase.ExistingInstitution, institution.Name, expectedResult);
-                var existingContact = logger.LogGetExpectedResultCheck(() => newCase.ExistingContact, $"{contact.LastName}, {contact.FirstName}", expectedResult);
+                Login(XrmApp, UserAlias);
+                Logger.Log<Action<string, Guid>>(XrmApp.Entity.OpenEntity, contact.LogicalName, contact.Id);
+                var newCase = new CaseEntity(XrmApp, XrmBrowser);
+                Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, "Create New Case");
+                XrmApp.ThinkTime(2000);
+                var existingInstitution = Logger.LogGetExpectedResultCheck(() => newCase.ExistingInstitution, institution.Name, expectedResult);
+                var existingContact = Logger.LogGetExpectedResultCheck(() => newCase.ExistingContact, $"{contact.LastName}, {contact.FirstName}", expectedResult);
 
-                var firstName = logger.LogGetExpectedResultCheck(() => newCase.FirstName, contact.FirstName, expectedResult);
-                var lastName = logger.LogGetExpectedResultCheck(() => newCase.LastName, contact.LastName, expectedResult);
-                var businessPhone = logger.LogGetExpectedResultCheck(() => newCase.BusinessPhone, contact.Telephone1, expectedResult);
-                var mobilePhone = logger.LogGetExpectedResultCheck(() => newCase.MobilePhone, contact.MobilePhone, expectedResult);
-                var emailAddress = logger.LogGetExpectedResultCheck(() => newCase.EmailAddress, contact.EMailAddress1, expectedResult);
+                var firstName = Logger.LogGetExpectedResultCheck(() => newCase.FirstName, contact.FirstName, expectedResult);
+                var lastName = Logger.LogGetExpectedResultCheck(() => newCase.LastName, contact.LastName, expectedResult);
+                var businessPhone = Logger.LogGetExpectedResultCheck(() => newCase.BusinessPhone, contact.Telephone1, expectedResult);
+                var mobilePhone = Logger.LogGetExpectedResultCheck(() => newCase.MobilePhone, contact.MobilePhone, expectedResult);
+                var emailAddress = Logger.LogGetExpectedResultCheck(() => newCase.EmailAddress, contact.EMailAddress1, expectedResult);
 
-                var name = logger.LogGetExpectedResultCheck(() => newCase.Name, institution.Name, expectedResult);
-                var city = logger.LogGetExpectedResultCheck(() => newCase.City, institution.Address1_City, expectedResult);
-                var country = logger.LogGetExpectedResultCheck(() => newCase.Country, institution.Countryid.Name, expectedResult);
+                var name = Logger.LogGetExpectedResultCheck(() => newCase.Name, institution.Name, expectedResult);
+                var city = Logger.LogGetExpectedResultCheck(() => newCase.City, institution.Address1_City, expectedResult);
+                var country = Logger.LogGetExpectedResultCheck(() => newCase.Country, institution.Countryid.Name, expectedResult);
 
                 Assert.IsTrue(existingInstitution && existingContact && firstName && lastName && businessPhone && mobilePhone && emailAddress && name && city && country, expectedResult);
 
             }
             catch (Exception e)
             {
-                exception = e;
+                Exception = e;
                 throw;
             }
         }
