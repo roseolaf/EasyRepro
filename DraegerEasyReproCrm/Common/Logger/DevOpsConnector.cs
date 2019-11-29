@@ -25,8 +25,12 @@ namespace Draeger.Dynamics365.Testautomation.Common
         public static string Title = "Title";
         public static string Priority = "Priority";
         public static string Url = "Url";
+    }
 
-
+    public static class TestSuiteIdentifier
+    {
+        public static Guid TestSuiteGuid = new Guid();
+        public static DateTime TestSuiteStartTime = DateTime.Now;
     }
 
     public class DevOpsConnector
@@ -47,6 +51,8 @@ namespace Draeger.Dynamics365.Testautomation.Common
             // Add TC info to dict TODO: Tags / Category 
             var tcInfo = new Dictionary<ScalarValue, LogEventPropertyValue>()
             {
+                { new ScalarValue("TestSuiteGuid"), new ScalarValue(TestSuiteIdentifier.TestSuiteGuid.ToString()) },
+                { new ScalarValue("TestSuiteStartTime"), new ScalarValue(TestSuiteIdentifier.TestSuiteStartTime.ToString("dd/MM/yyyy HH:mm:ss.fff"))},
                 { new ScalarValue("Area"), new ScalarValue(workItem.Fields["System.NodeName"].ToString()) },
                 { new ScalarValue("TeamProject"), new ScalarValue(workItem.Fields["System.TeamProject"].ToString()) },
                 { new ScalarValue("Sprint"), new ScalarValue(Regex.Match(workItem.Fields["System.IterationPath"].ToString(),@"\d+").Value) },

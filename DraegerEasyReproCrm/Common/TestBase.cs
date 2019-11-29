@@ -43,21 +43,21 @@ namespace Draeger.Dynamics365.Testautomation.Common
         public XrmApp XrmApp;
 
 
-
         [AssemblyInitialize]
         public static void AssemblyInitialize(TestContext testContext)
         {
             CredentialsManager.Instance.Init(new XrmManagementHelper());
             ICredentials credentials = new NetworkCredential("tmp-QA-TA-001", "DraegerQA01");
             WebRequest.DefaultWebProxy.Credentials = credentials;
-            
         }
 
         [AssemblyCleanup]
         public static void AssemblyCleanup()
         {
-            AdminConnection.Instance.Dispose();
-            CredentialsManager.Instance.Dispose();
+            //AdminConnection.Instance.Dispose();
+            //CredentialsManager.Instance.Dispose();
+            AdminConnection adminConnection = new AdminConnection();
+            adminConnection.Dispose();
         }
 
         [TestInitialize]
