@@ -52,7 +52,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                             capabilities = options.ToFireFox().ToCapabilities();
                             break;
                     }
-                    driver = new RemoteWebDriver(options.RemoteHubServer, capabilities, TimeSpan.FromMinutes(5));
+                    driver = new RemoteWebDriver(options.RemoteHubServer, capabilities, TimeSpan.FromMinutes(30));
                     break;
                 default:
                     throw new InvalidOperationException(
