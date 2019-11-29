@@ -149,9 +149,8 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
                 var connection = new TeamHttpClient(new Uri(azureDevOpsOrganizationUrl), creds);
 
                 var allTeams = connection.GetAllTeamsAsync().Result;
-
-                // TODO ProjectName as const?
                 var project = allTeams.First(x => x.ProjectName == azureDevOpsProjectName);
+
                 var teamMembers = connection.GetTeamMembersWithExtendedPropertiesAsync(project.ProjectId.ToString(), project.Id.ToString()).Result;
                 // TODO Fail to feature owner
                 var bugResponsible = teamMembers.First(x => x.Identity.UniqueName == "malte.fries@draeger.com").Identity;
@@ -276,6 +275,17 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
                 });
 
 
+            var solutionVersion = loggerSinkList[0].TestContext.Properties["SolutionVersion"];
+            var foundInRelease = new Regex("(.+[1-9][0-9]*)").Match(solutionVersion.ToString()).Value;
+
+
+            jsonPatchDocument.Add(
+                new JsonPatchOperation()
+                {
+                    Path = "/fields/Custom.FoundInRelease",
+                    Operation = Operation.Replace,
+                    Value = foundInRelease,
+                });
             FileStream attStream = new FileStream(screenshotPath, FileMode.Open, FileAccess.Read);
             var screenshotFullPage = witClient.CreateAttachmentAsync(attStream).Result; // upload the file
             attStream.Dispose();
@@ -338,7 +348,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
 
 
             var solutionVersion = loggerSinkList[0].TestContext.Properties["SolutionVersion"];
-
+            var foundInRelease = new Regex("(.+[1-9][0-9]*)").Match(solutionVersion.ToString()).Value;
 
             var oldSystemInfo = existingBug.Fields["Microsoft.VSTS.TCM.SystemInfo"].ToString();
 
@@ -353,6 +363,13 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
                     Path = "/fields/System.Title",
                     Operation = Operation.Add,
                     Value = title,
+                });
+            jsonPatchDocument.Add(
+                new JsonPatchOperation()
+                {
+                    Path = "/fields/Custom.FoundInRelease",
+                    Operation = Operation.Replace,
+                    Value = foundInRelease,
                 });
             jsonPatchDocument.Add(
                 new JsonPatchOperation()

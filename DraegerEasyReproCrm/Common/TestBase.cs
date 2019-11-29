@@ -107,11 +107,9 @@ namespace Draeger.Dynamics365.Testautomation.Common
 
 
             Logger.TestResult("{TestResult}", TestContext.CurrentTestOutcome);
-#if DEBUG
+#if !DEBUG
             if (Exception != null)
             {
-                
-                Console.WriteLine("Creating Bug");
                 if (Exception.Message.Contains("Assert"))
                     Logger.Fail("{InnerException} - {@Exception}", Exception.InnerException, Exception);
                 else
@@ -134,7 +132,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
             //XrmBrowser.Browser.Driver?.Close();
             //XrmBrowser.Browser.Driver?.Quit();
             //XrmBrowser.Browser.Driver?.Dispose();
-            XrmApp?.Dispose();
+            XrmApp.Dispose();
 
 
         }

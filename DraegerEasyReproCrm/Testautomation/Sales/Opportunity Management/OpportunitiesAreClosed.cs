@@ -764,7 +764,6 @@ namespace Draeger.Dynamics365.Testautomation.Sales.OpportunityManagement
                 Logger.Log<Action<string>>(XrmApp.Navigation.OpenApp, "Dräger Sales App");
                 Logger.Log<Action<string, string>>(XrmApp.Navigation.OpenSubArea, "Sales", "Opportunities");
 
-
                 Logger.NextStep();// 4
                 Logger.Log<Action<string, string, bool>>(XrmApp.CommandBar.ClickCommand, "New");
 
