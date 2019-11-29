@@ -28,8 +28,8 @@ namespace Draeger.Dynamics365.Testautomation.Common
             UserAgent = false,
             DefaultThinkTime = 2000,
             UCITestMode = false,
-            PageLoadTimeout = TimeSpan.FromMinutes(3),
-            CommandTimeout = TimeSpan.FromSeconds(30),
+            PageLoadTimeout = TimeSpan.FromMinutes(10),
+            CommandTimeout = TimeSpan.FromMinutes(5),
             StartMaximized = true,
             
         };
