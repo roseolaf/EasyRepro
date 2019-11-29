@@ -58,7 +58,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
             CredentialsManager.Instance.Dispose();
             //AdminConnection adminConnection = new AdminConnection();
             //adminConnection.Dispose();
-            Application.Exit();
+            Environment.Exit(Environment.ExitCode);
         }
 
         [TestInitialize]
