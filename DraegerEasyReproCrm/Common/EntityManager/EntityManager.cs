@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Net;
+using System.Threading;
 using Draeger.CrmConnector.CrmOnline;
 using Draeger.Testautomation.CredentialsManagerCore.Bases;
 using Infoman.Xrm.Services;
@@ -445,13 +446,23 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
                     //
                     // proxy.EnableProxyTypes();
 
+                    int tries = 10;
 
-                    var serviceClient = new CrmServiceClient(connectionString);
-                    proxy = serviceClient.OrganizationServiceProxy;
-                    var error = serviceClient.LastCrmError;
-                    Console.WriteLine(error);
+                    CrmServiceClient serviceClient =null;
+                    for (int i = 0; i < tries; i++)
+                    {
+                        serviceClient = new CrmServiceClient(connectionString);
+                        proxy = serviceClient.OrganizationServiceProxy;
+                        var error = serviceClient.LastCrmError;
+                        Console.WriteLine(error);
+                        if (proxy != null)
+                            break;
+                        Console.WriteLine($"Could not establish connection. Retry in 500ms {i}/{tries}");
+                        Thread.Sleep(500);
+                    }
+
                     proxy.EnableProxyTypes();
-                    proxy.Timeout = new TimeSpan(0, 10, 0);
+                    proxy.Timeout = new TimeSpan(1, 0, 0);
 
                 }
                 catch (Exception e)
