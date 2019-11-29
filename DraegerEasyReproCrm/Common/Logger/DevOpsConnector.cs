@@ -29,7 +29,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
 
     public static class TestSuiteIdentifier
     {
-        public static Guid TestSuiteGuid = new Guid();
+        public static Guid TestSuiteGuid = Guid.NewGuid();
         public static DateTime TestSuiteStartTime = DateTime.Now;
     }
 
