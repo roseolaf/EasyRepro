@@ -451,14 +451,22 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
                     CrmServiceClient serviceClient =null;
                     for (int i = 0; i < tries; i++)
                     {
-                        serviceClient = new CrmServiceClient(connectionString);
-                        proxy = serviceClient.OrganizationServiceProxy;
-                        var error = serviceClient.LastCrmError;
-                        Console.WriteLine(error);
-                        if (proxy != null)
-                            break;
-                        Console.WriteLine($"Could not establish connection. Retry in 500ms {i}/{tries}");
-                        Thread.Sleep(500);
+                        try
+                        {
+
+                            serviceClient = new CrmServiceClient(connectionString);
+                            proxy = serviceClient.OrganizationServiceProxy;
+                            var error = serviceClient.LastCrmError;
+                            Console.WriteLine(error);
+                            if (proxy != null)
+                                break;
+                            Console.WriteLine($"Could not establish connection. Retry in 500ms {i}/{tries}");
+                            Thread.Sleep(500);
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e);
+                        }
                     }
 
                     proxy.EnableProxyTypes();
