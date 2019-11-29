@@ -53,6 +53,14 @@ namespace Draeger.Dynamics365.Testautomation.Common
             
         }
 
+        [AssemblyCleanup]
+        public static void AssemblyCleanup()
+        {
+            AdminConnection ac = new AdminConnection();
+            ac.Dispose();
+            
+        }
+
         [TestInitialize]
         public void TestInitialize()
         {
@@ -136,6 +144,8 @@ namespace Draeger.Dynamics365.Testautomation.Common
 
 
         }
+
+
 
         protected void Login(XrmApp app, string userAlias)
         {
