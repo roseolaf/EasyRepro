@@ -56,9 +56,8 @@ namespace Draeger.Dynamics365.Testautomation.Common
         [AssemblyCleanup]
         public static void AssemblyCleanup()
         {
-            AdminConnection ac = new AdminConnection();
-            ac.Dispose();
-            
+            AdminConnection.Instance.Dispose();
+            CredentialsManager.Instance.Dispose();
         }
 
         [TestInitialize]
