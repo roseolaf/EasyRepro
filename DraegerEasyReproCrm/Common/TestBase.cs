@@ -54,9 +54,9 @@ namespace Draeger.Dynamics365.Testautomation.Common
         [AssemblyCleanup]
         public static void AssemblyCleanup()
         {
-            //    AdminConnection.Instance.Dispose();
+            //    CrmConnection.Instance.Dispose();
             CredentialsManager.Instance.Dispose();
-            //AdminConnection adminConnection = new AdminConnection();
+            //CrmConnection adminConnection = new CrmConnection();
             //adminConnection.Dispose();
             //Environment.Exit(Environment.ExitCode);
         }
@@ -65,7 +65,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
         public void TestInitialize()
         {
 
-            AdminConnection ac = new AdminConnection();
+            CrmConnection ac = new CrmConnection();
             var context = ac.GetContext();
             var solutionsHistory = context.CreateQuery("msdyn_solutionhistory");
 
@@ -142,7 +142,8 @@ namespace Draeger.Dynamics365.Testautomation.Common
             //XrmBrowser.Browser.Driver?.Dispose();
             XrmApp.Dispose();
 
-            AdminConnection.Instance.Dispose();
+            //Console.WriteLine("Dispose Admin Connection");
+            //CrmConnection.Instance.Dispose();
 
         }
 

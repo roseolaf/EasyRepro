@@ -21,7 +21,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager.Decorator
 
         public override Entity CreateEntityRecord<T>(object caller, T entity)
         {
-            ServiceContext context = AdminConnection.Instance.GetContext();
+            ServiceContext context = CrmConnection.Instance.GetContext();
 
             var retrieveEntityRequest = new RetrieveEntityRequest
             {

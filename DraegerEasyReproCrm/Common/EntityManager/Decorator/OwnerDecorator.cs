@@ -46,7 +46,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager.Decorator
 
         private void GetOwner(object caller)
         {
-            ServiceContext context = AdminConnection.Instance.GetContext();
+            ServiceContext context = CrmConnection.Instance.GetContext();
             Owner = context.SystemUserSet.First(sysUser => sysUser.DomainName.Equals(OwnerEmail));                   
             
         }

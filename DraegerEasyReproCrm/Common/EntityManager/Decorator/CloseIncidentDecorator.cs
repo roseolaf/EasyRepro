@@ -37,7 +37,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager.Decorator
                 Status = new OptionSetValue((int)IncidentStatusCode.Resolved_ProblemSolved_2)
             };
 
-            ServiceContext context = AdminConnection.Instance.GetContext();
+            ServiceContext context = CrmConnection.Instance.GetContext();
             context.Execute(closeIncidentRequest);
               
             return retVal;

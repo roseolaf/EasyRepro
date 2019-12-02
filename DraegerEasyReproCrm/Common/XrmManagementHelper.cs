@@ -22,8 +22,8 @@ namespace Draeger.Dynamics365.Testautomation.Common
             // Connect to the Organization service. 
             // The using statement assures that the service proxy is properly disposed.
 
-            var organizationServiceProxy = AdminConnection.Instance.OpenConnection();
-            ServiceContext context = AdminConnection.Instance.GetContext();
+            var organizationServiceProxy = CrmConnection.Instance.OpenConnection();
+            ServiceContext context = CrmConnection.Instance.GetContext();
 
             var user = GetUserEntity(credentials, context);
             if (user == null) return;
@@ -40,8 +40,8 @@ namespace Draeger.Dynamics365.Testautomation.Common
         public void SetSecurityRoles(ITestUserCredentials credentials, HashSet<SecurityRole> securityRoles,
             ILogger logger, bool removeBasicRoles = false)
         {
-            var organizationServiceProxy = AdminConnection.Instance.OpenConnection();
-            var context = AdminConnection.Instance.GetContext();
+            var organizationServiceProxy = CrmConnection.Instance.OpenConnection();
+            var context = CrmConnection.Instance.GetContext();
 
             var user = GetUserEntity(credentials, context);
 

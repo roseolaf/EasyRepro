@@ -85,7 +85,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
 
         public override Entity GetEntityRecord(object caller, string entityLogicalName, Guid guid)
         {
-            ServiceContext context = AdminConnection.Instance.GetContext();
+            ServiceContext context = CrmConnection.Instance.GetContext();
             return context.Retrieve(entityLogicalName, guid, new ColumnSet(true));
 
         }
@@ -93,7 +93,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
         public override Entity CreateEntityRecord<T>(object caller, T entity)
         {
 
-            ServiceContext context = AdminConnection.Instance.GetContext();
+            ServiceContext context = CrmConnection.Instance.GetContext();
 
             RetrieveEntityRequest retrieveEntityRequest = new RetrieveEntityRequest
             {
@@ -320,7 +320,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
         public override bool DeleteEntityRecord(string entityName, Guid guid)
         {
 
-            ServiceContext context = AdminConnection.Instance.GetContext();
+            ServiceContext context = CrmConnection.Instance.GetContext();
             try
             {
                 context.Delete(entityName, guid);
@@ -338,7 +338,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
         public override Entity CloneEntityRecord(string entityName, params KeyValuePair<string, object>[] attributes)
         {
 
-            ServiceContext context = AdminConnection.Instance.GetContext();
+            ServiceContext context = CrmConnection.Instance.GetContext();
 
             var query = new QueryExpression
             {
@@ -426,7 +426,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
 
     }
 
-    public class AdminConnection : Singleton<AdminConnection>, IDisposable
+    public class CrmConnection : Singleton<CrmConnection>, IDisposable
     {
         private Microsoft.Xrm.Sdk.Client.OrganizationServiceProxy proxy = null;
         private readonly object _proxyLock = new object();
@@ -435,7 +435,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
         {
             if (proxy != null) return proxy;
 
-            var connectionString = ConfigurationManager.ConnectionStrings["AdminConnection"]?.ConnectionString;
+            var connectionString = ConfigurationManager.ConnectionStrings["CrmConnection"]?.ConnectionString;
 
             lock (_proxyLock)
             {
