@@ -38,6 +38,8 @@ namespace Draeger.Testautomation.CredentialsManagerCore
             if (_disposedValue) return;
             if (disposing)
             {
+
+                _logger.Debug("kvc dispose");
                 Owner.ReturnCredentials(this, _logger);
             }
 
@@ -54,6 +56,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore
         /// </summary>
         internal void Release()
         {
+            _logger.Debug("ManagedCredentials.Release");
             _credentials.Dispose();
         }
 
