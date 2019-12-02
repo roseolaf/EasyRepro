@@ -461,6 +461,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
                             if (proxy != null)
                                 break;
                             Console.WriteLine($"Could not establish connection. Retry in 500ms {i}/{tries}");
+                             
                             Thread.Sleep(500);
                         }
                         catch (Exception e)

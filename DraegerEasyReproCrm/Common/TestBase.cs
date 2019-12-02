@@ -142,8 +142,9 @@ namespace Draeger.Dynamics365.Testautomation.Common
             //XrmBrowser.Browser.Driver?.Dispose();
             XrmApp.Dispose();
 
-            //Console.WriteLine("Dispose Admin Connection");
-            //CrmConnection.Instance.Dispose();
+            Console.WriteLine("Dispose Crm Connection");
+            CrmConnection.Instance.Dispose();
+            Console.WriteLine("Crm Connection disposed");
 
         }
 
