@@ -3,7 +3,7 @@
   <!-- Configurations that affect the Test Framework -->
   <RunConfiguration>
     <!--<DisableAppDomain>False</DisableAppDomain>-->
-    <TargetFrameworkVersion>.NET Framework, Version=v4.6.2</TargetFrameworkVersion>
+    <!--<TargetFrameworkVersion>.NET Framework, Version=v4.6.2</TargetFrameworkVersion>-->
     <!--<TestSessionTimeout>10000</TestSessionTimeout>-->
   </RunConfiguration>
   <!--<MSTest>
