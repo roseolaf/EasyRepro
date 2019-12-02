@@ -110,12 +110,14 @@ namespace Draeger.Testautomation.CredentialsManagerCore
                     lock (_getCredslock)
                     {
 
-                        logger.Debug("Test GetCredentials after Credslock");
+                        logger.Debug("Test GetCredentials inside Credslock");
                         var matchingCredentials =
                             GetCredentialsUsingSecurityRoles(credentialsInfo[alias].SecurityRoles, logger) ??
                             PrepareUnusedCredentials(credentialsInfo[alias], logger);
                         retVal.Add(alias, matchingCredentials);
                     }
+
+                    logger.Debug("Test GetCredentials after Credslock");
                 }
 
             return retVal;
