@@ -54,11 +54,11 @@ namespace Draeger.Dynamics365.Testautomation.Common
         [AssemblyCleanup]
         public static void AssemblyCleanup()
         {
-            AdminConnection.Instance.Dispose();
+            //    AdminConnection.Instance.Dispose();
             CredentialsManager.Instance.Dispose();
             //AdminConnection adminConnection = new AdminConnection();
             //adminConnection.Dispose();
-            Environment.Exit(Environment.ExitCode);
+            //Environment.Exit(Environment.ExitCode);
         }
 
         [TestInitialize]
@@ -142,6 +142,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
             //XrmBrowser.Browser.Driver?.Dispose();
             XrmApp.Dispose();
 
+            AdminConnection.Instance.Dispose();
 
         }
 
