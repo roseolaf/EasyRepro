@@ -2,7 +2,14 @@
 <RunSettings>
   <!-- Configurations that affect the Test Framework -->
   <RunConfiguration>
-    <DisableAppDomain>True</DisableAppDomain>
-    <MaxCpuCount>1</MaxCpuCount>
+    <DisableAppDomain>False</DisableAppDomain>
+    <TestSessionTimeout>10000</TestSessionTimeout>
+    <ExecutionThreadApartmentState>STA</ExecutionThreadApartmentState>
   </RunConfiguration>
+  <MSTest>
+    <!-- Enable legacy mode, legacy setting are honored only when this flag is set to true -->
+    <ForcedLegacyMode>true</ForcedLegacyMode>
+  </MSTest>
+  <TestRunParameters>
+  </TestRunParameters>
 </RunSettings>
