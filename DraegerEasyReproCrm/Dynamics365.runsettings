@@ -3,7 +3,7 @@
   <!-- Configurations that affect the Test Framework -->
   <RunConfiguration>
     <DisableAppDomain>False</DisableAppDomain>
-    <TestSessionTimeout>10000</TestSessionTimeout>
+    <!--<TestSessionTimeout>10000</TestSessionTimeout>-->
     <ExecutionThreadApartmentState>STA</ExecutionThreadApartmentState>
   </RunConfiguration>
   <MSTest>
