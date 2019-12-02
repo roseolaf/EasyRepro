@@ -79,28 +79,38 @@ namespace Draeger.Testautomation.CredentialsManagerCore
         public Dictionary<string, ManagedCredentials> GetCredentials(object caller, string testMethod,
             ILogger logger)
         {
-//#if DEBUG
-//            if (Environment.MachineName == "LDE7355")
-//            if (_usedCredentials.Count <= 0)
-//            {
-//                //reserve one user for other machine
-//                var user = GetUnusedCredentials(UserGroup.Sales, null);
-//                _usedCredentials.Add(user, new CredentialsInfo(){ExclusivelyUsed = true, SecurityRoles = new HashSet<SecurityRole>()});
+            //#if DEBUG
+            //            if (Environment.MachineName == "LDE7355")
+            //            if (_usedCredentials.Count <= 0)
+            //            {
+            //                //reserve one user for other machine
+            //                var user = GetUnusedCredentials(UserGroup.Sales, null);
+            //                _usedCredentials.Add(user, new CredentialsInfo(){ExclusivelyUsed = true, SecurityRoles = new HashSet<SecurityRole>()});
 
-//            }
-//#endif
+            //            }
+            //#endif
+
+            logger.Debug("Test GetCredentials");
             var credentialsInfo = GetCallingMethodsCredentialsRequests(caller, testMethod);
+
+            logger.Debug("Test credentialsInfo");
             var retVal = new Dictionary<string, ManagedCredentials>();
             foreach (var alias in credentialsInfo.Keys)
                 //admin account is unmanaged!!
                 if (credentialsInfo[alias].UserGroup == UserGroup.Admin)
                 {
                     retVal.Add(alias, GetUnusedCredentials(credentialsInfo[alias].UserGroup, logger));
+
+                    logger.Debug("Test GetUnusedCredentials Admin");
                 }
                 else
                 {
+
+                    logger.Debug("Test GetCredentials before Credslock");
                     lock (_getCredslock)
                     {
+
+                        logger.Debug("Test GetCredentials after Credslock");
                         var matchingCredentials =
                             GetCredentialsUsingSecurityRoles(credentialsInfo[alias].SecurityRoles, logger) ??
                             PrepareUnusedCredentials(credentialsInfo[alias], logger);
