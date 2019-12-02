@@ -92,9 +92,16 @@ namespace Draeger.Dynamics365.Testautomation.Common
             Users = CredentialsManager.Instance.GetCredentials(this,
                 TestContext.TestName, Logger);
 
+            Logger.Debug("Test Users");
             XrmBrowser = new WebClient(TestSettings.Options);
+
+            Logger.Debug("Test XrmBrowser");
             XrmApp = new XrmApp(XrmBrowser);
+
+            Logger.Debug("Test XrmApp");
             TestContext.Properties.Add("WebClient", XrmBrowser);
+
+            Logger.Debug("Test WebClient");
 #if DEBUG
             var monitor = Screen.FromPoint(new Point(Screen.PrimaryScreen.Bounds.Right + 1,
                 Screen.PrimaryScreen.Bounds.Top));
