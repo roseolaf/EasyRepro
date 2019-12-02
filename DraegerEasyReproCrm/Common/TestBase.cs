@@ -46,25 +46,33 @@ namespace Draeger.Dynamics365.Testautomation.Common
         [AssemblyInitialize]
         public static void AssemblyInitialize(TestContext testContext)
         {
+            Console.WriteLine("Assembly Init");
             CredentialsManager.Instance.Init(new XrmManagementHelper());
             ICredentials credentials = new NetworkCredential("tmp-QA-TA-001", "DraegerQA01");
             WebRequest.DefaultWebProxy.Credentials = credentials;
+
+            Console.WriteLine("Assembly Init complete");
         }
 
         [AssemblyCleanup]
         public static void AssemblyCleanup()
         {
+
+            Console.WriteLine("Assembly cleanup");
             //    CrmConnection.Instance.Dispose();
             CredentialsManager.Instance.Dispose();
+            CrmConnection.Instance.Dispose();
             //CrmConnection adminConnection = new CrmConnection();
             //adminConnection.Dispose();
             //Environment.Exit(Environment.ExitCode);
+
+            Console.WriteLine("Assembly cleanup complete");
         }
 
         [TestInitialize]
         public void TestInitialize()
         {
-
+            Console.WriteLine("Test Init");
             CrmConnection ac = new CrmConnection();
             var context = ac.GetContext();
             var solutionsHistory = context.CreateQuery("msdyn_solutionhistory");
@@ -98,12 +106,17 @@ namespace Draeger.Dynamics365.Testautomation.Common
 #endif
             XrmBrowser.Browser.Driver.Navigate().GoToUrl(XrmUri);
 
+
+            Console.WriteLine("Test Init Complete");
+
         }
 
 
         [TestCleanup]
         public void TestCleanUp()
         {
+
+            Console.WriteLine("Test Cleanup");
             var uri = new Uri(XrmBrowser.Browser.Driver.Url);
             var scheme = uri.Scheme;
             var authority = uri.Authority;
@@ -142,9 +155,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
             //XrmBrowser.Browser.Driver?.Dispose();
             XrmApp.Dispose();
 
-            Console.WriteLine("Dispose Crm Connection");
-            CrmConnection.Instance.Dispose();
-            Console.WriteLine("Crm Connection disposed");
+            Console.WriteLine("Test Cleanup complete");
 
         }
 
