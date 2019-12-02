@@ -73,6 +73,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         /// </summary>
         public BrowserOptions Options { get; private set; }
 
+
         /// <summary>
         /// Gets a reference to the underlying selenium driver for this browser.
         /// </summary>
@@ -80,7 +81,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             get
             {
-                if (this.driver == null)
+                if (this.driver == null && !disposing)
                 {
                     this.driver = BrowserDriverFactory.CreateWebDriver(this.Options);
 

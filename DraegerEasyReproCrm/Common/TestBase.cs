@@ -76,11 +76,12 @@ namespace Draeger.Dynamics365.Testautomation.Common
 
             LoggerSinkList = new List<ListSinkInfo>();
             var loggerConfig = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
                 .Enrich.With(new QaLogEnricher(TestContext))
                 .WriteTo.File(new JsonFormatter(renderMessage: true),
                     Path.Combine(Directory.GetCurrentDirectory(), "/logs/log.json"),
                     rollingInterval: RollingInterval.Day,
-                    restrictedToMinimumLevel:LogEventLevel.Debug,
+                    restrictedToMinimumLevel:LogEventLevel.Verbose,
                     retainedFileCountLimit: null)
                 .WriteTo.MSTestOutput(TestContext, LogEventLevel.Debug)
                 .WriteTo.ListOutput(LoggerSinkList,TestContext);
@@ -149,11 +150,12 @@ namespace Draeger.Dynamics365.Testautomation.Common
             }
 
             //XrmBrowser.Browser.Driver?.Close();
-            //XrmBrowser.Browser.Driver?.Quit();
+            //XrmBrowser.Browser.Driver.Quit();
             //XrmBrowser.Browser.Driver?.Dispose();
             XrmApp.Dispose();
-            CredentialsManager.Instance.Dispose();
-            CrmConnection.Instance.Dispose();
+            XrmApp = null;
+            //CredentialsManager.Instance.Dispose();
+            //CrmConnection.Instance.Dispose();
             Logger.Debug("{Call} {Driver} {XrmApp} {CredManager} {CrmConnection}", "End",XrmBrowser.Browser.Driver != null, XrmApp != null, CrmConnection.Instance != null, CredentialsManager.Instance != null);
             Console.WriteLine("Test Cleanup complete");
 
