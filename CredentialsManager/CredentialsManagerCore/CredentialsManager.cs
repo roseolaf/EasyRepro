@@ -137,10 +137,14 @@ namespace Draeger.Testautomation.CredentialsManagerCore
             ManagedCredentials credentials;
             //lock (_unusedCredslock)
             {
+
+                logger.Debug("Test PrepareUnusedCredentials start");
                 credentials = GetUnusedCredentials(credentialsInfo.UserGroup, logger);
                 credentialsInfo.ReferenceCount = 1;
                 _usedCredentials.Add(credentials, credentialsInfo);
                 SetSecurityRoles(credentials, credentialsInfo.SecurityRoles, logger, credentialsInfo.RemoveBasicRoles);
+
+                logger.Debug("Test PrepareUnusedCredentials end");
             }
 
             return credentials;
@@ -207,6 +211,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore
             ManagedCredentials retVal;
             //lock (_padlock)
             {
+                logger.Debug("Test GetCredentialsUsingSecurityRoles start");
                 var credentials =
                     _usedCredentials.Where(x =>
                             !x.Value.ExclusivelyUsed && x.Value.SecurityRoles.SetEquals(securityRoles))
@@ -216,6 +221,8 @@ namespace Draeger.Testautomation.CredentialsManagerCore
                 retVal = managedCredentials.First();
                 logger.Information($"Reusing credentials of {retVal.Username.ToUnsecureString()}");
                 Interlocked.Increment(ref _usedCredentials[retVal].ReferenceCount);
+
+                logger.Debug("Test GetCredentialsUsingSecurityRoles end");
             }
 
             return retVal;
