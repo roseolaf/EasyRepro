@@ -2,14 +2,14 @@
 <RunSettings>
   <!-- Configurations that affect the Test Framework -->
   <RunConfiguration>
-    <DisableAppDomain>False</DisableAppDomain>
+    <!--<DisableAppDomain>False</DisableAppDomain>-->
+    <TargetFrameworkVersion>.NET Framework, Version=v4.6.2</TargetFrameworkVersion>
     <!--<TestSessionTimeout>10000</TestSessionTimeout>-->
-    <ExecutionThreadApartmentState>STA</ExecutionThreadApartmentState>
   </RunConfiguration>
-  <MSTest>
-    <!-- Enable legacy mode, legacy setting are honored only when this flag is set to true -->
+  <!--<MSTest>
+    --><!-- Enable legacy mode, legacy setting are honored only when this flag is set to true --><!--
     <ForcedLegacyMode>true</ForcedLegacyMode>
-  </MSTest>
+  </MSTest>-->
   <TestRunParameters>
   </TestRunParameters>
 </RunSettings>

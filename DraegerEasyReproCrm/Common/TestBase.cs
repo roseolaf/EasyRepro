@@ -46,19 +46,16 @@ namespace Draeger.Dynamics365.Testautomation.Common
         [AssemblyInitialize]
         public static void AssemblyInitialize(TestContext testContext)
         {
-            Console.WriteLine("Assembly Init");
             CredentialsManager.Instance.Init(new XrmManagementHelper());
             ICredentials credentials = new NetworkCredential("tmp-QA-TA-001", "DraegerQA01");
             WebRequest.DefaultWebProxy.Credentials = credentials;
 
-            Console.WriteLine("Assembly Init complete");
         }
 
         [AssemblyCleanup]
         public static void AssemblyCleanup()
         {
 
-            Console.WriteLine("Assembly cleanup");
             //    CrmConnection.Instance.Dispose();
             CredentialsManager.Instance.Dispose();
             CrmConnection.Instance.Dispose();
@@ -66,13 +63,11 @@ namespace Draeger.Dynamics365.Testautomation.Common
             //adminConnection.Dispose();
             //Environment.Exit(Environment.ExitCode);
 
-            Console.WriteLine("Assembly cleanup complete");
         }
 
         [TestInitialize]
         public void TestInitialize()
         {
-            Console.WriteLine("Test Init");
             CrmConnection ac = new CrmConnection();
             var context = ac.GetContext();
             var solutionsHistory = context.CreateQuery("msdyn_solutionhistory");
@@ -91,6 +86,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
                 .WriteTo.ListOutput(LoggerSinkList,TestContext);
             Logger = new LoggerWrapper(loggerConfig.CreateLogger());
 
+            Logger.Debug("Test Init");
 
             Users = CredentialsManager.Instance.GetCredentials(this,
                 TestContext.TestName, Logger);
@@ -107,7 +103,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
             XrmBrowser.Browser.Driver.Navigate().GoToUrl(XrmUri);
 
 
-            Console.WriteLine("Test Init Complete");
+            Logger.Debug("Test Init Complete");
 
         }
 
@@ -115,6 +111,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
         [TestCleanup]
         public void TestCleanUp()
         {
+            Logger.Debug("{Call} {Driver} {XrmApp} {CredManager} {CrmConnection}", "Cleanup Start", XrmBrowser.Browser.Driver != null, XrmApp != null, CrmConnection.Instance != null, CredentialsManager.Instance != null);
 
             Console.WriteLine("Test Cleanup");
             var uri = new Uri(XrmBrowser.Browser.Driver.Url);
@@ -144,6 +141,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
 #else
             (new Screenshot()).SaveScreenshotFullPage(XrmBrowser, TestContext);
 #endif
+            Logger.Debug("{Call} {Driver} {XrmApp} {CredManager} {CrmConnection}", "User Dispose", XrmBrowser.Browser.Driver != null, XrmApp != null, CrmConnection.Instance != null, CredentialsManager.Instance != null);
 
             foreach (var kvp in Users)
             {
@@ -154,7 +152,9 @@ namespace Draeger.Dynamics365.Testautomation.Common
             //XrmBrowser.Browser.Driver?.Quit();
             //XrmBrowser.Browser.Driver?.Dispose();
             XrmApp.Dispose();
-
+            CredentialsManager.Instance.Dispose();
+            CrmConnection.Instance.Dispose();
+            Logger.Debug("{Call} {Driver} {XrmApp} {CredManager} {CrmConnection}", "End",XrmBrowser.Browser.Driver != null, XrmApp != null, CrmConnection.Instance != null, CredentialsManager.Instance != null);
             Console.WriteLine("Test Cleanup complete");
 
         }
