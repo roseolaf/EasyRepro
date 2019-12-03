@@ -399,6 +399,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         public static void WaitForElement(this IWebElement element)
         {
             element.WaitUntilElement(e => e.Displayed && e.Enabled, TimeSpan.FromSeconds(25));
+            Thread.Sleep(50);
         }
 
         public static void WaitForLoading(this IWebElement element)

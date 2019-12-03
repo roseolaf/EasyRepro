@@ -23,7 +23,8 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager.Decorator
         {
             entity.Attributes["dw_accountgroup"] = new OptionSetValue((int)Account_AccountGroup_OptionSet.SoldTo);
 
-            
+            InformationDescription += $"Account group set to \"sold to\"\\n";
+
             return base.CreateEntityRecord(caller, entity);
         }
 

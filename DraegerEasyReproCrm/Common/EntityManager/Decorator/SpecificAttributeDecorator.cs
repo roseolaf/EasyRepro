@@ -44,7 +44,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager.Decorator
             }
 
             entity.Attributes[AttributeName] = AttributeValue;
-
+            InformationDescription += $"Specified attribute {AttributeName} with value {AttributeValue}\\n";
             return base.CreateEntityRecord(caller, entity);
         }
         public override Entity CloneEntityRecord(string entityName, params KeyValuePair<string, object>[] attributes)
