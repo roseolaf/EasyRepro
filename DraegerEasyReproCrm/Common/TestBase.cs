@@ -14,6 +14,7 @@ using System.Web;
 using System.Windows.Forms;
 using Draeger.Dynamics365.Testautomation.Attributes;
 using Draeger.Dynamics365.Testautomation.Common.EntityManager;
+using Draeger.Dynamics365.Testautomation.Common.Helper;
 using Draeger.Testautomation.CredentialsManagerCore;
 using Microsoft.Dynamics365.UIAutomation.Api.UCI;
 using Microsoft.Dynamics365.UIAutomation.Browser;
@@ -128,35 +129,46 @@ namespace Draeger.Dynamics365.Testautomation.Common
             }
             Logger.Debug("{Call} {Driver} {XrmApp} {CredManager} {CrmConnection}", "User Dispose", XrmBrowser.Browser.Driver != null, XrmApp != null, CrmConnection.Instance != null, CredentialsManager.Instance != null);
 
-
-            Console.WriteLine("Test Cleanup");
-            var uri = new Uri(XrmBrowser.Browser.Driver.Url);
-            var scheme = uri.Scheme;
-            var authority = uri.Authority;
-            var qs = HttpUtility.ParseQueryString(uri.Query.ToLower());
-            var appId = qs.Get("appid");
-            TestContext.Properties.Add("Scheme",scheme);
-            TestContext.Properties.Add("Authority",authority);
-            TestContext.Properties.Add("AppId",appId);
-
-
-            Logger.TestResult("{TestResult}", TestContext.CurrentTestOutcome);
-#if !DEBUG
-            if (Exception != null)
+            try
             {
-                if (Exception.Message.Contains("Assert"))
-                    Logger.Fail("{InnerException} - {@Exception}", Exception.InnerException, Exception);
-                else
-                    Logger.Error("{InnerException} - {@Exception}", Exception.InnerException, Exception);
 
-                WorkItems.CreateOrUpdateBug(int.Parse(TestContext.Properties["TestCaseId"].ToString()),
-                     LoggerSinkList,
-                     Exception,
-                     (new Screenshot()).SaveScreenshotFullPage(XrmBrowser, TestContext));
-            }
+                Console.WriteLine("Test Cleanup");
+                var uri = new Uri(XrmBrowser.Browser.Driver.Url);
+                var scheme = uri.Scheme;
+                var authority = uri.Authority;
+                var qs = HttpUtility.ParseQueryString(uri.Query.ToLower());
+                var appId = qs.Get("appid");
+                TestContext.Properties.Add("Scheme", scheme);
+                TestContext.Properties.Add("Authority", authority);
+                TestContext.Properties.Add("AppId", appId);
+
+
+                Logger.TestResult("{TestResult}", TestContext.CurrentTestOutcome);
+#if !DEBUG
+                if (Exception != null)
+                {
+                    if (Exception.Message.Contains("Assert"))
+                        Logger.Fail("{InnerException} - {@Exception}", Exception.InnerException, Exception);
+                    else
+                        Logger.Error("{InnerException} - {@Exception}", Exception.InnerException, Exception);
+
+                    WorkItems.CreateOrUpdateBug(int.Parse(TestContext.Properties["TestCaseId"].ToString()),
+                        LoggerSinkList,
+                        Exception,
+                        (new Screenshot()).SaveScreenshotFullPage(XrmBrowser, TestContext));
+                }
 #else
             (new Screenshot()).SaveScreenshotFullPage(XrmBrowser, TestContext);
 #endif
+            }
+            catch (WebDriverException e)
+            {
+                Logger.Debug(e, "WebDriverException during Bug creation");
+            }
+            catch (Exception e)
+            {
+                Logger.Debug(e, "Unexpected Exception during Bug creation");
+            }
 
 
             //XrmBrowser.Browser.Driver?.Close();
