@@ -524,7 +524,7 @@ namespace Draeger.Dynamics365.Testautomation.Core
 
                 var name = Logger.LogSet(() =>
                     newCasePage.Name, "OneTimeInstitution");
-                XrmApp.ThinkTime(5000);
+                XrmApp.ThinkTime(10000);
 
                 var Country = Logger.LogGetExpectedResultCheck(() =>
                     newCasePage.ExistingInstitution, name, expectedResult);
