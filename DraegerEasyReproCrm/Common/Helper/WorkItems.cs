@@ -359,13 +359,6 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
             jsonPatchDocument.Add(
                 new JsonPatchOperation()
                 {
-                    Path = "/fields/System.Title",
-                    Operation = Operation.Add,
-                    Value = title,
-                });
-            jsonPatchDocument.Add(
-                new JsonPatchOperation()
-                {
                     Path = "/fields/Custom.FoundInRelease",
                     Operation = Operation.Replace,
                     Value = foundInRelease,
@@ -380,13 +373,6 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
             jsonPatchDocument.Add(
                 new JsonPatchOperation()
                 {
-                    Path = "/fields/System.AreaPath",
-                    Operation = Operation.Replace,
-                    Value = testCase.Fields["System.AreaPath"],
-                });
-            jsonPatchDocument.Add(
-                new JsonPatchOperation()
-                {
                     Path = "/fields/System.State",
                     Operation = Operation.Replace,
                     Value = "Active",
@@ -394,9 +380,8 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
             jsonPatchDocument.Add(
                  new JsonPatchOperation()
                  {
-
                      Path = "/fields/Microsoft.VSTS.TCM.ReproSteps",
-                     Operation = Operation.Add,
+                     Operation = Operation.Replace,
                      Value = newReproStepsHtml
 
                  });
