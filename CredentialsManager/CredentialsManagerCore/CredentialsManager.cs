@@ -265,11 +265,13 @@ namespace Draeger.Testautomation.CredentialsManagerCore
             //lock (_returnCredslock)
             {
 
-                logger.Debug("ReturnCredentials start");
+                logger.Debug($"ReturnCredentials start {managedCredentials.Username} {_usedCredentials[managedCredentials].ReferenceCount}");
                 Interlocked.Decrement(ref _usedCredentials[managedCredentials].ReferenceCount);
-                if (_usedCredentials[managedCredentials].ReferenceCount >= 1) return;
 
                 logger.Debug("ReturnCredentials Decrement");
+                if (_usedCredentials[managedCredentials].ReferenceCount >= 1) return;
+
+                logger.Debug("ReturnCredentials ReferenceCount");
                 ResetUserRoles(managedCredentials, _usedCredentials[managedCredentials].SecurityRoles, logger);
 
                 logger.Debug("ReturnCredentials ResetUserRoles");
