@@ -153,13 +153,14 @@ namespace Draeger.Dynamics365.Testautomation.Common
 
             foreach (var kvp in Users)
             {
+                Logger.Debug($"Return Credentials for user {kvp.Value.Username.ToUnsecureString()}");
                 kvp.Value.Dispose();
             }
 
             //XrmBrowser.Browser.Driver?.Close();
             //XrmBrowser.Browser.Driver.Quit();
             //XrmBrowser.Browser.Driver?.Dispose();
-            XrmApp.Dispose();
+          XrmApp.Dispose();
             XrmApp = null;
             //CredentialsManager.Instance.Dispose();
             //CrmConnection.Instance.Dispose();
