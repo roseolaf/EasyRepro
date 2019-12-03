@@ -198,7 +198,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore
                         $"Pooled credentials don't exist for UserGroup {@group.ToString()}");
             }
 
-            var manCred = new ManagedCredentials(cred, this, logger);
+            var manCred = new ManagedCredentials(cred, this);
             return manCred;
         }
 
