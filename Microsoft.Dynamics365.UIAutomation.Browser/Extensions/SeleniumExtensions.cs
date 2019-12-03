@@ -398,7 +398,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
         public static void WaitForElement(this IWebElement element)
         {
-            element.WaitUntilElement(e => e.Displayed && e.Enabled, TimeSpan.FromSeconds(25));
+            element.WaitUntilElement(e => e.Displayed && e.Enabled && int.Parse(e.GetAttribute("clientHeight")) > 0, TimeSpan.FromSeconds(25));
         }
 
         public static void WaitForLoading(this IWebElement element)

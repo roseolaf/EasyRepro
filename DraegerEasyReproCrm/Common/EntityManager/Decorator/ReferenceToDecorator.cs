@@ -29,6 +29,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager.Decorator
         {
             entity.Attributes[AttributeRef] = new EntityReference(EntityInfoRef.LogicalName, EntityInfoRef.Id);
 
+            InformationDescription += $"Added reference for attribute {AttributeRef} with entity {EntityInfoRef.LogicalName} and guid {EntityInfoRef.Id} \\n";
             return base.CreateEntityRecord(caller, entity);
         }
 

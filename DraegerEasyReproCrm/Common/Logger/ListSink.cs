@@ -74,7 +74,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
                 Message = message,
                 Level = logEvent.Level.ToString(),
                 Url = _testContext.Properties.Contains("WebClient") ? (_testContext.Properties["WebClient"] as WebClient).Browser.Driver.Url: "",
-                Screenshot = _testContext.Properties.Contains("WebClient") ?(new Helper.Screenshot()).SaveScreenshot(_testContext.Properties["WebClient"] as WebClient, _testContext) : "",
+                Screenshot = (_testContext.Properties.Contains("WebClient") && logEvent.Level >= LogEventLevel.Information) ?(new Helper.Screenshot()).SaveScreenshot(_testContext.Properties["WebClient"] as WebClient, _testContext) : "",
                 Properties = logEvent.Properties,
                 TestContext = _testContext
             };

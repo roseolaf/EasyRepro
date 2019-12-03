@@ -24,6 +24,8 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager.Decorator
         public override Entity CreateEntityRecord<T>(object caller, T entity)
         {            
             entity.Attributes[AttributeRef] = new OptionSetValue(OptionSetRef);
+
+            InformationDescription += $"Set Option {AttributeRef} to {OptionSetRef} \\n";
             return base.CreateEntityRecord(caller, entity);
         }
 

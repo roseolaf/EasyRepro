@@ -43,7 +43,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
         public char CharToReplace;
         public ReplaceType ReplaceType;
         public string OwnerEmail = "";
-        public string InformationDescription = "Creating record (for detailed attributes, see log.level debug): ";
+        public string InformationDescription = "Creating record (for detailed attributes, see log.level debug):\\n";
         protected SystemUser Owner;
         //protected object createLock =  new object();
         //protected object cloneLock = new object();
@@ -304,7 +304,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
             var create = context.Create(entity);
             var result = GetEntityRecord(this, entity.LogicalName, create);
 
-            Logger.Information("{informationDescription} {Entity} with name {defaultPrefix} and Guid {EntityId}",
+            Logger.Information(@"{informationDescription}\n{Entity} with prefix {defaultPrefix} and Guid {EntityId}",
                 InformationDescription, entity.LogicalName, this.DefaultPrefix, create.ToString());
             return result;
 
@@ -379,6 +379,23 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
             }
         }
 
+        public new string InformationDescription
+        {
+            get
+            {
+                if (_entityManagerComponent is EntityManagerDecorator deco)
+                    return deco.InformationDescription;
+                return _entityManagerComponent.InformationDescription;
+            }
+            set
+            {
+                if (_entityManagerComponent is EntityManagerDecorator deco)
+                    deco.InformationDescription = value;
+                else
+                    _entityManagerComponent.InformationDescription = value;
+            }
+        }
+
         public override ILogger Logger { get => _entityManagerComponent.Logger; }
 
         public EntityManagerDecorator(EntityManagerComponent entityManagerComponent)
@@ -448,7 +465,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
 
                     int tries = 50;
 
-                    CrmServiceClient serviceClient =null;
+                    CrmServiceClient serviceClient = null;
                     for (int i = 0; i < tries; i++)
                     {
                         try
@@ -461,7 +478,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
                             if (proxy != null)
                                 break;
                             Console.WriteLine($"Could not establish connection. Retry in 500ms {i}/{tries}");
-                             
+
                             Thread.Sleep(3000);
                         }
                         catch (Exception e)

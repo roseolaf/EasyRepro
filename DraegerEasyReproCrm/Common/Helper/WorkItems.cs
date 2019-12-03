@@ -307,7 +307,6 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
         private static void UpdateBug(int testCaseId, List<ListSinkInfo> loggerSinkList, string screenshotPath, WorkItem testCase, WorkItemTrackingHttpClient witClient, WebApiTeam project, IdentityRef bugResponsible, WorkItemRelationType relationTestedBy, string title, int actionFailedIndex, WorkItem existingBug)
         {
 
-
             // Full page screenshot
             FileStream attStream = new FileStream(screenshotPath, FileMode.Open, FileAccess.Read);
             var screenshotFullPage = witClient.CreateAttachmentAsync(attStream).Result; // upload file
@@ -485,6 +484,9 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
 
             foreach (var log in loggerSinkList)
             {
+                if (log.LogEvent.Level < LogEventLevel.Information)
+                    continue;
+                
                 var logmsgModified = log.Message.Replace("\r\n", "<br>");
                 if (log.EntityUrl.IsNullOrEmpty())
                 {

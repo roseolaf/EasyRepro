@@ -155,6 +155,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager.Decorator
                 }
 
 
+            InformationDescription += $"Added values to {entityMetadata.Attributes.Length} attributes\\n";
 
             return base.CreateEntityRecord(caller, entity);
         }
