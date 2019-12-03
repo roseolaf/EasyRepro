@@ -30,10 +30,10 @@ namespace Draeger.Dynamics365.Testautomation.Common
 
             foreach (var role in securityRoles.Select(securityRole => FindSecurityRoleEntity(securityRole, organizationServiceProxy)))
             {
-                logger.Information($"Role {role.Name} is retrieved for reset.");
+                logger?.Information($"Role {role.Name} is retrieved for reset.");
 
                 WithdrawSecurityRole(user, role, organizationServiceProxy);
-                logger.Information($"Disassociated role {role.Name} from user {user.FirstName} {user.LastName}.\n");
+                logger?.Information($"Disassociated role {role.Name} from user {user.FirstName} {user.LastName}.\n");
             }
         }
 

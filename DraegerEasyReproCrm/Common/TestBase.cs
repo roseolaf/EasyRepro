@@ -14,14 +14,15 @@ using System.Web;
 using System.Windows.Forms;
 using Draeger.Dynamics365.Testautomation.Attributes;
 using Draeger.Dynamics365.Testautomation.Common.EntityManager;
-using Draeger.Dynamics365.Testautomation.Common.Helper;
 using Draeger.Testautomation.CredentialsManagerCore;
 using Microsoft.Dynamics365.UIAutomation.Api.UCI;
 using Microsoft.Dynamics365.UIAutomation.Browser;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using OpenQA.Selenium;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Json;
+using Screenshot = Draeger.Dynamics365.Testautomation.Common.Helper.Screenshot;
 using WebClient = Microsoft.Dynamics365.UIAutomation.Api.UCI.WebClient;
 
 [assembly: Parallelize(Workers = 100, Scope = ExecutionScope.MethodLevel)]
@@ -120,6 +121,13 @@ namespace Draeger.Dynamics365.Testautomation.Common
         public void TestCleanUp()
         {
             Logger.Debug("{Call} {Driver} {XrmApp} {CredManager} {CrmConnection}", "Cleanup Start", XrmBrowser.Browser.Driver != null, XrmApp != null, CrmConnection.Instance != null, CredentialsManager.Instance != null);
+            foreach (var kvp in Users)
+            {
+                Logger.Debug($"Return Credentials for user {kvp.Value.Username.ToUnsecureString()}");
+                kvp.Value.Return(Logger);
+            }
+            Logger.Debug("{Call} {Driver} {XrmApp} {CredManager} {CrmConnection}", "User Dispose", XrmBrowser.Browser.Driver != null, XrmApp != null, CrmConnection.Instance != null, CredentialsManager.Instance != null);
+
 
             Console.WriteLine("Test Cleanup");
             var uri = new Uri(XrmBrowser.Browser.Driver.Url);
@@ -149,24 +157,24 @@ namespace Draeger.Dynamics365.Testautomation.Common
 #else
             (new Screenshot()).SaveScreenshotFullPage(XrmBrowser, TestContext);
 #endif
-            Logger.Debug("{Call} {Driver} {XrmApp} {CredManager} {CrmConnection}", "User Dispose", XrmBrowser.Browser.Driver != null, XrmApp != null, CrmConnection.Instance != null, CredentialsManager.Instance != null);
 
-            foreach (var kvp in Users)
-            {
-                Logger.Debug($"Return Credentials for user {kvp.Value.Username.ToUnsecureString()}");
-                kvp.Value.Dispose();
-            }
 
             //XrmBrowser.Browser.Driver?.Close();
             //XrmBrowser.Browser.Driver.Quit();
             //XrmBrowser.Browser.Driver?.Dispose();
-          XrmApp.Dispose();
-            XrmApp = null;
+            try
+            {
+                XrmApp.Dispose();
+                XrmApp = null;
+            }
+            catch (WebDriverException e)
+            {
+                Logger.Debug(e, "WebDriverException during dispose");
+            }
             //CredentialsManager.Instance.Dispose();
             //CrmConnection.Instance.Dispose();
             Logger.Debug("{Call} {Driver} {XrmApp} {CredManager} {CrmConnection}", "End",XrmBrowser.Browser.Driver != null, XrmApp != null, CrmConnection.Instance != null, CredentialsManager.Instance != null);
             Console.WriteLine("Test Cleanup complete");
-
         }
 
 
