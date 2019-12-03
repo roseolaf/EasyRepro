@@ -13,17 +13,15 @@ namespace Draeger.Testautomation.CredentialsManagerCore
 
         #region IDisposable Support
         private bool _disposedValue = false; // Dient zur Erkennung redundanter Aufrufe.
-        private ILogger _logger;
 
         //make parameter-less constructor private to force usage of parameters for now
         private ManagedCredentials()
         { }
 
-        public ManagedCredentials(ITestUserCredentials credentials, CredentialsManager owner, ILogger logger)
+        public ManagedCredentials(ITestUserCredentials credentials, CredentialsManager owner)
         {
             this._credentials = credentials;
             Owner = owner;
-            _logger = logger;
         }
 
         public SecureString Username => _credentials.Username;
@@ -33,15 +31,15 @@ namespace Draeger.Testautomation.CredentialsManagerCore
 
         public CredentialsManager Owner { get; private set; } = null;
 
-        protected virtual void Dispose(bool disposing)
+        protected virtual void Dispose(bool disposing, ILogger logger)
         {
             //_logger.Debug($"Managed Credentials before dispose {_disposedValue}");
             //if (_disposedValue) return;
             if (disposing)
             {
 
-                _logger.Debug("Managed Credentials dispose");
-                Owner.ReturnCredentials(this, _logger);
+                logger?.Debug("Managed Credentials dispose");
+                Owner.ReturnCredentials(this, logger);
             }
 
             //_disposedValue = true;
@@ -49,15 +47,21 @@ namespace Draeger.Testautomation.CredentialsManagerCore
 
         public void Dispose()
         {
-            Dispose(true);
+            Dispose(true, null);
+        }
+
+        public void Return(ILogger logger)
+        {
+            Dispose(true, logger);
         }
 
         /// <summary>
         /// This method is called by the owner's ReturnCredentials method when the reference count reaches zero
         /// </summary>
-        internal void Release()
+        /// <param name="logger"></param>
+        internal void Release(ILogger logger)
         {
-            _logger.Debug("ManagedCredentials.Release");
+            logger?.Debug("ManagedCredentials.Release");
             _credentials.Dispose();
         }
 

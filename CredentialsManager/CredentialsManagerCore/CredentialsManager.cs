@@ -198,7 +198,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore
                         $"Pooled credentials don't exist for UserGroup {@group.ToString()}");
             }
 
-            var manCred = new ManagedCredentials(cred, this, logger);
+            var manCred = new ManagedCredentials(cred, this);
             return manCred;
         }
 
@@ -265,23 +265,23 @@ namespace Draeger.Testautomation.CredentialsManagerCore
             //lock (_returnCredslock)
             {
 
-                logger.Debug($"ReturnCredentials start {managedCredentials.Username.ToUnsecureString()} {_usedCredentials[managedCredentials].ReferenceCount}");
+                logger?.Debug($"ReturnCredentials start {managedCredentials.Username.ToUnsecureString()} {_usedCredentials[managedCredentials].ReferenceCount}");
                 Interlocked.Decrement(ref _usedCredentials[managedCredentials].ReferenceCount);
 
-                logger.Debug("ReturnCredentials Decrement");
+                logger?.Debug("ReturnCredentials Decrement");
                 if (_usedCredentials[managedCredentials].ReferenceCount >= 1) return;
 
-                logger.Debug("ReturnCredentials ReferenceCount");
+                logger?.Debug("ReturnCredentials ReferenceCount");
                 ResetUserRoles(managedCredentials, _usedCredentials[managedCredentials].SecurityRoles, logger);
 
-                logger.Debug("ReturnCredentials ResetUserRoles");
-                managedCredentials.Release();
+                logger?.Debug("ReturnCredentials ResetUserRoles");
+                managedCredentials.Release(logger);
 
-                logger.Debug("ReturnCredentials Release");
+                logger?.Debug("ReturnCredentials Release");
                 _usedCredentials.Remove(managedCredentials);
 
 
-                logger.Debug("ReturnCredentials end");
+                logger?.Debug("ReturnCredentials end");
             }
         }
 
