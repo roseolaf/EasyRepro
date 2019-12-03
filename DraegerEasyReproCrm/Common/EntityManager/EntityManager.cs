@@ -462,7 +462,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
                                 break;
                             Console.WriteLine($"Could not establish connection. Retry in 500ms {i}/{tries}");
                              
-                            Thread.Sleep(500);
+                            Thread.Sleep(3000);
                         }
                         catch (Exception e)
                         {
