@@ -70,11 +70,6 @@ namespace Draeger.Dynamics365.Testautomation.Common
         [TestInitialize]
         public void TestInitialize()
         {
-            CrmConnection ac = new CrmConnection();
-            var context = ac.GetContext();
-            var solutionsHistory = context.CreateQuery("msdyn_solutionhistory");
-
-            TestContext.Properties.Add("SolutionVersion", solutionsHistory.First()["msdyn_solutionversion"].ToString());
 
             LoggerSinkList = new List<ListSinkInfo>();
             var loggerConfig = new LoggerConfiguration()
@@ -90,6 +85,13 @@ namespace Draeger.Dynamics365.Testautomation.Common
             Logger = new LoggerWrapper(loggerConfig.CreateLogger());
 
             Logger.Debug("Test Init");
+            CrmConnection ac = new CrmConnection();
+            var context = ac.GetContext();
+            var solutionsHistory = context.CreateQuery("msdyn_solutionhistory");
+
+            TestContext.Properties.Add("SolutionVersion", solutionsHistory.First()["msdyn_solutionversion"].ToString());
+
+            Logger.Debug("Test CrmConnection");
 
             Users = CredentialsManager.Instance.GetCredentials(this,
                 TestContext.TestName, Logger);

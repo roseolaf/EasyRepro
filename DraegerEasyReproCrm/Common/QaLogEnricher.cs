@@ -48,14 +48,9 @@ namespace Draeger.Dynamics365.Testautomation.Common
         // Catches missing properties
         string GetProperty(string property)
         {
-            try
-            {
+            if(_testContext.Properties.Contains(property))
                 return _testContext.Properties[property].ToString();
-            }
-            catch
-            {
-                return "";
-            }
+            return "";
         }
 
         // Default set of information which should be shown on every log line

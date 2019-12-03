@@ -185,7 +185,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.PageObjects
         internal BrowserCommandResult<bool> SetValue(string field, string value, bool clearFocusOnEnd = true)
         {
             var fieldContainer = browser.Driver.WaitForElement(By.XPath(AppElements.Xpath[AppReference.Entity.TextFieldContainer].Replace("[NAME]", field)));
-
+            
             if (fieldContainer.ElementExists(By.TagName("input")))
             {
                 var input = fieldContainer.FindElement(By.TagName("input"));
