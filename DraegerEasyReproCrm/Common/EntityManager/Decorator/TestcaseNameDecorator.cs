@@ -34,7 +34,6 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager.Decorator
             var randomName = Generator.GenerateRandomName();
           
             this.DefaultPrefix = $"{((TestBase)caller).TestContext.Properties["TestCaseId"]}_{randomName}_";
-            InformationDescription += $"Auto generated prefix: {DefaultPrefix}\\n";
             return this.DefaultPrefix;
         }
 
