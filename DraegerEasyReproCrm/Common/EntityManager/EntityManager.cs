@@ -467,6 +467,8 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
                         catch (Exception e)
                         {
                             Console.WriteLine(e);
+                            if (i == 49)
+                                throw;
                         }
                     }
 
