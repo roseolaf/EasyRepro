@@ -35,8 +35,8 @@ namespace Draeger.Testautomation.CredentialsManagerCore
 
         protected virtual void Dispose(bool disposing)
         {
-            _logger.Debug($"Managed Credentials before dispose {_disposedValue}");
-            if (_disposedValue) return;
+            //_logger.Debug($"Managed Credentials before dispose {_disposedValue}");
+            //if (_disposedValue) return;
             if (disposing)
             {
 
@@ -44,7 +44,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore
                 Owner.ReturnCredentials(this, _logger);
             }
 
-            _disposedValue = true;
+            //_disposedValue = true;
         }
 
         public void Dispose()
