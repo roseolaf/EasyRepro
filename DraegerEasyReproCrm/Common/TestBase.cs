@@ -121,14 +121,12 @@ namespace Draeger.Dynamics365.Testautomation.Common
         [TestCleanup]
         public void TestCleanUp()
         {
-            Logger.Debug("{Call} {Driver} {XrmApp} {CredManager} {CrmConnection}", "Cleanup Start", XrmBrowser.Browser.Driver != null, XrmApp != null, CrmConnection.Instance != null, CredentialsManager.Instance != null);
             foreach (var kvp in Users)
             {
                 Logger.Debug($"Return Credentials for user {kvp.Value.Username.ToUnsecureString()}");
                 kvp.Value.Return(Logger);
             }
-            Logger.Debug("{Call} {Driver} {XrmApp} {CredManager} {CrmConnection}", "User Dispose", XrmBrowser.Browser.Driver != null, XrmApp != null, CrmConnection.Instance != null, CredentialsManager.Instance != null);
-
+       
             try
             {
 
@@ -171,9 +169,6 @@ namespace Draeger.Dynamics365.Testautomation.Common
             }
 
 
-            //XrmBrowser.Browser.Driver?.Close();
-            //XrmBrowser.Browser.Driver.Quit();
-            //XrmBrowser.Browser.Driver?.Dispose();
             try
             {
                 XrmApp.Dispose();
@@ -183,10 +178,6 @@ namespace Draeger.Dynamics365.Testautomation.Common
             {
                 Logger.Debug(e, "WebDriverException during dispose");
             }
-            //CredentialsManager.Instance.Dispose();
-            //CrmConnection.Instance.Dispose();
-            Logger.Debug("{Call} {Driver} {XrmApp} {CredManager} {CrmConnection}", "End",XrmBrowser.Browser.Driver != null, XrmApp != null, CrmConnection.Instance != null, CredentialsManager.Instance != null);
-            Console.WriteLine("Test Cleanup complete");
         }
 
 

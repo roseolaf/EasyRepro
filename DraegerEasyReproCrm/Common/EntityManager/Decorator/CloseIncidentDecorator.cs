@@ -40,7 +40,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager.Decorator
             ServiceContext context = CrmConnection.Instance.GetContext();
             context.Execute(closeIncidentRequest);
 
-            InformationDescription += $"Closed incident with Guid {retVal.Id}\\n";
+            InformationDescription += $"Closed incident with Guid {retVal.Id}. {Environment.NewLine}";
             return retVal;
         }
 

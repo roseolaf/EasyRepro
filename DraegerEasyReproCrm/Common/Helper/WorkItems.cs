@@ -394,13 +394,6 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
             jsonPatchDocument.Add(
                  new JsonPatchOperation()
                  {
-                     Path = "/fields/System.AssignedTo",
-                     Operation = Operation.Replace,
-                     Value = bugResponsible,
-                 });
-            jsonPatchDocument.Add(
-                 new JsonPatchOperation()
-                 {
 
                      Path = "/fields/Microsoft.VSTS.TCM.ReproSteps",
                      Operation = Operation.Add,

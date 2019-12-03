@@ -31,7 +31,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager.Decorator
             GetOwner(caller);
             entity.Attributes["ownerid"] = new EntityReference(SystemUser.EntityLogicalName, Owner.Id);
 
-            InformationDescription += $"Set owner to {OwnerEmail} \\n";
+            InformationDescription += $"Set owner to {OwnerEmail}. {Environment.NewLine}";
             return base.CreateEntityRecord(caller, entity);
         }
 

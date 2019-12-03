@@ -25,7 +25,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager.Decorator
         {            
             entity.Attributes[AttributeRef] = new OptionSetValue(OptionSetRef);
 
-            InformationDescription += $"Set Option {AttributeRef} to {OptionSetRef} \\n";
+            InformationDescription += $"Set Option {AttributeRef} to {OptionSetRef}. {Environment.NewLine}";
             return base.CreateEntityRecord(caller, entity);
         }
 
