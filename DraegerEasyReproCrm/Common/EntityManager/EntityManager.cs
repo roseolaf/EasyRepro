@@ -446,7 +446,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
                     //
                     // proxy.EnableProxyTypes();
 
-                    int tries = 10;
+                    int tries = 50;
 
                     CrmServiceClient serviceClient =null;
                     for (int i = 0; i < tries; i++)
