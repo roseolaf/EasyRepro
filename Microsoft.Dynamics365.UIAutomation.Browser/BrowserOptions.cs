@@ -94,7 +94,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                 options.AddArgument("--user-agent=" + UserAgentValue);
             }
 
-            options.AddExtension("C:/Selenium/AutoAuthProxy.crx");
+            options.AddExtension("C:/Software/AutoAuthProxy.crx");
 
             return options;
         }

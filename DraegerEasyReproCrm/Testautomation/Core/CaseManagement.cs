@@ -579,7 +579,7 @@ namespace Draeger.Dynamics365.Testautomation.Core
                 var confirmDialog = Logger.LogExpectedResultCheck<Func<bool,bool>,bool>(
                     XrmApp.Dialogs.ConfirmationDialog, true, expectedResult, true);
 
-                XrmApp.ThinkTime(2000);
+                XrmApp.ThinkTime(5000);
 
                 var status = Logger.LogExpectedResultCheck<Func<string>, string>(
                     XrmApp.Entity.GetFooterStatusValue, "Active", expectedResult);
