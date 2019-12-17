@@ -20,7 +20,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
         {
             BrowserType = (BrowserType)Enum.Parse(typeof(BrowserType), Type),
             RemoteBrowserType = BrowserType.Chrome,
-            RemoteHubServer = new Uri ("http://10.247.134.133:4444/wd/hub"),
+            RemoteHubServer = new Uri ("http://localhost:4444/wd/hub"),
             PrivateMode = false,
             CleanSession = true,
             FireEvents = false,
