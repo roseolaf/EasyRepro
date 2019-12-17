@@ -114,7 +114,6 @@ namespace Draeger.Dynamics365.Testautomation.Common
 #endif
             XrmBrowser.Browser.Driver.Navigate().GoToUrl(XrmUri);
 
-
             Logger.Debug("Test Init Complete");
 
         }

@@ -279,13 +279,13 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
             var foundInRelease = new Regex("(.+[1-9][0-9]*)").Match(solutionVersion.ToString()).Value;
 
 
-            jsonPatchDocument.Add(
-                new JsonPatchOperation()
-                {
-                    Path = "/fields/Custom.FoundInRelease",
-                    Operation = Operation.Replace,
-                    Value = foundInRelease,
-                });
+            //jsonPatchDocument.Add(
+            //    new JsonPatchOperation()
+            //    {
+            //        Path = "/fields/Custom.FoundInRelease",
+            //        Operation = Operation.Replace,
+            //        Value = foundInRelease,
+            //    });
             FileStream attStream = new FileStream(screenshotPath, FileMode.Open, FileAccess.Read);
             var screenshotFullPage = witClient.CreateAttachmentAsync(attStream).Result; // upload the file
             attStream.Dispose();
@@ -356,13 +356,13 @@ namespace Draeger.Dynamics365.Testautomation.Common.Helper
 
             var addRelation = existingBug.Relations.Any(x => !x.Url.Contains(testCaseId.ToString()));
             var jsonPatchDocument = new JsonPatchDocument();
-            jsonPatchDocument.Add(
-                new JsonPatchOperation()
-                {
-                    Path = "/fields/Custom.FoundInRelease",
-                    Operation = Operation.Replace,
-                    Value = foundInRelease,
-                });
+            //jsonPatchDocument.Add(
+            //    new JsonPatchOperation()
+            //    {
+            //        Path = "/fields/Custom.FoundInRelease",
+            //        Operation = Operation.Replace,
+            //        Value = foundInRelease,
+            //    });
             jsonPatchDocument.Add(
                 new JsonPatchOperation()
                 {
