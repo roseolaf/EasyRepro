@@ -40,7 +40,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.PageObjects
             if (!Client.Browser.Driver.ElementExists(By.XPath(xpathToFind), TimeSpan.FromSeconds(2)))
                 throw new InvalidOperationException("Field: " + field + " Does not exist");
             IWebElement fieldElement = browser.Driver.FindElement(By.XPath(xpathToFind)).ClickWait();
-            var datePickerRoot = Client.Browser.Driver.FindElement(By.XPath("//div[contains(@id, \"[NAME]\") and contains(@id, \"date-container\")]/div[contains(@placeholder,\"---\")]".Replace("[NAME]", field)));
+            var datePickerRoot = Client.Browser.Driver.FindElement(By.XPath("//div[contains(@id, \"[NAME]\") and contains(@id, \"date-container\")]/div".Replace("[NAME]", field)));
             browser.Driver.WaitFor(d => datePickerRoot.GetAttribute("class").Contains("is-open"));
             browser.Driver.WaitForTransaction();
             fieldElement.ClickWait();
