@@ -1657,10 +1657,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
             return this.Execute(GetOptions($"Save"), driver =>
             {
                 var save = driver.WaitForElement(By.XPath(AppElements.Xpath[AppReference.Entity.Save]),
-                    "Save Buttton is not available");
+                    "Save Button is not available");
 
                 save?.ClickWait();
-
+                driver.WaitForSaving();
                 return true;
             });
         }
