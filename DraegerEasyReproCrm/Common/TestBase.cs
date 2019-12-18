@@ -54,18 +54,18 @@ namespace Draeger.Dynamics365.Testautomation.Common
 
         }
 
-        [AssemblyCleanup]
-        public static void AssemblyCleanup()
-        {
+        //[AssemblyCleanup]
+        //public static void AssemblyCleanup()
+        //{
 
-            //    CrmConnection.Instance.Dispose();
-            CredentialsManager.Instance.Dispose();
-            CrmConnection.Instance.Dispose();
-            //CrmConnection adminConnection = new CrmConnection();
-            //adminConnection.Dispose();
-            //Environment.Exit(Environment.ExitCode);
+        //    //    CrmConnection.Instance.Dispose();
+        //    CredentialsManager.Instance.Dispose();
+        //    CrmConnection.Instance.Dispose();
+        //    //CrmConnection adminConnection = new CrmConnection();
+        //    //adminConnection.Dispose();
+        //    //Environment.Exit(Environment.ExitCode);
 
-        }
+        //}
 
         [TestInitialize]
         public void TestInitialize()
