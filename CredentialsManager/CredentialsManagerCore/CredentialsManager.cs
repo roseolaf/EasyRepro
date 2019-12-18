@@ -185,12 +185,15 @@ namespace Draeger.Testautomation.CredentialsManagerCore
             switch (@group)
             {
                 case UserGroup.Sales:
+                    logger.Debug("GetUnusedCredentials Sales");
                     cred = _pool.SalesUsers.Acquire();
                     break;
                 case UserGroup.Service:
+                    logger.Debug("GetUnusedCredentials Service");
                     cred = _pool.ServiceUsers.Acquire();
                     break;
                 case UserGroup.Admin:
+                    logger.Debug("GetUnusedCredentials Admin");
                     cred = _pool.AdminUser;
                     break;
                 default:
@@ -267,21 +270,20 @@ namespace Draeger.Testautomation.CredentialsManagerCore
 
                 logger?.Debug($"ReturnCredentials start {managedCredentials.Username.ToUnsecureString()} {_usedCredentials[managedCredentials].ReferenceCount}");
                 Interlocked.Decrement(ref _usedCredentials[managedCredentials].ReferenceCount);
-
                 logger?.Debug("ReturnCredentials Decrement");
+
                 if (_usedCredentials[managedCredentials].ReferenceCount >= 1) return;
-
                 logger?.Debug("ReturnCredentials ReferenceCount");
+
                 ResetUserRoles(managedCredentials, _usedCredentials[managedCredentials].SecurityRoles, logger);
-
                 logger?.Debug("ReturnCredentials ResetUserRoles");
-                managedCredentials.Release(logger);
 
-                logger?.Debug("ReturnCredentials Release");
                 _usedCredentials.Remove(managedCredentials);
+                logger?.Debug("ReturnCredentials Remove");
 
+                managedCredentials.Release(logger);
+                logger?.Debug("ReturnCredentials Release");
 
-                logger?.Debug("ReturnCredentials end");
             }
         }
 
