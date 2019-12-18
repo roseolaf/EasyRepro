@@ -78,7 +78,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
             //if (this.StartMaximized)
             //{
-            //    options.AddArgument("--start-maximized");
+                options.AddArgument("--start-maximized");
             //}
 
             if (this.PrivateMode)
@@ -86,7 +86,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                 options.AddArgument("--incognito");
             }
 
-            if (this.Headless)
+            //if (this.Headless)
             {
                 options.AddArgument("--headless");
             }
