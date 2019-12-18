@@ -76,10 +76,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
             options.AddArgument("--window-size=1920,1080");
 
-            if (this.StartMaximized)
-            {
-                options.AddArgument("--start-maximized");
-            }
+            //if (this.StartMaximized)
+            //{
+            //    options.AddArgument("--start-maximized");
+            //}
 
             if (this.PrivateMode)
             {
