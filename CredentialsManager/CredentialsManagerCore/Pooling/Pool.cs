@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
+using Serilog;
 
 namespace Draeger.Testautomation.CredentialsManagerCore.Pooling
 {
@@ -41,16 +42,21 @@ namespace Draeger.Testautomation.CredentialsManagerCore.Pooling
             return typeof(T);
         }
 
-        public T Acquire()
+        public T Acquire(ILogger logger)
         {
+            logger.Debug("Acquire start");
             _sync.WaitOne();
+            logger.Debug("Acquire WaitOne");
             switch (_loadingMode)
             {
                 case LoadingMode.Eager:
+                    logger.Debug("Acquire Eager");
                     return AcquireEager();
                 case LoadingMode.Lazy:
+                    logger.Debug("Acquire Lazy");
                     return AcquireLazy();
                 default:
+                    logger.Debug("Acquire AcquireLazyExpanding");
                     Debug.Assert(_loadingMode == LoadingMode.LazyExpanding,
                         "Unknown LoadingMode encountered in Acquire method.");
                     return AcquireLazyExpanding();
