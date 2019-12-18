@@ -16,6 +16,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Web.Script.Serialization;
+using OpenQA.Selenium.Internal;
+using OpenQA.Selenium.Support.Extensions;
 using SeleniumExtras.WaitHelpers;
 using ExpectedConditions = SeleniumExtras.WaitHelpers.ExpectedConditions;
 
@@ -414,6 +416,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             element.WaitUntilElement(e => !e.FindElements(By.XPath("//span[starts-with(text(),'Saving')]")).Any(), TimeSpan.FromSeconds(60));
         }
 
+        public static void ScrollIntoViewIfNeeded(this IWebDriver driver, IWebElement webElement)
+        {
+            driver.ExecuteScript("arguments[0].scrollIntoViewIfNeeded();", webElement);
+        }
         public static void WaitUntilElement(this IWebElement element, Func<IWebElement, bool> condition, TimeSpan time)
         {
             DateTime startTime = DateTime.Now;
@@ -421,6 +427,8 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             {
                 try
                 {
+                    var driver = ((IWrapsDriver) element).WrappedDriver;
+                    driver.ScrollIntoViewIfNeeded(element);
                     if (condition.Invoke(element))
                         return;
                 }

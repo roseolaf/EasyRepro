@@ -39,6 +39,11 @@ namespace Draeger.Dynamics365.Testautomation.ExtensionMethods
             driver.ExecuteScript("arguments[0].scrollIntoView();", webElement);
         }
 
+        public static void ScrollIntoViewIfNeeded(this IWebDriver driver, IWebElement webElement)
+        {
+            driver.ExecuteScript("arguments[0].scrollIntoViewIfNeeded();", webElement);
+        }
+
         public static void ScrollLeft(this IWebDriver driver, IWebElement webElement)
         {
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
