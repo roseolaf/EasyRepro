@@ -113,6 +113,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
             XrmBrowser.Browser.Driver.Manage().Window.Maximize();
 #endif
             XrmBrowser.Browser.Driver.Navigate().GoToUrl(XrmUri);
+            XrmBrowser.Browser.Driver.Manage().Window.Maximize();
 
             Logger.Debug("Test Init Complete");
 

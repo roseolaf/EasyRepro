@@ -31,6 +31,8 @@ namespace Draeger.Dynamics365.Testautomation.Common
             PageLoadTimeout = TimeSpan.FromMinutes(10),
             CommandTimeout = TimeSpan.FromMinutes(5),
             StartMaximized = true,
+            Width = 1920,
+            Height = 1080
             
         };
 

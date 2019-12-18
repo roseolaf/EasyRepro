@@ -435,7 +435,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                 if (DateTime.Now > startTime.Add(time))
                 {
                     string exceptionMessage = $"Timed out after {time} for {element.Text} and condition {condition.Method.Name}";
-                    throw new TimeoutException(exceptionMessage);
+                    throw new ElementNotInteractableException(exceptionMessage);
                 }
                 Thread.Sleep(100);
             }
@@ -464,7 +464,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                 if (DateTime.Now > startTime.Add(time))
                 {
                     string exceptionMessage = $"Timed out after {time} for {element.Text}";
-                    throw new TimeoutException(exceptionMessage);
+                    throw new InvalidElementStateException(exceptionMessage);
                 }
                 Thread.Sleep(100);
             }
@@ -985,4 +985,5 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
         #endregion Args / Tracing
     }
+
 }
