@@ -86,7 +86,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                 options.AddArgument("--incognito");
             }
 
-            //if (this.Headless)
+            if (this.Headless)
             {
                 options.AddArgument("--headless");
             }
