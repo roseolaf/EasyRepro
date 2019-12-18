@@ -187,12 +187,12 @@ namespace Draeger.Testautomation.CredentialsManagerCore
             {
                 case UserGroup.Sales:
                     logger.Debug("GetUnusedCredentials Sales");
-                    cred = _pool.SalesUsers.Acquire(ILogger logger);
+                    cred = _pool.SalesUsers.Acquire(logger);
                     logger.Debug("GetUnusedCredentials Sales Acquired");
                     break;
                 case UserGroup.Service:
                     logger.Debug("GetUnusedCredentials Service");
-                    cred = _pool.ServiceUsers.Acquire();
+                    cred = _pool.ServiceUsers.Acquire(logger);
                     logger.Debug("GetUnusedCredentials Service Acquired");
                     break;
                 case UserGroup.Admin:
