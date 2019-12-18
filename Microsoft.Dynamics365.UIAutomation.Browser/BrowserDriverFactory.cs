@@ -62,7 +62,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             driver.Manage().Timeouts().PageLoad = options.PageLoadTimeout;
 
             // StartMaximized overrides a set width & height
-            if (options.StartMaximized && options.BrowserType != BrowserType.Chrome) //Handle Chrome in the Browser Options
+            if (options.StartMaximized)
                 driver.Manage().Window.Maximize();
             else if (!options.StartMaximized && options.Width.HasValue && options.Height.HasValue)
                 driver.Manage().Window.Size = new System.Drawing.Size(options.Width.Value, options.Height.Value);

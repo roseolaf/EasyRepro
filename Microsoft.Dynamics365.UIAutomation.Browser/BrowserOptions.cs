@@ -74,6 +74,8 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
         {
             var options = new ChromeOptions();
 
+            options.AddArgument("--window-size=1920,1080");
+
             if (this.StartMaximized)
             {
                 options.AddArgument("--start-maximized");
