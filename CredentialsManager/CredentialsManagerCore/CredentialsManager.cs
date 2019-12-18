@@ -142,6 +142,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore
 
                 logger.Debug("Test PrepareUnusedCredentials start");
                 credentials = GetUnusedCredentials(credentialsInfo.UserGroup, logger);
+                logger.Debug("Test PrepareUnusedCredentials GetUnusedCredentials");
                 credentialsInfo.ReferenceCount = 1;
                 _usedCredentials.Add(credentials, credentialsInfo);
                 SetSecurityRoles(credentials, credentialsInfo.SecurityRoles, logger, credentialsInfo.RemoveBasicRoles);
@@ -187,14 +188,17 @@ namespace Draeger.Testautomation.CredentialsManagerCore
                 case UserGroup.Sales:
                     logger.Debug("GetUnusedCredentials Sales");
                     cred = _pool.SalesUsers.Acquire();
+                    logger.Debug("GetUnusedCredentials Sales Acquired");
                     break;
                 case UserGroup.Service:
                     logger.Debug("GetUnusedCredentials Service");
                     cred = _pool.ServiceUsers.Acquire();
+                    logger.Debug("GetUnusedCredentials Service Acquired");
                     break;
                 case UserGroup.Admin:
                     logger.Debug("GetUnusedCredentials Admin");
                     cred = _pool.AdminUser;
+                    logger.Debug("GetUnusedCredentials Admin Acquired");
                     break;
                 default:
                     throw new InvalidOperationException(
@@ -222,7 +226,11 @@ namespace Draeger.Testautomation.CredentialsManagerCore
                             !x.Value.ExclusivelyUsed && x.Value.SecurityRoles.SetEquals(securityRoles))
                         .Select(x => x.Key);
                 var managedCredentials = credentials.ToList();
-                if (!managedCredentials.Any()) return null;
+                if (!managedCredentials.Any())
+                {
+                    logger.Debug("Test GetCredentialsUsingSecurityRoles null");
+                    return null;
+                }
                 retVal = managedCredentials.First();
                 logger.Information($"Reusing credentials of {retVal.Username.ToUnsecureString()}");
                 Interlocked.Increment(ref _usedCredentials[retVal].ReferenceCount);

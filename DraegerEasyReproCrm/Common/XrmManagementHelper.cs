@@ -49,7 +49,9 @@ namespace Draeger.Dynamics365.Testautomation.Common
             {
                 foreach (var assignedRole in GetAssignedRoles(user, organizationServiceProxy))
                 {
+                    logger.Information($"WithdrawSecurityRole {assignedRole.Name} start");
                     WithdrawSecurityRole(user, assignedRole, organizationServiceProxy);
+                    logger.Information($"WithdrawSecurityRole {assignedRole.Name} end");
                 }
             }
 
