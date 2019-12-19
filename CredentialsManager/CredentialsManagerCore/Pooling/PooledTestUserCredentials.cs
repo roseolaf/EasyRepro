@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security;
 using Draeger.Testautomation.CredentialsManagerCore.Interfaces;
+using Serilog;
 
 namespace Draeger.Testautomation.CredentialsManagerCore.Pooling
 {
@@ -27,7 +28,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore.Pooling
         /// Dispose logic is wrapped inside this method to catch redundant calls to dispose
         /// </summary>
         /// <param name="disposing"></param>
-        public void Dispose(bool disposing)
+        public void Dispose(bool disposing, ILogger logger)
         {
             if (_disposedValue) return;
             if (disposing)
@@ -38,7 +39,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore.Pooling
                 }
                 else
                 {
-                    _pool.Release(this);
+                    _pool.Release(this, logger);
                 }
             }
 
@@ -50,7 +51,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore.Pooling
         /// </summary>
         public void Dispose()
         {
-            Dispose(true);
+            Dispose(true, null);
         }
     }
 }

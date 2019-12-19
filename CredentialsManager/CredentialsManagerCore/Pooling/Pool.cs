@@ -63,13 +63,18 @@ namespace Draeger.Testautomation.CredentialsManagerCore.Pooling
             }
         }
 
-        public void Release(T item)
+        public void Release(T item, ILogger logger)
         {
+            logger?.Debug("Release start");
             lock (_itemStore)
             {
+                logger?.Debug("Release lock");
                 _itemStore.Store(item);
+                logger?.Debug("Release store");
+
             }
             _sync.Release();
+            logger?.Debug("Release end");
         }
 
         protected virtual void Dispose(bool disposing)

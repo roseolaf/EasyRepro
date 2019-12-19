@@ -1,4 +1,5 @@
-﻿using System.Security;
+﻿using System;
+using System.Security;
 using Draeger.Testautomation.CredentialsManagerCore.Interfaces;
 using Draeger.Testautomation.CredentialsManagerCore.Pooling;
 using Draeger.Testautomation.CredentialsManagerCore.Pooling.Users;
@@ -62,7 +63,22 @@ namespace Draeger.Testautomation.CredentialsManagerCore
         internal void Release(ILogger logger)
         {
             logger?.Debug("ManagedCredentials.Release");
-            _credentials.Dispose();
+            switch (_credentials.UserGroup)
+            {
+                case UserGroup.Sales:
+                    ((PooledTestUserCredentials<SalesUserCredentials>)_credentials).Dispose();
+                    break;
+                case UserGroup.Admin:
+                    ((PooledTestUserCredentials<AdminUserCredentials>)_credentials).Dispose();
+                    break;
+                case UserGroup.Service:
+                    ((PooledTestUserCredentials<ServiceUserCredentials>)_credentials).Dispose();
+                    break;
+                case UserGroup.Undefined:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         #endregion
