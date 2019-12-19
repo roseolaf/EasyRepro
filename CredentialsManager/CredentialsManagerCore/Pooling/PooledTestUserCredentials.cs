@@ -30,16 +30,20 @@ namespace Draeger.Testautomation.CredentialsManagerCore.Pooling
         /// <param name="disposing"></param>
         public void Dispose(bool disposing, ILogger logger)
         {
+            logger?.Debug("PooledTestUserCredentials Dispose start");
             if (_disposedValue) return;
             if (disposing)
             {
                 if (_pool.IsDisposed)
                 {
                     _credentials.Dispose();
+                    logger?.Debug("PooledTestUserCredentials Dispose pool");
+
                 }
                 else
                 {
                     _pool.Release(this, logger);
+                    logger?.Debug("PooledTestUserCredentials Dispose release");
                 }
             }
 
