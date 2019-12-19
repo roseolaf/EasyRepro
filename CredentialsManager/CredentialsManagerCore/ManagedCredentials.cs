@@ -66,13 +66,13 @@ namespace Draeger.Testautomation.CredentialsManagerCore
             switch (_credentials.UserGroup)
             {
                 case UserGroup.Sales:
-                    ((PooledTestUserCredentials<SalesUserCredentials>)_credentials).Dispose();
+                    ((PooledTestUserCredentials<SalesUserCredentials>)_credentials).Dispose(true, logger);
                     break;
                 case UserGroup.Admin:
-                    ((PooledTestUserCredentials<AdminUserCredentials>)_credentials).Dispose();
+                    ((PooledTestUserCredentials<AdminUserCredentials>)_credentials).Dispose(true, logger);
                     break;
                 case UserGroup.Service:
-                    ((PooledTestUserCredentials<ServiceUserCredentials>)_credentials).Dispose();
+                    ((PooledTestUserCredentials<ServiceUserCredentials>)_credentials).Dispose(true, logger);
                     break;
                 case UserGroup.Undefined:
                     break;

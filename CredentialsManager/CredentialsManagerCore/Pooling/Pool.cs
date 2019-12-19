@@ -45,7 +45,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore.Pooling
         public T Acquire(ILogger logger)
         {
             logger.Debug("Acquire start");
-            _sync.WaitOne();
+            _sync.WaitOne(new TimeSpan(0,0,5,0));
             logger.Debug("Acquire WaitOne");
             switch (_loadingMode)
             {
