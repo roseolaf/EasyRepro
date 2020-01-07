@@ -1,17 +1,13 @@
-﻿using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
-using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
-using Microsoft.VisualStudio.Services.Common;
-using Microsoft.VisualStudio.Services.WebApi;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.RegularExpressions;
+using Microsoft.TeamFoundation.WorkItemTracking.WebApi.Models;
+using Microsoft.VisualStudio.Services.WebApi;
 using Serilog.Events;
-using Draeger.Dynamics365.Testautomation.Common.Helper;
+using TaADOLog.ADO;
 
-namespace Draeger.Dynamics365.Testautomation.Common
+namespace TaADOLog.Logger
 {
     public static class TestSuiteIdentifier
     {
@@ -19,12 +15,12 @@ namespace Draeger.Dynamics365.Testautomation.Common
         public static DateTime TestSuiteStartTime = DateTime.Now;
     }
 
-    public class DevOpsConnector
+    public class TestCaseInfo
     {
         
         private string UrlBuilder(string teamProject, string workItemId)
         {
-            return $"{WorkItems.azureDevOpsOrganizationUrl}/{teamProject}/_workitems/edit/{workItemId}";
+            return $"{ADOManager.ADOOrganizationUrl}/{teamProject}/_workitems/edit/{workItemId}";
         }
 
 
@@ -32,7 +28,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
         {
 
             //get work item for the id found in query
-            WorkItem workItem = WorkItems.FetchWorkItemData(id);
+            WorkItem workItem = WorkItems.GetWorkItem(id);
 
             // Add TC info to dict TODO: Tags / Category 
             var tcInfo = new Dictionary<ScalarValue, LogEventPropertyValue>()

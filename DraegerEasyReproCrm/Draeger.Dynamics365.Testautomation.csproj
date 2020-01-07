@@ -65,8 +65,8 @@
     <Reference Include="Draeger.CrmConnector.CrmOnline, Version=2.1.7258.16157, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Draeger.CrmConnector.CrmOnline.2.1.7258.16157\lib\net462\Draeger.CrmConnector.CrmOnline.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlAgilityPack, Version=1.11.16.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlAgilityPack.1.11.16\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    <Reference Include="HtmlAgilityPack, Version=1.11.17.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlAgilityPack.1.11.17\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
     <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
       <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
@@ -291,10 +291,7 @@
     <Compile Include="Common\Enums\Global.cs" />
     <Compile Include="Common\Helper\Generator.cs" />
     <Compile Include="Common\Helper\Screenshot.cs" />
-    <Compile Include="Common\Helper\WorkItems.cs" />
     <Compile Include="Common\Locators\BreadCrumbLocators.cs" />
-    <Compile Include="Common\Logger\LoggerWrapper.cs" />
-    <Compile Include="Common\Logger\DevOpsConnector.cs" />
     <Compile Include="Common\EntityManager\EntityInfo.cs" />
     <Compile Include="Common\EntityManager\EntityManager.cs" />
     <Compile Include="Common\EntityManager\Decorator\TestcaseNameDecorator.cs" />
@@ -303,16 +300,10 @@
     <Compile Include="Common\Enums\Requirement.cs" />
     <Compile Include="Common\Locators\CaseConstants.cs" />
     <Compile Include="Common\Locators\CaseLocators.cs" />
-    <Compile Include="Common\Logger\ListSink.cs" />
-    <Compile Include="Common\Logger\ListSinkConfiguration.cs" />
-    <Compile Include="Common\Logger\MSTestSinkConfiguration.cs" />
-    <Compile Include="Common\Logger\MSTestSink.cs" />
-    <Compile Include="Common\Logger\SerilogExtensions.cs" />
     <Compile Include="Common\PageObjects\BreadCrumb.cs" />
     <Compile Include="Common\PageObjects\EntityPageBase.cs" />
     <Compile Include="Common\PageObjects\PageElements\GridElement.cs" />
     <Compile Include="Common\PageObjects\PageElements\TimelineElement.cs" />
-    <Compile Include="Common\QaLogEnricher.cs" />
     <Compile Include="Common\TestBase.cs" />
     <Compile Include="Common\UtilityHelper.cs" />
     <Compile Include="Common\XrmManagementHelper.cs" />
@@ -397,6 +388,10 @@
     <ProjectReference Include="..\Microsoft.Dynamics365.UIAutomation.Browser\Microsoft.Dynamics365.UIAutomation.Browser.csproj">
       <Project>{c9748803-f3cb-4531-b313-bc24d4d0bf0c}</Project>
       <Name>Microsoft.Dynamics365.UIAutomation.Browser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TaADOLog\TaADOLog.csproj">
+      <Project>{1a19bc92-fde1-41e3-9d47-1dc587c6c847}</Project>
+      <Name>TaADOLog</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

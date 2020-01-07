@@ -21,6 +21,7 @@ using Draeger.Dynamics365.Testautomation.Common.PageObjects.PageElements;
 using Microsoft.TeamFoundation.Framework.Common;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using TaADOLog.Logger;
 using StringExtensions = Draeger.Dynamics365.Testautomation.ExtensionMethods.StringExtensions;
 using Entity = Microsoft.Xrm.Sdk.Entity;
 

@@ -20,6 +20,7 @@ using OpenQA.Selenium;
 using Microsoft.Crm.Sdk.Messages;
 using Entity = Microsoft.Xrm.Sdk.Entity;
 using System.Globalization;
+using TaADOLog.Logger;
 
 namespace Draeger.Dynamics365.Testautomation.Core
 {

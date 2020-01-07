@@ -490,7 +490,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
                     }
 
                     proxy.EnableProxyTypes();
-                    proxy.Timeout = new TimeSpan(0, 1, 0);
+                    proxy.Timeout = new TimeSpan(0, 5, 0);
 
                 }
                 catch (Exception e)

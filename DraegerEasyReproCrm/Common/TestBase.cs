@@ -23,8 +23,11 @@ using OpenQA.Selenium;
 using Serilog;
 using Serilog.Events;
 using Serilog.Formatting.Json;
-using Screenshot = Draeger.Dynamics365.Testautomation.Common.Helper.Screenshot;
+//using Screenshot = Draeger.Dynamics365.Testautomation.Common.Helper.Screenshot;
 using WebClient = Microsoft.Dynamics365.UIAutomation.Api.UCI.WebClient;
+using TaADOLog.Logger.Sink;
+using TaADOLog.Logger;
+using TaADOLog.ADO;
 
 [assembly: Parallelize(Workers = 100, Scope = ExecutionScope.MethodLevel)]
 
@@ -39,7 +42,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
         protected Dictionary<string, ManagedCredentials> Users = null;
         public TestContext TestContext { get; set; }
         public LoggerWrapper Logger;
-        public List<ListSinkInfo> LoggerSinkList;
+        public List<ListSinkInfo<TestContext>> LoggerSinkList;
         public Exception Exception;
         public WebClient XrmBrowser;
         public XrmApp XrmApp;
@@ -51,6 +54,12 @@ namespace Draeger.Dynamics365.Testautomation.Common
             CredentialsManager.Instance.Init(new XrmManagementHelper());
             ICredentials credentials = new NetworkCredential("tmp-QA-TA-001", "DraegerQA01");
             WebRequest.DefaultWebProxy.Credentials = credentials;
+
+
+            ADOManager.ADOOrganizationUrl = "https://dev.azure.com/draeger";
+            ADOManager.ADOProjectName = "CRM";
+            ADOManager.ADOResponsibleEMail = "malte.fries@draeger.com";
+            ADOManager.personalAccessToken = "6opssjduepken5jciswfhpsywohwyng3lfzcr5tbtti54vilfjya";
 
         }
 
@@ -71,10 +80,10 @@ namespace Draeger.Dynamics365.Testautomation.Common
         public void TestInitialize()
         {
 
-            LoggerSinkList = new List<ListSinkInfo>();
+            LoggerSinkList = new List<ListSinkInfo<TestContext>>();
             var loggerConfig = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
-                .Enrich.With(new QaLogEnricher(TestContext))
+                .Enrich.With(new ADOEnricher(TestContext))
                 .WriteTo.File(new JsonFormatter(renderMessage: true),
                     Path.Combine(Directory.GetCurrentDirectory(), "/logs/log.json"),
                     rollingInterval: RollingInterval.Day,
@@ -144,7 +153,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
 
 
                 Logger.TestResult("{TestResult}", TestContext.CurrentTestOutcome);
-#if !DEBUG
+#if DEBUG
                 if (Exception != null)
                 {
                     if (Exception.Message.Contains("Assert"))
@@ -152,13 +161,14 @@ namespace Draeger.Dynamics365.Testautomation.Common
                     else
                         Logger.Error("{InnerException} - {@Exception}", Exception.InnerException, Exception);
 
-                    WorkItems.CreateOrUpdateBug(int.Parse(TestContext.Properties["TestCaseId"].ToString()),
+
+
+                    ADOManager.CreateOrUpdateBug(int.Parse(TestContext.Properties["TestCaseId"].ToString()),
                         LoggerSinkList,
-                        Exception,
-                        (new Screenshot()).SaveScreenshotFullPage(XrmBrowser, TestContext));
+                        Exception);
                 }
 #else
-            (new Screenshot()).SaveScreenshotFullPage(XrmBrowser, TestContext);
+            (new Helper.Screenshot()).SaveScreenshot(XrmBrowser, TestContext);
 #endif
             }
             catch (WebDriverException e)

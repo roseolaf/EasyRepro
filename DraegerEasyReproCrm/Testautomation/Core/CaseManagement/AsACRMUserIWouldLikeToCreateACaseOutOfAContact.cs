@@ -18,6 +18,7 @@ using Draeger.Testautomation.CredentialsManagerCore.Attributes;
 using OpenQA.Selenium;
 using Microsoft.Crm.Sdk.Messages;
 using Draeger.Testautomation.CredentialsManagerCore.Extensions;
+using TaADOLog.Logger;
 using Entity = Microsoft.Xrm.Sdk.Entity;
 
 namespace Draeger.Dynamics365.Testautomation.Testautomation.Core.CaseManagement
