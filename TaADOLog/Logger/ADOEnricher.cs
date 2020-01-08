@@ -28,8 +28,8 @@ namespace TaADOLog.Logger
             logEventProperties = new List<LogEventProperty>();
             logEventProperties.Add(new LogEventProperty("Application", new ScalarValue("Dynamics 365")));
             logEventProperties.Add(new LogEventProperty("Interface", new ScalarValue("Unified Client Interface")));
-            logEventProperties.Add(new LogEventProperty("MethodName", new ScalarValue(_testContext.TestName)));
-            logEventProperties.Add(new LogEventProperty("ClassName", new ScalarValue(_testContext.FullyQualifiedTestClassName)));
+            logEventProperties.Add(new LogEventProperty("TestMethodName", new ScalarValue(_testContext.TestName)));
+            logEventProperties.Add(new LogEventProperty("TestClassName", new ScalarValue(_testContext.FullyQualifiedTestClassName)));
 
             //Failed = 0,       Der Test wurde ausgeführt, aber es gab Probleme. Möglicherweise liegen Ausnahmen oder Assertionsfehler vor.
             //Inconclusive = 1, Der Test wurde abgeschlossen, es lässt sich aber nicht sagen, ob er bestanden wurde oder fehlerhaft war. Kann für abgebrochene Tests verwendet werden.
