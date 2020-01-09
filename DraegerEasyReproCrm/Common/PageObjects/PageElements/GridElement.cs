@@ -67,6 +67,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.PageObjects.PageElements
                 var rowMatch = rowElements.FirstOrDefault(r => int.Parse(r.GetAttribute(GridElementPointer.rowNumberAttr)) == gridItem.Index);
                 if (rowMatch != null)
                 {
+                    browser.Driver.ScrollIntoViewIfNeeded(rowMatch);
                     rowMatch.ClickWait();
                     break;
                 }
@@ -95,6 +96,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.PageObjects.PageElements
                             g => g.Index.Equals(int.Parse(r.GetAttribute(GridElementPointer.rowNumberAttr)))));
                     foreach (var rM in rowMatch)
                     {
+                        browser.Driver.ScrollIntoViewIfNeeded(rM);
                         rM.ClickWait();
                         if (ItemsSelected() == count)
                             break;

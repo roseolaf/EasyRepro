@@ -416,7 +416,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
             element.WaitUntilElement(e => !e.FindElements(By.XPath("//span[starts-with(text(),'Saving')]")).Any(), TimeSpan.FromSeconds(60));
         }
 
-        public static void ScrollIntoViewIfNeeded(this IWebDriver driver, IWebElement webElement)
+        public static void _ScrollIntoViewIfNeeded(this IWebDriver driver, IWebElement webElement)
         {
             driver.ExecuteScript("arguments[0].scrollIntoViewIfNeeded();", webElement);
         }
@@ -428,7 +428,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                 try
                 {
                     var driver = ((IWrapsDriver) element).WrappedDriver;
-                    driver.ScrollIntoViewIfNeeded(element);
+                    driver._ScrollIntoViewIfNeeded(element);
                     if (condition.Invoke(element))
                         return;
                 }
