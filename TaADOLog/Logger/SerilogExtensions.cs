@@ -88,6 +88,7 @@ namespace TaADOLog.Logger
             try
             {
 
+                logger.Verbose("Screenshot before invoke");
                 var retVar = (T)method.DynamicInvoke(extendedMethodParameters.ToArray());
                 logger.Step("{ActionClassName} {ActionMethodName} {@Parameters} with value {@ReturnValue}", method.Method.DeclaringType.Name, method.Method.Name, logdict, retVar);
                 return retVar;
@@ -121,7 +122,7 @@ namespace TaADOLog.Logger
             var logdict = @params.ToDictionary(x => x.Key.Name, y => y.Value);
             try
             {
-
+                logger.Verbose("Screenshot before invoke");
                 var retVar = (T)method.DynamicInvoke(extendedMethodParameters.ToArray());
                 logger.ExpectedResult("{ActionClassName} {ActionMethodName} {@Parameters} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, logdict, retVar, expectedResult, expectedResultMsg);
 
@@ -158,6 +159,7 @@ namespace TaADOLog.Logger
             try
             {
 
+                logger.Verbose("Screenshot before invoke");
                 var retVar = (T)method.DynamicInvoke(extendedMethodParameters.ToArray());
                 logger.ExpectedResult("{ActionClassName} {ActionMethodName} {@Parameters} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, logdict, retVar, expectedResult, expectedResultMsg);
 
@@ -177,6 +179,7 @@ namespace TaADOLog.Logger
         {  
             try
             {
+                logger.Verbose("Screenshot before invoke");
                 var retVar = (T)method.DynamicInvoke();
                 logger.ExpectedResult("{ActionClassName} {ActionMethodName} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, retVar, expectedResult, expectedResultMsg);
 
@@ -195,6 +198,7 @@ namespace TaADOLog.Logger
         {
             try
             {
+                logger.Verbose("Screenshot before invoke");
                 var retVar = (T)method.DynamicInvoke();
                 logger.ExpectedResult("{ActionClassName} {ActionMethodName} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, retVar, expectedResult, expectedResultMsg);
 
@@ -213,6 +217,7 @@ namespace TaADOLog.Logger
 
             try
             {
+                logger.Verbose("Screenshot before invoke");
                 method.DynamicInvoke(); 
                 logger.Step("{ClassNames} {ActionMethodName}", method.Method.DeclaringType.Name, method.Method.Name);
 
@@ -247,6 +252,7 @@ namespace TaADOLog.Logger
             var logdict = @params.ToDictionary(x => x.Key.Name, y => y.Value);
              try
             {
+                logger.Verbose("Screenshot before invoke");
                 method.DynamicInvoke(extendedMethodParameters.ToArray());
                 logger.Step("{ActionClassName} {ActionMethodName} {@Parameters}", method.Method.DeclaringType.Name, method.Method.Name, logdict);
 
@@ -268,6 +274,7 @@ namespace TaADOLog.Logger
             var propertyOwner = Expression.Lambda(propertyOwnerExpression).Compile().DynamicInvoke();
             try
             {
+                logger.Verbose("Screenshot before invoke");
                 propertyInfo.SetValue(propertyOwner, value, null);
                 logger.Step("Set {ActionClassName} {Properties} to {Value}", propertyInfo.DeclaringType.Name, propertyInfo.Name, value);
 
@@ -291,6 +298,7 @@ namespace TaADOLog.Logger
 
             try
             {
+                logger.Verbose("Screenshot before invoke");
                 var value = propertyInfo.GetValue(propertyOwner, null);
                 logger.Step("Get {ActionClassName} {Properties} with value {Value}", propertyInfo.DeclaringType.Name, propertyInfo.Name, value);
                 return (T)value;
@@ -313,6 +321,7 @@ namespace TaADOLog.Logger
 
             try
             {
+                logger.Verbose("Screenshot before invoke");
                 var value = propertyInfo.GetValue(propertyOwner, null);
                 logger.ExpectedResult("Get {ActionClassName} {Properties} with value {@Value} expected result {@expectedResult} ({expectedResultMessage})", propertyInfo.DeclaringType.Name, propertyInfo.Name, value, expectedResult, expectedResultMsg);
 
@@ -338,6 +347,7 @@ namespace TaADOLog.Logger
 
             try
             {
+                logger.Verbose("Screenshot before invoke");
                 var value = propertyInfo.GetValue(propertyOwner, null);
                 logger.ExpectedResult("Get {ActionClassName} {Properties} with value {@Value} expected result {@expectedResult} ({expectedResultMessage})", propertyInfo.DeclaringType.Name, propertyInfo.Name, value, expectedResult, expectedResultMsg);
 
