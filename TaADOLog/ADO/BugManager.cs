@@ -828,10 +828,10 @@ namespace TaADOLog.ADO
 
             List<AttachmentReference> screenshotError = new List<AttachmentReference>();
 
+            AttachmentReference screenshotBeforeInvoke = null;
             foreach (var log in loggerSinkList)
             {
 
-                AttachmentReference screenshotBeforeInvoke = null;
                 if (log.LogEvent.Level == LogEventLevel.Verbose && log.Message.Equals("Screenshot before invoke"))
                 {
 
@@ -896,6 +896,9 @@ namespace TaADOLog.ADO
                 {
                     reproStepsHTML +=
                         $"<a href=\"{screenshot.Url}\" target=\"_blank\"><img src=\"{screenshot.Url}\"></a>";
+                    // reset
+                    screenshotBeforeInvoke = null;
+
                 }
                 reproStepsHTML += "</td>"+
                                 $"</tr>";
