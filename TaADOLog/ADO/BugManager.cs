@@ -826,7 +826,7 @@ namespace TaADOLog.ADO
                              $"<th> Screenshot </th>" +
                              $"</tr></thead><tbody>";
 
-            AttachmentReference screenshotError = null;
+            List<AttachmentReference> screenshotError = new List<AttachmentReference>();
 
             foreach (var log in loggerSinkList)
             {
@@ -865,26 +865,31 @@ namespace TaADOLog.ADO
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\"" + (!log.Step.IsNullOrEmpty() ? $"title=\"'{stepDict[actualStep]}'\">" : ">") +
                     $"{log.Step}</td>" +
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
-                    (loggerSinkList.IndexOf(log) == actionFailedIndex ? $"❌ {logmsgModified}</td>" : $"{logmsgModified}</td>") +
+                    ((log.Level == LogEventLevel.Error.ToString() ||log.Level == LogEventLevel.Fatal.ToString())? $"❌ {logmsgModified}</td>" : $"{logmsgModified}</td>") +
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
                     (log.Url.IsNullOrEmpty() ? "</td>" : $"<a href=\"{log.Url}\" target=\"_blank\">🌍</a></td>") +
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
                     (screenshot == null ? $"</td>" : $"<a href=\"{screenshot.Url}\" target=\"_blank\"><img src=\"{screenshot.Url}\"></a></td>") +
                     $"</tr>";
 
-                if (loggerSinkList.IndexOf(log) == actionFailedIndex && screenshot != null)
+                if ((log.Level == LogEventLevel.Error.ToString() || log.Level == LogEventLevel.Fatal.ToString()) && screenshot != null)
                 {
-                    screenshotError = screenshot;
+                    screenshotError.Add(screenshot);
                 }
 
 
 
             }
+
             reproStepsHTML += "</tbody></table>" +
                               "<br/>" +
-                              "<br/>" +
-                              $"<img src=\"{screenshotError?.Url}\">" +
-                              "</div>" +
+                              "<br/>;";
+
+            foreach (var sE in screenshotError)
+            {
+                reproStepsHTML += $"<img src=\"{sE?.Url}\">";
+            }
+            reproStepsHTML += "</div>" +
                               "<br/>" +
                               "<br/>" +
                               "<br/>" +
