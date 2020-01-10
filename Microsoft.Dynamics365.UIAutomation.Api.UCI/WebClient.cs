@@ -284,7 +284,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                             InitializeTestMode();
                         }
                     }
-                    else if (driver.ElementExists(By.Id("appBreadCrumbText"), TimeSpan.FromSeconds(15)) && driver.WaitForElement(By.Id("appBreadCrumbText"),
+                    else if (driver.WaitForElement(By.Id("appBreadCrumbText"),
                         TimeSpan.FromSeconds(15)).Text == appName)
                     {
                         return true;

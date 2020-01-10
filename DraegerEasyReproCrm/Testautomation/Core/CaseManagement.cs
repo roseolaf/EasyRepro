@@ -389,6 +389,7 @@ namespace Draeger.Dynamics365.Testautomation.Core
                 Login(XrmApp, UserAlias);
                 Logger.Log<Action<string>>(
                     XrmApp.Navigation.OpenApp, "Dräger Sales App");
+
                 Logger.Log<Action<string, string>>(
                     XrmApp.Navigation.OpenSubArea, "Sales", "Cases");
                 Logger.Log<Action<string, string, bool>>(

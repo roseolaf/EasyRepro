@@ -361,8 +361,21 @@ namespace TaADOLog.ADO
 
             AttachmentReference screenshotError = null;
 
+            AttachmentReference screenshotBeforeInvoke = null;
             foreach (var log in loggerSinkList)
             {
+
+                if (log.Level.ToString() == LogEventLevel.Verbose.ToString() && log.Message.Contains("Screenshot before invoke"))
+                {
+
+                    if (!log.Multimedia.ToString().IsNullOrEmpty())
+                    {
+                        FileStream attStream = new FileStream(log.Multimedia.ToString(), FileMode.Open, FileAccess.Read);
+                        screenshotBeforeInvoke = witClient.CreateAttachmentAsync(attStream).Result; // upload file
+                        attStream.Dispose();
+                    }
+
+                }
                 if (log.LogEvent.Level < LogEventLevel.Information)
                     continue;
                 
@@ -395,15 +408,32 @@ namespace TaADOLog.ADO
                     $"<i>{log.DateTime:dd/MM/yyyy HH:mm:ss.fff}</i></td>" +
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
                     $"{log.Level}</td>" +
-                    $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\"" + (!log.Step.IsNullOrEmpty() ? $"title=\"'{stepDict[actualStep]}'\">" : ">") +
+                    $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\"" +
+                    (!log.Step.IsNullOrEmpty() ? $"title=\"'{stepDict[actualStep]}'\">" : ">") +
                     $"{log.Step}</td>" +
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
-                    (loggerSinkList.IndexOf(log) == actionFailedIndex ? $"❌ {logmsgModified}</td>" : $"{logmsgModified}</td>") +
+                    (loggerSinkList.IndexOf(log) == actionFailedIndex
+                        ? $"❌ {logmsgModified}</td>"
+                        : $"{logmsgModified}</td>") +
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
                     (log.Url.IsNullOrEmpty() ? "</td>" : $"<a href=\"{log.Url}\" target=\"_blank\">🌍</a></td>") +
-                    $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
-                    (screenshot == null ? $"</td>" : $"<a href=\"{screenshot.Url}\" target=\"_blank\"><img src=\"{screenshot.Url}\"></a></td>") +
-                    $"</tr>";
+                    $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">";
+                if (screenshotBeforeInvoke != null)
+                {
+                    reproStepsHTML +=
+                        $"<a href=\"{screenshotBeforeInvoke.Url}\" target=\"_blank\"><img src=\"{screenshotBeforeInvoke.Url}\"></a><br>";
+                }
+
+                if (screenshot != null)
+                {
+                    reproStepsHTML +=
+                        $"<a href=\"{screenshot.Url}\" target=\"_blank\"><img src=\"{screenshot.Url}\"></a>";
+                    // reset
+                    screenshotBeforeInvoke = null;
+
+                }
+                reproStepsHTML += "</td>" +
+                                  $"</tr>";
 
                 if (loggerSinkList.IndexOf(log) == actionFailedIndex && screenshot != null)
                 {
