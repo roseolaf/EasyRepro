@@ -284,7 +284,12 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                             InitializeTestMode();
                         }
                     }
-                    else
+                    else if (driver.ElementExists(By.Id("navbar-container"),
+                        TimeSpan.FromSeconds(15)))
+                    {
+                        return true;
+                    }else
+
                         throw new InvalidOperationException($"App Name {appName} not found.");
                 }
 
