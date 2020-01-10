@@ -272,7 +272,7 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                     //Switch to frame 0
                     driver.SwitchTo().Frame(0);
 
-                    if (driver.ElementExists(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppContainer]), TimeSpan.FromSeconds(15)))
+                    if (driver.ElementExists(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppContainer]), TimeSpan.FromSeconds(5)))
                     {
                         var tileContainer = driver.FindElement(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppContainer]));
                         tileContainer.FindElement(By.XPath(AppElements.Xpath[AppReference.Navigation.UCIAppTile].Replace("[NAME]", appName))).ClickWait(true);
@@ -284,13 +284,25 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                             InitializeTestMode();
                         }
                     }
-                    else if (driver.WaitForElement(By.Id("appBreadCrumbText"),
-                        TimeSpan.FromSeconds(15)).Text == appName)
+                    else
                     {
-                        return true;
-                    }else
+                        try
+                        {
 
-                        throw new InvalidOperationException($"App Name {appName} not found.");
+                            driver.SwitchTo().DefaultContent();
+                            var appBreadCrumbText = driver.WaitForElement(
+                                By.XPath("//span[@data-id=\"appBreadCrumbText\"]"),
+                                TimeSpan.FromSeconds(5)).Text;
+                            if (String.Equals(appBreadCrumbText, appName, StringComparison.CurrentCultureIgnoreCase))
+                                return true;
+
+                        }
+                        catch (Exception)
+                        {
+                            throw new InvalidOperationException($"App Name {appName} not found.");
+                        }
+                    }
+
                 }
 
                 return true;
