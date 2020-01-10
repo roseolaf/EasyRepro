@@ -153,7 +153,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
 
 
                 Logger.TestResult("{TestResult}", TestContext.CurrentTestOutcome);
-#if DEBUG
+#if !DEBUG
                 if (Exception != null)
                 {
                     if (Exception.Message.Contains("Assert"))
