@@ -832,7 +832,7 @@ namespace TaADOLog.ADO
             foreach (var log in loggerSinkList)
             {
 
-                if (log.LogEvent.Level == LogEventLevel.Verbose && log.Message.Equals("Screenshot before invoke"))
+                if (log.Level.ToString() == LogEventLevel.Verbose.ToString() && log.Message.Contains("Screenshot before invoke"))
                 {
 
                     if (!log.Multimedia.ToString().IsNullOrEmpty())

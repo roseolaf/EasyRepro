@@ -65,6 +65,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.EntityManager
 
         public abstract Entity CreateEntityRecord<T>(object caller, T entity) where T : Entity;
         public abstract bool DeleteEntityRecord(string entityName, Guid guid);
+
         public abstract Entity UpdateEntityRecord<T>(object caller, T entity, Guid guid) where T : Entity;
         public abstract Entity GetEntityRecord(object caller, string entityLogicalName, Guid guid);
         public abstract Entity CloneEntityRecord(string entityName, params KeyValuePair<string, object>[] attributes);

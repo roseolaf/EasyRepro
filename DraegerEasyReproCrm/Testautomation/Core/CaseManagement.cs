@@ -91,8 +91,14 @@ namespace Draeger.Dynamics365.Testautomation.Core
         {
             foreach (var tD in testData)
             {
-                new BaseComponent().DeleteEntityRecord(tD.Value.LogicalName, tD.Value.Id);
-
+                try
+                {
+                    new BaseComponent().DeleteEntityRecord(tD.Value.LogicalName, tD.Value.Id);
+                }
+                catch (Exception)
+                {
+                    // ignored
+                }
             }
 
         }
