@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.Services.WebApi.Patch;
 using Microsoft.VisualStudio.Services.WebApi.Patch.Json;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Serilog.Events;
+using TaADOLog.Logger;
 using TaADOLog.Logger.Sink;
 using static TaADOLog.ADO.ADOManager;
 
@@ -365,7 +366,7 @@ namespace TaADOLog.ADO
             foreach (var log in loggerSinkList)
             {
 
-                if (log.Level.ToString() == LogEventLevel.Verbose.ToString() && log.Message.Contains("Screenshot before invoke"))
+                if (log.Level.ToString() == LogEventLevel.Verbose.ToString() && log.Message.Contains(SerilogExtensions.VerboseScreenshot))
                 {
 
                     if (!log.Multimedia.ToString().IsNullOrEmpty())

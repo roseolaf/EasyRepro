@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.TeamFoundation.TestManagement.WebApi;
 
 namespace TaADOLog.Logger
 {
@@ -31,6 +32,7 @@ namespace TaADOLog.Logger
             logEventProperties.Add(new LogEventProperty("TestMethodName", new ScalarValue(_testContext.TestName)));
             logEventProperties.Add(new LogEventProperty("TestClassName", new ScalarValue(_testContext.FullyQualifiedTestClassName)));
 
+            
             //Failed = 0,       Der Test wurde ausgeführt, aber es gab Probleme. Möglicherweise liegen Ausnahmen oder Assertionsfehler vor.
             //Inconclusive = 1, Der Test wurde abgeschlossen, es lässt sich aber nicht sagen, ob er bestanden wurde oder fehlerhaft war. Kann für abgebrochene Tests verwendet werden.
             //Passed = 2,       Der Test wurde ohne Probleme ausgeführt.

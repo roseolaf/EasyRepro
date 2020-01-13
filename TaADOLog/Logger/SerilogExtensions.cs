@@ -63,7 +63,7 @@ namespace TaADOLog.Logger
               .Fatal(messageTemplate, args);
         }
 
-
+        public const string VerboseScreenshot = "VerboseScreenshotBeforeInvoke";
         static Regex classNameRx = new Regex(@"\w+$");
         public static T Log<TDelegate, T>(this LoggerWrapper logger, TDelegate method, params object[] methodParameters) where TDelegate : Delegate
         {
@@ -88,7 +88,7 @@ namespace TaADOLog.Logger
             try
             {
 
-                logger.Verbose("Screenshot before invoke");
+                logger.Verbose(VerboseScreenshot);
                 var retVar = (T)method.DynamicInvoke(extendedMethodParameters.ToArray());
                 logger.Step("{ActionClassName} {ActionMethodName} {@Parameters} with value {@ReturnValue}", method.Method.DeclaringType.Name, method.Method.Name, logdict, retVar);
                 return retVar;
@@ -122,7 +122,7 @@ namespace TaADOLog.Logger
             var logdict = @params.ToDictionary(x => x.Key.Name, y => y.Value);
             try
             {
-                logger.Verbose("Screenshot before invoke");
+                logger.Verbose(VerboseScreenshot);
                 var retVar = (T)method.DynamicInvoke(extendedMethodParameters.ToArray());
                 logger.ExpectedResult("{ActionClassName} {ActionMethodName} {@Parameters} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, logdict, retVar, expectedResult, expectedResultMsg);
 
@@ -159,7 +159,7 @@ namespace TaADOLog.Logger
             try
             {
 
-                logger.Verbose("Screenshot before invoke");
+                logger.Verbose(VerboseScreenshot);
                 var retVar = (T)method.DynamicInvoke(extendedMethodParameters.ToArray());
                 logger.ExpectedResult("{ActionClassName} {ActionMethodName} {@Parameters} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, logdict, retVar, expectedResult, expectedResultMsg);
 
@@ -179,7 +179,7 @@ namespace TaADOLog.Logger
         {  
             try
             {
-                logger.Verbose("Screenshot before invoke");
+                logger.Verbose(VerboseScreenshot);
                 var retVar = (T)method.DynamicInvoke();
                 logger.ExpectedResult("{ActionClassName} {ActionMethodName} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, retVar, expectedResult, expectedResultMsg);
 
@@ -198,7 +198,7 @@ namespace TaADOLog.Logger
         {
             try
             {
-                logger.Verbose("Screenshot before invoke");
+                logger.Verbose(VerboseScreenshot);
                 var retVar = (T)method.DynamicInvoke();
                 logger.ExpectedResult("{ActionClassName} {ActionMethodName} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, retVar, expectedResult, expectedResultMsg);
 
@@ -217,7 +217,7 @@ namespace TaADOLog.Logger
 
             try
             {
-                logger.Verbose("Screenshot before invoke");
+                logger.Verbose(VerboseScreenshot);
                 method.DynamicInvoke(); 
                 logger.Step("{ClassNames} {ActionMethodName}", method.Method.DeclaringType.Name, method.Method.Name);
 
@@ -252,7 +252,7 @@ namespace TaADOLog.Logger
             var logdict = @params.ToDictionary(x => x.Key.Name, y => y.Value);
              try
             {
-                logger.Verbose("Screenshot before invoke");
+                logger.Verbose(VerboseScreenshot);
                 method.DynamicInvoke(extendedMethodParameters.ToArray());
                 logger.Step("{ActionClassName} {ActionMethodName} {@Parameters}", method.Method.DeclaringType.Name, method.Method.Name, logdict);
 
@@ -274,15 +274,15 @@ namespace TaADOLog.Logger
             var propertyOwner = Expression.Lambda(propertyOwnerExpression).Compile().DynamicInvoke();
             try
             {
-                logger.Verbose("Screenshot before invoke");
+                logger.Verbose(VerboseScreenshot);
                 propertyInfo.SetValue(propertyOwner, value, null);
-                logger.Step("Set {ActionClassName} {Properties} to {Value}", propertyInfo.DeclaringType.Name, propertyInfo.Name, value);
+                logger.Step("Set {ActionClassName} {@Properties} to {Value}", propertyInfo.DeclaringType.Name, propertyInfo.Name, value);
 
                 return value;
             }
             catch (Exception)
             {
-                logger.Error("Set {ActionClassName} {Properties} to {Value}", propertyInfo.DeclaringType.Name, propertyInfo.Name, value);
+                logger.Error("Set {ActionClassName} {@Properties} to {Value}", propertyInfo.DeclaringType.Name, propertyInfo.Name, value);
 
                 throw;
             }
@@ -298,14 +298,14 @@ namespace TaADOLog.Logger
 
             try
             {
-                logger.Verbose("Screenshot before invoke");
+                logger.Verbose(VerboseScreenshot);
                 var value = propertyInfo.GetValue(propertyOwner, null);
-                logger.Step("Get {ActionClassName} {Properties} with value {Value}", propertyInfo.DeclaringType.Name, propertyInfo.Name, value);
+                logger.Step("Get {ActionClassName} {@Properties} with value {Value}", propertyInfo.DeclaringType.Name, propertyInfo.Name, value);
                 return (T)value;
             }
             catch (Exception)
             {
-                logger.Error("Get {ActionClassName} {Properties} failed", propertyInfo.DeclaringType.Name, propertyInfo.Name);
+                logger.Error("Get {ActionClassName} {@Properties} failed", propertyInfo.DeclaringType.Name, propertyInfo.Name);
 
                 throw;
             }
@@ -321,15 +321,15 @@ namespace TaADOLog.Logger
 
             try
             {
-                logger.Verbose("Screenshot before invoke");
+                logger.Verbose(VerboseScreenshot);
                 var value = propertyInfo.GetValue(propertyOwner, null);
-                logger.ExpectedResult("Get {ActionClassName} {Properties} with value {@Value} expected result {@expectedResult} ({expectedResultMessage})", propertyInfo.DeclaringType.Name, propertyInfo.Name, value, expectedResult, expectedResultMsg);
+                logger.ExpectedResult("Get {ActionClassName} {@Properties} with value {@Value} expected result {@expectedResult} ({expectedResultMessage})", propertyInfo.DeclaringType.Name, propertyInfo.Name, value, expectedResult, expectedResultMsg);
 
                 return (T)value;
             }
             catch (Exception)
             {
-                logger.ExpectedResultFail("Get {ActionClassName} {Properties} and expected result {@expectedResult} ({expectedResultMessage}) failed", propertyInfo.DeclaringType.Name, propertyInfo.Name, expectedResult, expectedResultMsg);
+                logger.ExpectedResultFail("Get {ActionClassName} {@Properties} and expected result {@expectedResult} ({expectedResultMessage}) failed", propertyInfo.DeclaringType.Name, propertyInfo.Name, expectedResult, expectedResultMsg);
 
                 throw;
             }
@@ -347,16 +347,16 @@ namespace TaADOLog.Logger
 
             try
             {
-                logger.Verbose("Screenshot before invoke");
+                logger.Verbose(VerboseScreenshot);
                 var value = propertyInfo.GetValue(propertyOwner, null);
-                logger.ExpectedResult("Get {ActionClassName} {Properties} with value {@Value} expected result {@expectedResult} ({expectedResultMessage})", propertyInfo.DeclaringType.Name, propertyInfo.Name, value, expectedResult, expectedResultMsg);
+                logger.ExpectedResult("Get {ActionClassName} {@Properties} with value {@Value} expected result {@expectedResult} ({expectedResultMessage})", propertyInfo.DeclaringType.Name, propertyInfo.Name, value, expectedResult, expectedResultMsg);
 
                 return value.Equals(expectedResult);
 
             }
             catch (Exception e)
             {
-                logger.ExpectedResultFail("Get {ActionClassName} {Properties} and expected result {@expectedResult} ({expectedResultMessage}) failed", propertyInfo.DeclaringType.Name, propertyInfo.Name, expectedResult, expectedResultMsg);
+                logger.ExpectedResultFail("Get {ActionClassName} {@Properties} and expected result {@expectedResult} ({expectedResultMessage}) failed", propertyInfo.DeclaringType.Name, propertyInfo.Name, expectedResult, expectedResultMsg);
 
                 throw;
             }

@@ -294,8 +294,11 @@
     <Compile Include="Common\Enums\Requirement.cs" />
     <Compile Include="Common\Locators\CaseConstants.cs" />
     <Compile Include="Common\Locators\CaseLocators.cs" />
+    <Compile Include="Common\Locators\ServiceordersLocators.cs" />
+    <Compile Include="Common\Locators\ServiceordersConstants.cs" />
     <Compile Include="Common\PageObjects\BreadCrumb.cs" />
     <Compile Include="Common\PageObjects\EntityPageBase.cs" />
+    <Compile Include="Common\PageObjects\ServiceordersJsDialog.cs" />
     <Compile Include="Common\PageObjects\PageElements\GridElement.cs" />
     <Compile Include="Common\PageObjects\PageElements\TimelineElement.cs" />
     <Compile Include="Common\TestBase.cs" />
@@ -317,7 +320,7 @@
     </Compile>
     <Compile Include="Testautomation\Core\CaseManagement.cs" />
     <Compile Include="Testautomation\Core\CaseManagement\AsACRMUserIWouldLikeToCreateACaseOutOfAContact.cs" />
-    <Compile Include="Testautomation\iService\Unknown.cs" />
+    <Compile Include="Testautomation\iService\PlanningDispatchingAndScheduling.cs" />
     <Compile Include="Testautomation\Sales\Opportunity Management\OpportunitiesAreClosed.cs" />
     <Compile Include="Testautomation\Sales\Opportunity Management\CopyOpportunityWithAllEditableFields.cs" />
     <Compile Include="Common\Locators\OpportunityLocators.cs" />

@@ -13,8 +13,8 @@ namespace Draeger.Dynamics365.Testautomation.Common.PageObjects
     public class BreadCrumb
     {
         private XrmApp xrmApp;
-        private InteractiveBrowser browser;
-        public BreadCrumb(XrmApp xrm, InteractiveBrowser b = null)
+        private WebClient browser;
+        public BreadCrumb(XrmApp xrm, WebClient b = null)
         {
             browser = b;
             xrmApp = xrm;
@@ -32,6 +32,10 @@ namespace Draeger.Dynamics365.Testautomation.Common.PageObjects
         {
             get => GetBreadCrumbText(BreadCrumbLocators.appBreadCrumbText);
         }
+        public string GetRecordCrumbText
+        {
+            get => GetBreadCrumbText(BreadCrumbLocators.recordBreadCrumbText);
+        }
 
         public void ClickEntityBreadCrumb()
         {
@@ -48,11 +52,11 @@ namespace Draeger.Dynamics365.Testautomation.Common.PageObjects
 
         private string GetBreadCrumbText(By locator)
         {
-            return browser.Driver.FindElement(locator).Text;
+            return browser.Browser.Driver.FindElement(locator).Text;
         }
         private void ClickBreadCrumb(By locator)
         {
-            browser.Driver.FindElement(locator).ClickWait();
+            browser.Browser.Driver.FindElement(locator).ClickWait();
         }
 
     }

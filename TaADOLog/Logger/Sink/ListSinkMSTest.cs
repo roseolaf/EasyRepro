@@ -53,7 +53,7 @@ namespace TaADOLog.Logger.Sink
                 Message = message,
                 Level = logEvent.Level.ToString(),
                 Url = _testContext.Properties.Contains("WebClient") ? (_testContext.Properties["WebClient"] as WebClient).Browser.Driver.Url: "",
-                Multimedia = (_testContext.Properties.Contains("WebClient") && logEvent.Level >= LogEventLevel.Information) ?(new Screenshot()).SaveScreenshot(_testContext.Properties["WebClient"] as WebClient, _testContext) : "",
+                Multimedia = (_testContext.Properties.Contains("WebClient") && (logEvent.Level >= LogEventLevel.Information || message.Contains(SerilogExtensions.VerboseScreenshot))) ?(new Screenshot()).SaveScreenshot(_testContext.Properties["WebClient"] as WebClient, _testContext) : "",
                 Properties = logEvent.Properties,
                 TestContext = _testContext
             };

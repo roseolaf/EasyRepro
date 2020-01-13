@@ -9,11 +9,12 @@ namespace Draeger.Dynamics365.Testautomation.Common.Locators
 {
     public static class BreadCrumbLocators
     {
-        public static readonly By entitybreadCrumbText = By.Id("entityBreadCrumbText");
-        public static readonly By entitybreadCrumb = By.Id("entityBreadCrumb");
-        public static readonly By areaBreadCrumb = By.Id("areaBreadCrumb");
-        public static readonly By areaBreadCrumbText = By.Id("areaBreadCrumbText");
-        public static readonly By appBreadCrumb = By.Id("appBreadCrumb");
-        public static readonly By appBreadCrumbText = By.Id("appBreadCrumbText");
+        public static readonly By entitybreadCrumbText = By.XPath("//span[@data-id='entityBreadCrumbText']");
+        public static readonly By entitybreadCrumb = By.XPath("//span[@data-id='entityBreadCrumb']");
+        public static readonly By areaBreadCrumb = By.XPath("//span[@data-id='areaBreadCrumb']");
+        public static readonly By areaBreadCrumbText = By.XPath("//span[@data-id='areaBreadCrumbText']");
+        public static readonly By appBreadCrumb = By.XPath("//span[@data-id='appBreadCrumb']");
+        public static readonly By appBreadCrumbText = By.XPath("//span[@data-id='appBreadCrumbText']");
+        public static readonly By recordBreadCrumbText = By.XPath("//span[@data-id='recordBreadCrumbText']");
     }
 }

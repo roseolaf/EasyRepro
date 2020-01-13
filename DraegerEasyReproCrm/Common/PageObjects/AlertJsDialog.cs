@@ -267,6 +267,11 @@ namespace Draeger.Dynamics365.Testautomation.Common.PageObjects
             return !attribute.Contains("display: none");
         }
 
+        public string GetValue(By by)
+        {
+            var webElement = browser.Driver.WaitForElement(by);
+            return webElement.Text;
+        }
         internal new bool SetValue(string field, string value, bool clearFocusOnEnd = true)
         {
             try

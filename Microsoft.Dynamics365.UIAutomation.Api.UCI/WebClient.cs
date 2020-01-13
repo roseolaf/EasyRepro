@@ -297,9 +297,9 @@ namespace Microsoft.Dynamics365.UIAutomation.Api.UCI
                                 return true;
 
                         }
-                        catch (Exception)
+                        catch (Exception e)
                         {
-                            throw new InvalidOperationException($"App Name {appName} not found.");
+                            throw new InvalidOperationException($"App Name {appName} not found.", e);
                         }
                     }
 

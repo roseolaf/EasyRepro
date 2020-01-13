@@ -235,7 +235,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.PageObjects.PageElements
             var rowCounter = 0;
 
             // zero base counter
-            while (rowCounter < (gridRowCount-1))
+            while (rowCounter < (gridRowCount))
             {
                 // refresh root
                 gridRoot = browser.Driver.FindElement(GridElementPointer.gridRoot);
@@ -267,7 +267,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.PageObjects.PageElements
                     var col = int.Parse(dataidMatch.NextMatch().Groups[0].Value);
 
                     colCounter = col > colCounter ? col : colCounter;
-                    rowCounter = row > rowCounter ? row : rowCounter;
+                    rowCounter = row +1 > rowCounter ? row + 1 : rowCounter;
 
                     // items are added chaotically to the GridItemInfo, so init the row
                     if (returnList.ElementAtOrDefault(row) == null)
