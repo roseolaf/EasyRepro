@@ -92,9 +92,7 @@ namespace Draeger.Dynamics365.Testautomation.Testautomation.iService
                 Login(XrmApp, UserAlias);
                 Logger.Log<Action<string>>(
                     XrmApp.Navigation.OpenApp, "Dräger Sales App");
-
-                Assert.IsTrue(false);
-
+                
                 Logger.Log<Action<string, string>>(
                     XrmApp.Navigation.OpenSubArea, "Service", "Service Orders");
                 Logger.NextStep();
