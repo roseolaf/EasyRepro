@@ -23,6 +23,7 @@ using OpenQA.Selenium.Support.UI;
 using StringExtensions = Draeger.Dynamics365.Testautomation.ExtensionMethods.StringExtensions;
 using Entity = Microsoft.Xrm.Sdk.Entity;
 using Draeger.Dynamics365.Testautomation.Common.PageObjects.PageElements;
+using Microsoft.VisualStudio.Services.Common;
 using TaADOLog.Logger;
 using static Draeger.Dynamics365.Testautomation.Common.Enums.Global;
 
@@ -299,10 +300,9 @@ namespace Draeger.Dynamics365.Testautomation.Testautomation.iService
                 Logger.Log<Action<string, string>>(XrmApp.Entity.SelectTab, "Service Orders");
                 var serviceOrdersGridItemInfos = grid.GetGridItems();
                 var serviceOrderFromGrid = gridItemsToSelect[0];
-                Logger.LogGetExpectedResultCheck(() => serviceOrdersGridItemInfos.Count, 1, "All expected Service Orders are dispatched.");
-                Logger.LogGetExpectedResultCheck(() => serviceOrdersGridItemInfos[0].Attribute["Service Order No."], serviceOrderFromGrid.Attribute["Service Order No."], "All expected Service Orders are dispatched.");
-
-
+                var expectedResultLastStepA = Logger.LogGetExpectedResultCheck(() => serviceOrdersGridItemInfos.Count, 1, "All expected Service Orders are dispatched.");
+                var expectedResultLastStepB = Logger.LogExpectedResultCheck<Func<string,string,bool>,bool> (Compare, true, "All expected Service Orders are dispatched.", serviceOrdersGridItemInfos[0].Attribute["Service Order No."], serviceOrderFromGrid.Attribute["Service Order No."]);
+                Assert.IsTrue(expectedResultLastStepA && expectedResultLastStepB, "All expected Service Orders are dispatched.");
             }
             catch (Exception e)
             {
@@ -403,8 +403,9 @@ namespace Draeger.Dynamics365.Testautomation.Testautomation.iService
                 Logger.Log<Action<string, string>>(XrmApp.Entity.SelectTab, "Service Orders");
                 var serviceOrdersGridItemInfos = grid.GetGridItems();
                 var serviceOrderFromGrid = gridItemsToSelect[0];
-                Logger.LogGetExpectedResultCheck(() => serviceOrdersGridItemInfos.Count, 1, "All expected Service Orders are dispatched.");
-                Logger.LogGetExpectedResultCheck(() => serviceOrdersGridItemInfos[0].Attribute["Service Order No."], serviceOrderFromGrid.Attribute["Service Order No."], "All expected Service Orders are dispatched.");
+                var expectedResultLastStepA = Logger.LogGetExpectedResultCheck(() => serviceOrdersGridItemInfos.Count, 1, "All expected Service Orders are dispatched.");
+                var expectedResultLastStepB = Logger.LogExpectedResultCheck<Func<string, string, bool>, bool>(Compare, true, "All expected Service Orders are dispatched.", serviceOrdersGridItemInfos[0].Attribute["Service Order No."], serviceOrderFromGrid.Attribute["Service Order No."]);
+                Assert.IsTrue(expectedResultLastStepA && expectedResultLastStepB, "All expected Service Orders are dispatched.");
 
 
             }
@@ -508,8 +509,9 @@ namespace Draeger.Dynamics365.Testautomation.Testautomation.iService
                 Logger.Log<Action<string, string>>(XrmApp.Entity.SelectTab, "Service Orders");
                 var serviceOrdersGridItemInfos = grid.GetGridItems();
                 var serviceOrderFromGrid = gridItemsToSelect[0];
-                Logger.LogGetExpectedResultCheck(() => serviceOrdersGridItemInfos.Count, 1, "All expected Service Orders are dispatched.");
-                Logger.LogGetExpectedResultCheck(() => serviceOrdersGridItemInfos[0].Attribute["Service Order No."], serviceOrderFromGrid.Attribute["Service Order No."], "All expected Service Orders are dispatched.");
+                var expectedResultLastStepA = Logger.LogGetExpectedResultCheck(() => serviceOrdersGridItemInfos.Count, 1, "All expected Service Orders are dispatched.");
+                var expectedResultLastStepB = Logger.LogExpectedResultCheck<Func<string, string, bool>, bool>(Compare, true, "All expected Service Orders are dispatched.", serviceOrdersGridItemInfos[0].Attribute["Service Order No."], serviceOrderFromGrid.Attribute["Service Order No."]);
+                Assert.IsTrue(expectedResultLastStepA && expectedResultLastStepB, "All expected Service Orders are dispatched.");
 
 
             }
@@ -785,9 +787,9 @@ namespace Draeger.Dynamics365.Testautomation.Testautomation.iService
                 var serviceOrderJsAlert = new ServiceordersJsDialog(XrmApp, XrmBrowser);
 
                 var resultStep3a = Logger.LogGetExpectedResultCheck(() => serviceOrderJsAlert.Title, ServiceordersConstants.AlertJsTitle.Finished, "A pop-up appears, stating \"Service Orders processing finished!\"");
-                Assert.IsTrue(resultStep3a);
+                Assert.IsTrue(resultStep3a, "A pop-up appears, stating \"Service Orders processing finished!\"");
                 var resultStep3b = Logger.LogGetExpectedResultCheck(() => serviceOrderJsAlert.Content, "", "No additional error message.");
-                Assert.IsTrue(resultStep3b); 
+                Assert.IsTrue(resultStep3b, "No additional error message."); 
 
                 Logger.NextStep();
 
