@@ -80,6 +80,23 @@ namespace Draeger.Dynamics365.Testautomation.ExtensionMethods
             }
         }
 
+        public static void ScrollTopIndex(this IWebDriver driver, IWebElement webElement,int index)
+        {
+            IJavaScriptExecutor js = (IJavaScriptExecutor)driver;
+
+            var clientHeight = int.Parse(js.ExecuteScript("return arguments[0].clientHeight;", webElement).ToString());
+
+            int scrollHeight = int.Parse(js.ExecuteScript("return arguments[0].scrollHeight;", webElement).ToString());
+
+            var visibleHeight = clientHeight*index;
+
+            if (visibleHeight <= scrollHeight)
+            {
+                //visibleHeight += clientHeight;
+                js.ExecuteScript($"arguments[0].scrollTop = {visibleHeight};", webElement);
+            }
+        }
+
         public static Tuple<double, double,int,int,int> ScrollTopInfo(this IWebDriver driver, IWebElement webElement)
         {
             IJavaScriptExecutor js = (IJavaScriptExecutor)driver;

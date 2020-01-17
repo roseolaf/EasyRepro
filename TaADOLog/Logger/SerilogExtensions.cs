@@ -4,6 +4,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.RegularExpressions;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace TaADOLog.Logger
 {
@@ -265,6 +266,28 @@ namespace TaADOLog.Logger
             }
         }
 
+        public static T LogSetExpectedResult<T>(this LoggerWrapper logger, Expression<Func<T>> lambda, T value, string expectedResultMsg)
+        {
+            var memberExpression = (MemberExpression)lambda.Body;
+            var propertyInfo = (PropertyInfo)memberExpression.Member;
+            var propertyOwnerExpression = (MemberExpression)memberExpression.Expression;
+            var propertyOwner = Expression.Lambda(propertyOwnerExpression).Compile().DynamicInvoke();
+            try
+            {
+                logger.Verbose(VerboseScreenshot);
+                propertyInfo.SetValue(propertyOwner, value, null);
+                logger.ExpectedResult("Set {ActionClassName} {@Properties} to {Value} with expected result ({expectedResultMessage})", propertyInfo.DeclaringType.Name, propertyInfo.Name, value, expectedResultMsg);
+
+                return value;
+            }
+            catch (Exception)
+            {
+                logger.ExpectedResultFail("Set {ActionClassName} {@Properties} to {Value} with expected result ({expectedResultMessage}) failed", propertyInfo.DeclaringType.Name, propertyInfo.Name, value, expectedResultMsg);
+
+                throw;
+            }
+
+        }
 
         public static T LogSet<T>(this LoggerWrapper logger, Expression<Func<T>> lambda, T value)
         {

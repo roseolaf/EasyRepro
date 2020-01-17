@@ -86,7 +86,10 @@ namespace Draeger.Dynamics365.Testautomation.Common.PageObjects
             XrmApp.ThinkTime(300);
             SetLookUpByValue(new LookupItem() { Name = name, Value = value }, 0);
         }
-
+        protected string GetSimpleLookupField(string name)
+        {
+            return SimpleLookupFieldValue(new LookupItem() { Name = name});
+        }
         protected void SetSimpleLookupField(string name, string value)
         {
             SimpleLookupField(new LookupItem() { Name = name, Value = value });
@@ -272,7 +275,10 @@ namespace Draeger.Dynamics365.Testautomation.Common.PageObjects
             browser.Driver.WaitForElement(By.XPath($"//*[contains(@id,'{lookupitem.Name}') and contains(@id,'resultsContainer') and contains(@aria-label,'{lookupitem.Value}')]"), TimeSpan.FromSeconds(5)).Click();
             XrmApp.ThinkTime(500);
         }
-
+        internal string SimpleLookupFieldValue(LookupItem lookupitem)
+        {
+            return browser.Driver.WaitForElement(By.XPath($"//*[contains(@id,'{lookupitem.Name}')]/label")).Text;
+        }
         internal string GetReadOnlyPicklistField(string field)
         {
             var fieldContainer = browser.Driver.WaitForElement(By.XPath(AppElements.Xpath[AppReference.Entity.TextFieldContainer].Replace("[NAME]", field)));

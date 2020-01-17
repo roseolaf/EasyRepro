@@ -52,11 +52,11 @@ namespace Draeger.Dynamics365.Testautomation.Common.PageObjects
 
         private string GetBreadCrumbText(By locator)
         {
-            return browser.Browser.Driver.FindElement(locator).Text;
+            return browser.Browser.Driver.WaitForElement(locator).Text;
         }
         private void ClickBreadCrumb(By locator)
         {
-            browser.Browser.Driver.FindElement(locator).ClickWait();
+            browser.Browser.Driver.WaitForElement(locator).ClickWait();
         }
 
     }

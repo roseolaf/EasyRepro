@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using Draeger.Dynamics365.Testautomation.Common;
 using HtmlAgilityPack;
+using ImageMagick;
 using Microsoft.TeamFoundation.Common;
 using Microsoft.TeamFoundation.Core.WebApi;
 using Microsoft.TeamFoundation.WorkItemTracking.WebApi;
@@ -362,6 +363,7 @@ namespace TaADOLog.ADO
 
             AttachmentReference screenshotError = null;
 
+            string screenshotLastStep = null;
             AttachmentReference screenshotBeforeInvoke = null;
             foreach (var log in loggerSinkList)
             {
@@ -369,11 +371,37 @@ namespace TaADOLog.ADO
                 if (log.Level.ToString() == LogEventLevel.Verbose.ToString() && log.Message.Contains(SerilogExtensions.VerboseScreenshot))
                 {
 
+                    bool addAttachment = true;
+
                     if (!log.Multimedia.ToString().IsNullOrEmpty())
                     {
-                        FileStream attStream = new FileStream(log.Multimedia.ToString(), FileMode.Open, FileAccess.Read);
-                        screenshotBeforeInvoke = witClient.CreateAttachmentAsync(attStream).Result; // upload file
-                        attStream.Dispose();
+                        if (!screenshotLastStep.IsNullOrEmpty())
+                        {
+                            using (var img1 = new MagickImage(screenshotLastStep))
+                            {
+                                
+                                img1.ColorFuzz = new Percentage(5);
+
+                                using (var img2 = new MagickImage(log.Multimedia.ToString()))
+                                {
+
+                                    using (var imgSimilarity = new MagickImage())
+                                    {
+                                        double similarity = img1.Compare(img2, new ErrorMetric(), imgSimilarity);
+                                        if (similarity > 0.99)
+                                            addAttachment = false;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (addAttachment)
+                        {
+                            FileStream attStream = new FileStream(log.Multimedia.ToString(), FileMode.Open,
+                                FileAccess.Read);
+                            screenshotBeforeInvoke = witClient.CreateAttachmentAsync(attStream).Result; // upload file
+                            attStream.Dispose();
+                        }
                     }
 
                 }
@@ -392,6 +420,7 @@ namespace TaADOLog.ADO
 
                 if (!log.Multimedia.ToString().IsNullOrEmpty())
                 {
+                    screenshotLastStep = log.Multimedia.ToString();
                     FileStream attStream = new FileStream(log.Multimedia.ToString(), FileMode.Open, FileAccess.Read);
                     screenshot = witClient.CreateAttachmentAsync(attStream).Result; // upload file
                     attStream.Dispose();

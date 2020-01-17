@@ -15,6 +15,8 @@ namespace Draeger.Dynamics365.Testautomation.Common.PageObjects
 
         public string Title => GetValue(ServiceordersLocators.AlertJsDialog.Title);
 
+        public string Content => GetValue(ServiceordersLocators.AlertJsDialog.Content);
+
 
         public void Ok()
         {

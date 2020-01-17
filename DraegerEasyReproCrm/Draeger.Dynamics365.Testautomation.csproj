@@ -294,10 +294,14 @@
     <Compile Include="Common\Enums\Requirement.cs" />
     <Compile Include="Common\Locators\CaseConstants.cs" />
     <Compile Include="Common\Locators\CaseLocators.cs" />
+    <Compile Include="Common\Locators\InstalledBasesConstants.cs" />
+    <Compile Include="Common\Locators\InstalledBasesLocators.cs" />
     <Compile Include="Common\Locators\ServiceordersLocators.cs" />
     <Compile Include="Common\Locators\ServiceordersConstants.cs" />
     <Compile Include="Common\PageObjects\BreadCrumb.cs" />
     <Compile Include="Common\PageObjects\EntityPageBase.cs" />
+    <Compile Include="Common\PageObjects\InstalledBasesJsDialog.cs" />
+    <Compile Include="Common\PageObjects\ServiceOrderEntity.cs" />
     <Compile Include="Common\PageObjects\ServiceordersJsDialog.cs" />
     <Compile Include="Common\PageObjects\PageElements\GridElement.cs" />
     <Compile Include="Common\PageObjects\PageElements\TimelineElement.cs" />
