@@ -308,182 +308,199 @@ namespace TaADOLog.ADO
             workItemDict[existingBug.Id.Value] = result;
         }
 
+
+        private static readonly object htmlLock = new object();
         private static string LoggerToReproStepsHTML(List<ListSinkInfo<TestContext>> loggerSinkList, WorkItemTrackingHttpClient witClient, int actionFailedIndex, WorkItem testCase)
         {
-            String reproStepsHTML;
-            var testcaseInfo = loggerSinkList.First(logInfo => logInfo.Properties.ContainsKey("TestCaseInfo")).Properties["TestCaseInfo"] as DictionaryValue;
-            var title = testcaseInfo.Elements[new ScalarValue(PropertyKeys.Title)];
-            var url = testcaseInfo.Elements[new ScalarValue(PropertyKeys.Url)];
-            var testcaseId = loggerSinkList.First(logInfo => logInfo.TestContext.Properties.Contains("TestCaseId")).TestContext.Properties["TestCaseId"];
-            var solutionVersion = loggerSinkList.FirstOrDefault(logInfo => logInfo.TestContext.Properties.Contains("SolutionVersion"))?.TestContext.Properties["SolutionVersion"];
-            var duration = loggerSinkList.Last().DateTime - loggerSinkList.First().DateTime;
-
-
-            var steps = testCase.Fields["Microsoft.VSTS.TCM.Steps"].ToString();
-            var stepDict = new Dictionary<int, string>();
-
-            var htmlstepsDoc = new HtmlDocument();
-            htmlstepsDoc.LoadHtml(steps);
-            var stepsNode = htmlstepsDoc.DocumentNode.SelectNodes("//step");
-
-            var i = 1;
-            foreach (var step in stepsNode)
+            lock (htmlLock)
             {
-                var text = step.InnerText;
-                text = text.Replace("&lt;", "<");
-                text = text.Replace("&gt;", ">");
-                text = text.Replace("\"", "'");
-                var tmpDoc = new HtmlDocument();
-                tmpDoc.LoadHtml(text);
-                text = tmpDoc.DocumentNode.InnerText;
-                text = text.Replace("&amp;nbsp;", Environment.NewLine);
+                String reproStepsHTML;
+                var testcaseInfo =
+                    loggerSinkList.First(logInfo => logInfo.Properties.ContainsKey("TestCaseInfo"))
+                        .Properties["TestCaseInfo"] as DictionaryValue;
+                var title = testcaseInfo.Elements[new ScalarValue(PropertyKeys.Title)];
+                var url = testcaseInfo.Elements[new ScalarValue(PropertyKeys.Url)];
+                var testcaseId = loggerSinkList.First(logInfo => logInfo.TestContext.Properties.Contains("TestCaseId"))
+                    .TestContext.Properties["TestCaseId"];
+                var solutionVersion = loggerSinkList
+                    .FirstOrDefault(logInfo => logInfo.TestContext.Properties.Contains("SolutionVersion"))?.TestContext
+                    .Properties["SolutionVersion"];
+                var duration = loggerSinkList.Last().DateTime - loggerSinkList.First().DateTime;
 
-                stepDict.Add(i, text);
-                i++;
-            }
 
-            reproStepsHTML = $"<div id='{testcaseId}'>" +
-                             $"<span><b>TestCase:</b> <a href=\"{url}\"> {testcaseId} - {title}</a></span>" +
-                             $"<br/>" +
-                             $"<span><b>Duration:</b> {duration}</span>" +
-                             $"<br/>" +
-                             $"<span><b>Solution Version:</b> {solutionVersion}</span>" +
-                             $"<br/>" +
-                             $"<br/>" +
-                             $"<table width:100%  style='border-collapse:collapse; padding:3px; border-color:#c0c0c0; border-width: 1px; border-style:solid'>" +
-                             $"<thead style='background-color: #c0c0c0; padding:3px'>" +
-                             $"<tr>" +
-                             $"<th> Time </th>" +
-                             $"<th> Severity </th>" +
-                             $"<th> Step </th>" +
-                             $"<th> Description </th>" +
-                             $"<th> Url </th>" +
-                             $"<th> Screenshot </th>" +
-                             $"</tr></thead><tbody>";
+                var steps = testCase.Fields["Microsoft.VSTS.TCM.Steps"].ToString();
+                var stepDict = new Dictionary<int, string>();
 
-            AttachmentReference screenshotError = null;
+                var htmlstepsDoc = new HtmlDocument();
+                htmlstepsDoc.LoadHtml(steps);
+                var stepsNode = htmlstepsDoc.DocumentNode.SelectNodes("//step");
 
-            string screenshotLastStep = null;
-            AttachmentReference screenshotBeforeInvoke = null;
-            foreach (var log in loggerSinkList)
-            {
+                var i = 1;
+                foreach (var step in stepsNode)
+                {
+                    var text = step.InnerText;
+                    text = text.Replace("&lt;", "<");
+                    text = text.Replace("&gt;", ">");
+                    text = text.Replace("\"", "'");
+                    var tmpDoc = new HtmlDocument();
+                    tmpDoc.LoadHtml(text);
+                    text = tmpDoc.DocumentNode.InnerText;
+                    text = text.Replace("&amp;nbsp;", Environment.NewLine);
 
-                if (log.Level.ToString() == LogEventLevel.Verbose.ToString() && log.Message.Contains(SerilogExtensions.VerboseScreenshot))
+                    stepDict.Add(i, text);
+                    i++;
+                }
+
+                reproStepsHTML = $"<div id='{testcaseId}'>" +
+                                 $"<span><b>TestCase:</b> <a href=\"{url}\"> {testcaseId} - {title}</a></span>" +
+                                 $"<br/>" +
+                                 $"<span><b>Duration:</b> {duration}</span>" +
+                                 $"<br/>" +
+                                 $"<span><b>Solution Version:</b> {solutionVersion}</span>" +
+                                 $"<br/>" +
+                                 $"<br/>" +
+                                 $"<table width:100%  style='border-collapse:collapse; padding:3px; border-color:#c0c0c0; border-width: 1px; border-style:solid'>" +
+                                 $"<thead style='background-color: #c0c0c0; padding:3px'>" +
+                                 $"<tr>" +
+                                 $"<th> Time </th>" +
+                                 $"<th> Severity </th>" +
+                                 $"<th> Step </th>" +
+                                 $"<th> Description </th>" +
+                                 $"<th> Url </th>" +
+                                 $"<th> Screenshot </th>" +
+                                 $"</tr></thead><tbody>";
+
+                AttachmentReference screenshotError = null;
+
+                string screenshotLastStep = null;
+                AttachmentReference screenshotBeforeInvoke = null;
+                foreach (var log in loggerSinkList)
                 {
 
-                    bool addAttachment = true;
-
-                    if (!log.Multimedia.ToString().IsNullOrEmpty())
+                    if (log.Level.ToString() == LogEventLevel.Verbose.ToString() &&
+                        log.Message.Contains(SerilogExtensions.VerboseScreenshot))
                     {
-                        if (!screenshotLastStep.IsNullOrEmpty())
-                        {
-                            using (var img1 = new MagickImage(screenshotLastStep))
-                            {
-                                
-                                img1.ColorFuzz = new Percentage(5);
 
-                                using (var img2 = new MagickImage(log.Multimedia.ToString()))
+                        bool addAttachment = true;
+
+                        if (!log.Multimedia.ToString().IsNullOrEmpty())
+                        {
+                            if (!screenshotLastStep.IsNullOrEmpty())
+                            {
+                                using (var img1 = new MagickImage(screenshotLastStep))
                                 {
 
-                                    using (var imgSimilarity = new MagickImage())
+                                    img1.ColorFuzz = new Percentage(5);
+
+                                    using (var img2 = new MagickImage(log.Multimedia.ToString()))
                                     {
-                                        double diff = img1.Compare(img2, ErrorMetric.Fuzz, imgSimilarity);
-                                        if (diff < 0.02)
-                                            addAttachment = false;
+
+                                        using (var imgSimilarity = new MagickImage())
+                                        {
+                                            double diff = img1.Compare(img2, ErrorMetric.Fuzz, imgSimilarity);
+                                            if (diff < 0.02)
+                                                addAttachment = false;
+                                        }
                                     }
                                 }
                             }
+
+                            if (addAttachment)
+                            {
+                                FileStream attStream = new FileStream(log.Multimedia.ToString(), FileMode.Open,
+                                    FileAccess.Read);
+                                screenshotBeforeInvoke =
+                                    witClient.CreateAttachmentAsync(attStream).Result; // upload file
+                                attStream.Dispose();
+                            }
                         }
 
-                        if (addAttachment)
-                        {
-                            FileStream attStream = new FileStream(log.Multimedia.ToString(), FileMode.Open,
-                                FileAccess.Read);
-                            screenshotBeforeInvoke = witClient.CreateAttachmentAsync(attStream).Result; // upload file
-                            attStream.Dispose();
-                        }
                     }
 
-                }
-                if (log.LogEvent.Level < LogEventLevel.Information)
-                    continue;
-                
-                var logmsgModified = log.Message.Replace("\r\n", "<br>");
-                if (log.EntityUrl.IsNullOrEmpty())
-                {
-                    var htmlLink = new Regex(@"(http[^\s""']+)");
-                    var linkValue = htmlLink.Match(logmsgModified).Value;
-                    logmsgModified = htmlLink.Replace(logmsgModified, $"<a href=\"{linkValue}\">{linkValue}</a>");
-                }
+                    if (log.LogEvent.Level < LogEventLevel.Information)
+                        continue;
 
-                AttachmentReference screenshot = null;
+                    var logmsgModified = log.Message.Replace("\r\n", "<br>");
+                    if (log.EntityUrl.IsNullOrEmpty())
+                    {
+                        var htmlLink = new Regex(@"(http[^\s""']+)");
+                        var linkValue = htmlLink.Match(logmsgModified).Value;
+                        logmsgModified = htmlLink.Replace(logmsgModified, $"<a href=\"{linkValue}\">{linkValue}</a>");
+                    }
 
-                if (!log.Multimedia.ToString().IsNullOrEmpty())
-                {
-                    screenshotLastStep = log.Multimedia.ToString();
-                    FileStream attStream = new FileStream(log.Multimedia.ToString(), FileMode.Open, FileAccess.Read);
-                    screenshot = witClient.CreateAttachmentAsync(attStream).Result; // upload file
-                    attStream.Dispose();
-                }
-                var stepNrRegEx = new Regex(@"\d+");
+                    AttachmentReference screenshot = null;
 
-                int actualStep = -1;
-                if (!log.Step.IsNullOrEmpty())
-                    actualStep = int.Parse(stepNrRegEx.Match(log.Step).Value);
+                    if (!log.Multimedia.ToString().IsNullOrEmpty())
+                    {
+                        screenshotLastStep = log.Multimedia.ToString();
+                        FileStream attStream =
+                            new FileStream(log.Multimedia.ToString(), FileMode.Open, FileAccess.Read);
+                        screenshot = witClient.CreateAttachmentAsync(attStream).Result; // upload file
+                        attStream.Dispose();
+                    }
+
+                    var stepNrRegEx = new Regex(@"\d+");
+
+                    int actualStep = -1;
+                    if (!log.Step.IsNullOrEmpty())
+                        actualStep = int.Parse(stepNrRegEx.Match(log.Step).Value);
 
 
-                reproStepsHTML +=
-                    $"<tr style=\"padding:10px\" >" +
-                    $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid \">" +
-                    $"<i>{log.DateTime:dd/MM/yyyy HH:mm:ss.fff}</i></td>" +
-                    $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
-                    $"{((log.Properties.ContainsKey("MessageType") && !log.Properties["MessageType"].ToString().Equals("Step")) ? log.Properties["MessageType"].ToString().Replace("\"", "") : log.Level)}</td>" +
-                    $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\"" +
-                    (!log.Step.IsNullOrEmpty() ? $"title=\"'{stepDict[actualStep]}'\">" : ">") +
-                    $"{log.Step}</td>" +
-                    $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
-                    (loggerSinkList.IndexOf(log) == actionFailedIndex
-                        ? $"❌ {logmsgModified}</td>"
-                        : $"{logmsgModified}</td>") +
-                    $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
-                    (log.Url.IsNullOrEmpty() ? "</td>" : $"<a href=\"{log.Url}\" target=\"_blank\">🌍</a></td>") +
-                    $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">";
-                if (screenshotBeforeInvoke != null)
-                {
                     reproStepsHTML +=
-                        $"<a href=\"{screenshotBeforeInvoke.Url}\" target=\"_blank\"><img src=\"{screenshotBeforeInvoke.Url}\"></a><br>";
+                        $"<tr style=\"padding:10px\" >" +
+                        $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid \">" +
+                        $"<i>{log.DateTime:dd/MM/yyyy HH:mm:ss.fff}</i></td>" +
+                        $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
+                        $"{((log.Properties.ContainsKey("MessageType") && !log.Properties["MessageType"].ToString().Replace("\"", "").Equals("Step")) ? log.Properties["MessageType"].ToString().Replace("\"", "") : log.Level)}</td>" +
+                        $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\"" +
+                        (!log.Step.IsNullOrEmpty() ? $"title=\"'{stepDict[actualStep]}'\">" : ">") +
+                        $"{log.Step}</td>" +
+                        $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
+                        (loggerSinkList.IndexOf(log) == actionFailedIndex
+                            ? $"❌ {logmsgModified}</td>"
+                            : $"{logmsgModified}</td>") +
+                        $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
+                        (log.Url.IsNullOrEmpty() ? "</td>" : $"<a href=\"{log.Url}\" target=\"_blank\">🌍</a></td>") +
+                        $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">";
+                    if (screenshotBeforeInvoke != null)
+                    {
+                        reproStepsHTML +=
+                            $"<a href=\"{screenshotBeforeInvoke.Url}\" target=\"_blank\"><img src=\"{screenshotBeforeInvoke.Url}\"></a><br>";
+                    }
+
+                    if (screenshot != null)
+                    {
+                        reproStepsHTML +=
+                            $"<a href=\"{screenshot.Url}\" target=\"_blank\"><img src=\"{screenshot.Url}\"></a>";
+                        // reset
+                        screenshotBeforeInvoke = null;
+
+                    }
+
+                    reproStepsHTML += "</td>" +
+                                      $"</tr>";
+
+                    if (loggerSinkList.IndexOf(log) == actionFailedIndex && screenshot != null)
+                    {
+                        screenshotError = screenshot;
+                    }
+
+
+
                 }
 
-                if (screenshot != null)
-                {
-                    reproStepsHTML +=
-                        $"<a href=\"{screenshot.Url}\" target=\"_blank\"><img src=\"{screenshot.Url}\"></a>";
-                    // reset
-                    screenshotBeforeInvoke = null;
+                reproStepsHTML += "</tbody></table>" +
+                                  "<br/>" +
+                                  "<br/>" +
+                                  $"<img src=\"{screenshotError?.Url}\">" +
+                                  "</div>" +
+                                  "<br/>" +
+                                  "<br/>" +
+                                  "<br/>" +
+                                  "<br/>";
 
-                }
-                reproStepsHTML += "</td>" +
-                                  $"</tr>";
-
-                if (loggerSinkList.IndexOf(log) == actionFailedIndex && screenshot != null)
-                {
-                    screenshotError = screenshot;
-                }
-                
-
-
+                return reproStepsHTML;
             }
-            reproStepsHTML += "</tbody></table>" +
-                              "<br/>" +
-                              "<br/>" +
-                              $"<img src=\"{screenshotError?.Url}\">" +
-                              "</div>" +
-                              "<br/>" +
-                              "<br/>" +
-                              "<br/>" +
-                              "<br/>";
-
-            return reproStepsHTML;
         }
 
         private static string SystemInfoHTML(List<ListSinkInfo<TestContext>> loggerSinkList, string oldSystemInfo = null)
@@ -935,7 +952,7 @@ namespace TaADOLog.ADO
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid \">" +
                     $"<i>{log.DateTime:dd/MM/yyyy HH:mm:ss.fff}</i></td>" +
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
-                    $"{((log.Properties.ContainsKey("MessageType") && !log.Properties["MessageType"].ToString().Equals("Step")) ? log.Properties["MessageType"].ToString().Replace("\"","") : log.Level)}</td>" +
+                    $"{((log.Properties.ContainsKey("MessageType") && !log.Properties["MessageType"].ToString().Replace("\"", "").Equals("Step")) ? log.Properties["MessageType"].ToString().Replace("\"","") : log.Level)}</td>" +
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\"" +
                     (!log.Step.IsNullOrEmpty() ? $"title=\"'{stepDict[actualStep]}'\">" : ">") +
                     $"{log.Step}</td>" +
