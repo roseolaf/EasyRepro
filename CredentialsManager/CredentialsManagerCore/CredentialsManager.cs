@@ -13,6 +13,7 @@ using Draeger.Testautomation.CredentialsManagerCore.Pooling;
 using Draeger.Testautomation.CredentialsManagerCore.Pooling.Users;
 using Microsoft.Azure.KeyVault.Models;
 using Serilog;
+using TaADOLog.Logger;
 
 namespace Draeger.Testautomation.CredentialsManagerCore
 {
@@ -77,7 +78,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore
         /// <returns></returns>
         // ReSharper disable once UnusedMember.Global
         public Dictionary<string, ManagedCredentials> GetCredentials(object caller, string testMethod,
-            ILogger logger)
+            LoggerWrapper logger)
         {
             //#if DEBUG
             //            if (Environment.MachineName == "LDE7355")
@@ -134,7 +135,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore
         ///     As this method changes the reference count, it is locked for thread safety
         /// </summary>
         /// <returns></returns>
-        private ManagedCredentials PrepareUnusedCredentials(CredentialsInfo credentialsInfo, ILogger logger)
+        private ManagedCredentials PrepareUnusedCredentials(CredentialsInfo credentialsInfo, LoggerWrapper logger)
         {
             ManagedCredentials credentials;
             //lock (_unusedCredslock)
@@ -153,7 +154,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore
             return credentials;
         }
 
-        private void SetSecurityRoles(ITestUserCredentials credentials, HashSet<SecurityRole> securityRoles, ILogger logger, bool removeBasicRoles)
+        private void SetSecurityRoles(ITestUserCredentials credentials, HashSet<SecurityRole> securityRoles, LoggerWrapper logger, bool removeBasicRoles)
         {
             if (!_initialized)
                 throw new NotInitializedException(
@@ -168,7 +169,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore
         /// <param name="managedCredentials"></param>
         /// <param name="securityRoles"></param>
         /// <param name="logger"></param>
-        private void ResetUserRoles(ITestUserCredentials managedCredentials, HashSet<SecurityRole> securityRoles, ILogger logger)
+        private void ResetUserRoles(ITestUserCredentials managedCredentials, HashSet<SecurityRole> securityRoles, LoggerWrapper logger)
         {
             if (!_initialized)
                 throw new NotInitializedException(
@@ -180,7 +181,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore
         ///     This method fetches a set of credentials from the user pool
         /// </summary>
         /// <returns></returns>
-        private ManagedCredentials GetUnusedCredentials(UserGroup group, ILogger logger)
+        private ManagedCredentials GetUnusedCredentials(UserGroup group, LoggerWrapper logger)
         {
             ITestUserCredentials cred;
             switch (@group)
@@ -271,7 +272,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore
         /// </summary>
         /// <param name="managedCredentials"></param>
         /// <param name="logger"></param>
-        internal void ReturnCredentials(ManagedCredentials managedCredentials, ILogger logger)
+        internal void ReturnCredentials(ManagedCredentials managedCredentials, LoggerWrapper logger)
         {
             //lock (_returnCredslock)
             {

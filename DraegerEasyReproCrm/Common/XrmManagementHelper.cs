@@ -12,12 +12,13 @@ using Microsoft.Xrm.Sdk.Query;
 using Microsoft.Xrm.Sdk.Client;
 using Serilog;
 using Draeger.Dynamics365.Testautomation.Common.EntityManager;
+using TaADOLog.Logger;
 
 namespace Draeger.Dynamics365.Testautomation.Common
 {
     public class XrmManagementHelper : IXrmManagementHelper
     {
-        public void ResetUserRoles(ITestUserCredentials credentials, HashSet<SecurityRole> securityRoles, ILogger logger)
+        public void ResetUserRoles(ITestUserCredentials credentials, HashSet<SecurityRole> securityRoles, LoggerWrapper logger)
         {
             // Connect to the Organization service. 
             // The using statement assures that the service proxy is properly disposed.
@@ -30,15 +31,15 @@ namespace Draeger.Dynamics365.Testautomation.Common
 
             foreach (var role in securityRoles.Select(securityRole => FindSecurityRoleEntity(securityRole, organizationServiceProxy)))
             {
-                logger?.Information($"Role {role.Name} is retrieved for reset.");
+                logger?.Step($"Role {role.Name} is retrieved for reset.");
 
                 WithdrawSecurityRole(user, role, organizationServiceProxy);
-                logger?.Information($"Disassociated role {role.Name} from user {user.FirstName} {user.LastName}.\n");
+                logger?.Step($"Disassociated role {role.Name} from user {user.FirstName} {user.LastName}.\n");
             }
         }
 
         public void SetSecurityRoles(ITestUserCredentials credentials, HashSet<SecurityRole> securityRoles,
-            ILogger logger, bool removeBasicRoles = false)
+            LoggerWrapper logger, bool removeBasicRoles = false)
         {
             var organizationServiceProxy = CrmConnection.Instance.OpenConnection();
             var context = CrmConnection.Instance.GetContext();
@@ -49,9 +50,9 @@ namespace Draeger.Dynamics365.Testautomation.Common
             {
                 foreach (var assignedRole in GetAssignedRoles(user, organizationServiceProxy))
                 {
-                    logger.Information($"WithdrawSecurityRole {assignedRole.Name} start");
+                    logger.Step($"WithdrawSecurityRole {assignedRole.Name} start");
                     WithdrawSecurityRole(user, assignedRole, organizationServiceProxy);
-                    logger.Information($"WithdrawSecurityRole {assignedRole.Name} end");
+                    logger.Step($"WithdrawSecurityRole {assignedRole.Name} end");
                 }
             }
 
@@ -61,13 +62,13 @@ namespace Draeger.Dynamics365.Testautomation.Common
                 if (!removeBasicRoles && IsUserInRole(user, role, organizationServiceProxy))
                 //Find out if the role is already attached
                 {
-                    logger.Information($"Role {role.Name} is already associated to user {user.FirstName} {user.LastName}.\n");
+                    logger.Step($"Role {role.Name} is already associated to user {user.FirstName} {user.LastName}.\n");
                     continue;
                 }
 
                 if (role.Id == Guid.Empty || user.Id == Guid.Empty) continue;
                 AssignSecurityRole(user, role, organizationServiceProxy);
-                logger.Information(
+                logger.Step(
                     $"Associated role {role.Name} to user {user.FirstName} {user.LastName}.\n");
             }
 

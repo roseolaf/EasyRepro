@@ -5,6 +5,7 @@ using Draeger.Testautomation.CredentialsManagerCore.Pooling;
 using Draeger.Testautomation.CredentialsManagerCore.Pooling.Users;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Serilog;
+using TaADOLog.Logger;
 
 namespace Draeger.Testautomation.CredentialsManagerCore
 {
@@ -32,7 +33,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore
 
         public CredentialsManager Owner { get; private set; } = null;
 
-        protected virtual void Dispose(bool disposing, ILogger logger)
+        protected virtual void Dispose(bool disposing, LoggerWrapper logger)
         {
             //_logger.Debug($"Managed Credentials before dispose {_disposedValue}");
             //if (_disposedValue) return;
@@ -51,7 +52,7 @@ namespace Draeger.Testautomation.CredentialsManagerCore
             Dispose(true, null);
         }
 
-        public void Return(ILogger logger)
+        public void Return(LoggerWrapper logger)
         {
             Dispose(true, logger);
         }

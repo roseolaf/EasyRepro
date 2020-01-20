@@ -388,7 +388,7 @@ namespace TaADOLog.ADO
                                     using (var imgSimilarity = new MagickImage())
                                     {
                                         double diff = img1.Compare(img2, ErrorMetric.Fuzz, imgSimilarity);
-                                        if (diff < 0.01)
+                                        if (diff < 0.02)
                                             addAttachment = false;
                                     }
                                 }
@@ -437,7 +437,7 @@ namespace TaADOLog.ADO
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid \">" +
                     $"<i>{log.DateTime:dd/MM/yyyy HH:mm:ss.fff}</i></td>" +
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
-                    $"{((log.Properties.ContainsKey("MessageType") && !log.Properties["MessageType"].ToString().IsNullOrEmpty()) ? log.Properties["MessageType"].ToString().Replace("\"", "") : log.Level)}</td>" +
+                    $"{((log.Properties.ContainsKey("MessageType") && !log.Properties["MessageType"].ToString().Equals("Step")) ? log.Properties["MessageType"].ToString().Replace("\"", "") : log.Level)}</td>" +
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\"" +
                     (!log.Step.IsNullOrEmpty() ? $"title=\"'{stepDict[actualStep]}'\">" : ">") +
                     $"{log.Step}</td>" +
@@ -935,7 +935,7 @@ namespace TaADOLog.ADO
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid \">" +
                     $"<i>{log.DateTime:dd/MM/yyyy HH:mm:ss.fff}</i></td>" +
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
-                    $"{((log.Properties.ContainsKey("MessageType") && !log.Properties["MessageType"].ToString().IsNullOrEmpty()) ? log.Properties["MessageType"].ToString().Replace("\"","") : log.Level)}</td>" +
+                    $"{((log.Properties.ContainsKey("MessageType") && !log.Properties["MessageType"].ToString().Equals("Step")) ? log.Properties["MessageType"].ToString().Replace("\"","") : log.Level)}</td>" +
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\"" +
                     (!log.Step.IsNullOrEmpty() ? $"title=\"'{stepDict[actualStep]}'\">" : ">") +
                     $"{log.Step}</td>" +
