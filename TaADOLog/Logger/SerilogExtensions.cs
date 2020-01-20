@@ -16,7 +16,8 @@ namespace TaADOLog.Logger
             string messageTemplate,
             params object[] args)
         {
-            logger.Information(messageTemplate, args);
+            logger.ForContext("MessageType", "")
+            .Information(messageTemplate, args);
         }
 
         public static void ExpectedResult(
@@ -44,6 +45,23 @@ namespace TaADOLog.Logger
             logger.ForContext("MessageType", "TestResult")
               .Information( messageTemplate, args);
         }
+        public static void ExceptionFail(
+            this LoggerWrapper logger,
+            string messageTemplate,
+            params object[] args)
+        {
+            logger.ForContext("MessageType", "Exception")
+                .Fatal(messageTemplate, args);
+        }
+        public static void ExceptionError(
+            this LoggerWrapper logger,
+            string messageTemplate,
+            params object[] args)
+        {
+            logger.ForContext("MessageType", "Exception")
+                .Error(messageTemplate, args);
+        }
+
 
         public static void Error(
             this LoggerWrapper logger,

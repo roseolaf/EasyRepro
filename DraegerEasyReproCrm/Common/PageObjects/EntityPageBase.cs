@@ -270,7 +270,7 @@ namespace Draeger.Dynamics365.Testautomation.Common.PageObjects
 
         internal void SimpleLookupField(LookupItem lookupitem)
         {
-            browser.Driver.WaitForElement(By.XPath($"//*[contains(@id,'{lookupitem.Name}')]/input")).SendKeysWait(lookupitem.Value);
+            browser.Driver.WaitForElement(By.XPath($"//*[contains(@id,'{lookupitem.Name}')]/input")).SendKeysWait(lookupitem.Value,true);
             XrmApp.ThinkTime(500);
             browser.Driver.WaitForElement(By.XPath($"//*[contains(@id,'{lookupitem.Name}') and contains(@id,'resultsContainer') and contains(@aria-label,'{lookupitem.Value}')]"), TimeSpan.FromSeconds(5)).Click();
             XrmApp.ThinkTime(500);

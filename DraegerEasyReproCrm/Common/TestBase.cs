@@ -155,13 +155,13 @@ namespace Draeger.Dynamics365.Testautomation.Common
 
 
                 Logger.TestResult("{TestResult}", TestContext.CurrentTestOutcome);
-#if !DEBUG
+#if DEBUG
                 if (Exception != null)
                 {
                     if (Exception.Message.Contains("Assert"))
-                        Logger.Fail("{InnerException} - {@Exception}", Exception.InnerException, Exception);
+                        Logger.ExceptionFail("{InnerException} - {@Exception}", Exception.InnerException, Exception);
                     else
-                        Logger.Error("{InnerException} - {@Exception}", Exception.InnerException, Exception);
+                        Logger.ExceptionError("{InnerException} - {@Exception}", Exception.InnerException, Exception);
 
 
 
@@ -170,7 +170,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
                         Exception);
                 }
 #else
-            (new Helper.Screenshot()).SaveScreenshot(XrmBrowser, TestContext);
+                (new Helper.Screenshot()).SaveScreenshot(XrmBrowser, TestContext);
 #endif
             }
             catch (WebDriverException e)
