@@ -319,6 +319,10 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
                 Thread.Sleep(200);
                 element.WaitForElement();
                 element.Clear();
+                Thread.Sleep(200);
+                element.SendKeys(Keys.Control+"a");
+                Thread.Sleep(50);
+                element.SendKeys(Keys.Backspace);
                 element.SendKeys(value);
                 Thread.Sleep(200);
             }

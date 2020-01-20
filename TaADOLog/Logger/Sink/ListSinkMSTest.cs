@@ -36,10 +36,8 @@ namespace TaADOLog.Logger.Sink
             var msgformatter = new MessageTemplateTextFormatter("{Message}", null);
             msgformatter.Format(logEvent,msgWriter);
 
-            var stepRegex = new Regex(@"Step\d+");
-            var msgRegex = new Regex(@"Step\d+:");
-            var step = stepRegex.Match(msgWriter.ToString()).Value;
-            var message =  msgRegex.Replace(msgWriter.ToString(), "");
+            var step = logEvent.Properties.ContainsKey("Step") ? logEvent.Properties["Step"].ToString() : null;
+            var message =  msgWriter.ToString();
 
             TimeZoneInfo info = TimeZoneInfo.FindSystemTimeZoneById("W. Europe Standard Time");
             var logTime = TimeZoneInfo.ConvertTime(logEvent.Timestamp, info).DateTime;

@@ -16,8 +16,7 @@ namespace TaADOLog.Logger
             string messageTemplate,
             params object[] args)
         {
-            logger.ForContext("MessageType", "Step")
-              .Information(messageTemplate, args);
+            logger.Information(messageTemplate, args);
         }
 
         public static void ExpectedResult(

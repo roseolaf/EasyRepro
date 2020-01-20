@@ -86,97 +86,97 @@ namespace TaADOLog.Logger
 
         public void Error(string messageTemplate)
         {
-            _logger.Error($"{_step}: {messageTemplate}");
+            _logger.ForContext("Step", _step).Error(messageTemplate);
         }
 
         public void Error<T>(string messageTemplate, T propertyValue)
         {
-            ((ILogger)_logger).Error($"{_step}: {messageTemplate}", propertyValue);
+            _logger.ForContext("Step", _step).Error(messageTemplate, propertyValue);
         }
 
         public void Error<T0, T1>(string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            ((ILogger)_logger).Error($"{_step}: {messageTemplate}", propertyValue0, propertyValue1);
+            _logger.ForContext("Step", _step).Error(messageTemplate, propertyValue0, propertyValue1);
         }
 
         public void Error<T0, T1, T2>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            ((ILogger)_logger).Error($"{_step}: {messageTemplate}", propertyValue0, propertyValue1, propertyValue2);
+            _logger.ForContext("Step", _step).Error(messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         public void Error(string messageTemplate, params object[] propertyValues)
         {
-            _logger.Error($"{_step}: {messageTemplate}", propertyValues);
+            _logger.ForContext("Step", _step).Error(messageTemplate, propertyValues);
         }
 
         public void Error(Exception exception, string messageTemplate)
         {
-            _logger.Error(exception, $"{_step}: {messageTemplate}");
+            _logger.ForContext("Step", _step).Error(exception, messageTemplate);
         }
 
         public void Error<T>(Exception exception, string messageTemplate, T propertyValue)
         {
-            ((ILogger)_logger).Error(exception, $"{_step}: {messageTemplate}", propertyValue);
+            _logger.ForContext("Step", _step).Error(exception, messageTemplate, propertyValue);
         }
 
         public void Error<T0, T1>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            ((ILogger)_logger).Error(exception, $"{_step}: {messageTemplate}", propertyValue0, propertyValue1);
+            _logger.ForContext("Step", _step).Error(exception, messageTemplate, propertyValue0, propertyValue1);
         }
 
         public void Error<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            ((ILogger)_logger).Error(exception, $"{_step}: {messageTemplate}", propertyValue0, propertyValue1, propertyValue2);
+            _logger.ForContext("Step", _step).Error(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         public void Error(Exception exception, string messageTemplate, params object[] propertyValues)
         {
-            _logger.Error(exception, $"{_step}: {messageTemplate}", propertyValues);
+            _logger.ForContext("Step", _step).Error(exception, messageTemplate, propertyValues);
         }
 
         public void Fatal(string messageTemplate)
         {
-            _logger.Fatal($"{_step}: {messageTemplate}");
+            _logger.ForContext("Step", _step).Fatal(messageTemplate);
         }
 
         public void Fatal<T>(string messageTemplate, T propertyValue)
         {
-            ((ILogger)_logger).Fatal($"{_step}: {messageTemplate}", propertyValue);
+            _logger.ForContext("Step", _step).Fatal(messageTemplate, propertyValue);
         }
 
         public void Fatal<T0, T1>(string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            ((ILogger)_logger).Fatal($"{_step}: {messageTemplate}", propertyValue0, propertyValue1);
+            _logger.ForContext("Step", _step).Fatal(messageTemplate, propertyValue0, propertyValue1);
         }
 
         public void Fatal<T0, T1, T2>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            ((ILogger)_logger).Fatal($"{_step}: {messageTemplate}", propertyValue0, propertyValue1, propertyValue2);
+            _logger.ForContext("Step", _step).Fatal(messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         public void Fatal(string messageTemplate, params object[] propertyValues)
         {
-            _logger.Fatal($"{_step}: {messageTemplate}", propertyValues);
+            _logger.ForContext("Step", _step).Fatal(messageTemplate, propertyValues);
         }
 
         public void Fatal(Exception exception, string messageTemplate)
         {
-            _logger.Fatal(exception, $"{_step}: {messageTemplate}");
+            _logger.ForContext("Step", _step).Information(exception, messageTemplate);
         }
 
         public void Fatal<T>(Exception exception, string messageTemplate, T propertyValue)
         {
-            ((ILogger)_logger).Fatal(exception, $"{_step}: {messageTemplate}", propertyValue);
+            _logger.ForContext("Step", _step).Information(exception, messageTemplate, propertyValue);
         }
 
         public void Fatal<T0, T1>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            ((ILogger)_logger).Fatal(exception, $"{_step}: {messageTemplate}", propertyValue0, propertyValue1);
+            _logger.ForContext("Step", _step).Information(exception, messageTemplate, propertyValue0, propertyValue1);
         }
 
         public void Fatal<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            ((ILogger)_logger).Fatal(exception, $"{_step}: {messageTemplate}", propertyValue0, propertyValue1, propertyValue2);
+            _logger.ForContext("Step", _step).Information(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         public void Fatal(Exception exception, string messageTemplate, params object[] propertyValues)
@@ -216,52 +216,53 @@ namespace TaADOLog.Logger
 
         public void Information(string messageTemplate)
         {
-            _logger.Information($"Step{_step}: {messageTemplate}");
+            _logger.ForContext("Step", _step).
+            Information(messageTemplate);
         }
 
         public void Information<T>(string messageTemplate, T propertyValue)
         {
-            ((ILogger)_logger).Information($"Step{_step}: {messageTemplate}", propertyValue);
+            _logger.ForContext("Step", _step).Information(messageTemplate, propertyValue);
         }
 
         public void Information<T0, T1>(string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            ((ILogger)_logger).Information($"Step{_step}: {messageTemplate}", propertyValue0, propertyValue1);
+            _logger.ForContext("Step", _step).Information(messageTemplate, propertyValue0, propertyValue1);
         }
 
         public void Information<T0, T1, T2>(string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            ((ILogger)_logger).Information($"Step{_step}: {messageTemplate}", propertyValue0, propertyValue1, propertyValue2);
+            _logger.ForContext("Step", _step).Information(messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         public void Information(string messageTemplate, params object[] propertyValues)
         {
-            _logger.Information($"Step{_step}: {messageTemplate}", propertyValues);
+            _logger.ForContext("Step", _step).Information(messageTemplate, propertyValues);
         }
 
         public void Information(Exception exception, string messageTemplate)
         {
-            _logger.Information(exception, $"Step{_step}: {messageTemplate}");
+            _logger.ForContext("Step", _step).Information(exception, messageTemplate);
         }
 
         public void Information<T>(Exception exception, string messageTemplate, T propertyValue)
         {
-            ((ILogger)_logger).Information(exception, $"Step{_step}: {messageTemplate}", propertyValue);
+            _logger.ForContext("Step", _step).Information(exception, messageTemplate, propertyValue);
         }
 
         public void Information<T0, T1>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1)
         {
-            ((ILogger)_logger).Information(exception, $"Step{_step}: {messageTemplate}", propertyValue0, propertyValue1);
+            _logger.ForContext("Step", _step).Information(exception, messageTemplate, propertyValue0, propertyValue1);
         }
 
         public void Information<T0, T1, T2>(Exception exception, string messageTemplate, T0 propertyValue0, T1 propertyValue1, T2 propertyValue2)
         {
-            ((ILogger)_logger).Information(exception, $"Step{_step}: {messageTemplate}", propertyValue0, propertyValue1, propertyValue2);
+            _logger.ForContext("Step", _step).Information(exception, messageTemplate, propertyValue0, propertyValue1, propertyValue2);
         }
 
         public void Information(Exception exception, string messageTemplate, params object[] propertyValues)
         {
-            _logger.Information(exception, $"Step{_step}: {messageTemplate}", propertyValues);
+            _logger.ForContext("Step", _step).Information(exception, messageTemplate, propertyValues);
         }
 
         public bool IsEnabled(LogEventLevel level)
