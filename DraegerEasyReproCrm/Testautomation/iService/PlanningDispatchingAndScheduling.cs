@@ -301,7 +301,7 @@ namespace Draeger.Dynamics365.Testautomation.Testautomation.iService
                 var serviceOrdersGridItemInfos = grid.GetGridItems();
                 var serviceOrderFromGrid = gridItemsToSelect[0];
                 var expectedResultLastStepA = Logger.LogGetExpectedResultCheck(() => serviceOrdersGridItemInfos.Count, 1, "All expected Service Orders are dispatched.");
-                var expectedResultLastStepB = Logger.LogExpectedResultCheck<Func<string,string,bool>,bool> (Compare, true, "All expected Service Orders are dispatched.", serviceOrdersGridItemInfos[0].Attribute["Service Order No."], serviceOrderFromGrid.Attribute["Service Order No."]);
+                var expectedResultLastStepB = Logger.LogExpectedResultCheck<Func<string,string,bool>,bool> (Equals, true, "All expected Service Orders are dispatched.", serviceOrdersGridItemInfos[0].Attribute["Service Order No."], serviceOrderFromGrid.Attribute["Service Order No."]);
                 Assert.IsTrue(expectedResultLastStepA && expectedResultLastStepB, "All expected Service Orders are dispatched.");
             }
             catch (Exception e)
@@ -404,7 +404,7 @@ namespace Draeger.Dynamics365.Testautomation.Testautomation.iService
                 var serviceOrdersGridItemInfos = grid.GetGridItems();
                 var serviceOrderFromGrid = gridItemsToSelect[0];
                 var expectedResultLastStepA = Logger.LogGetExpectedResultCheck(() => serviceOrdersGridItemInfos.Count, 1, "All expected Service Orders are dispatched.");
-                var expectedResultLastStepB = Logger.LogExpectedResultCheck<Func<string, string, bool>, bool>(Compare, true, "All expected Service Orders are dispatched.", serviceOrdersGridItemInfos[0].Attribute["Service Order No."], serviceOrderFromGrid.Attribute["Service Order No."]);
+                var expectedResultLastStepB = Logger.LogExpectedResultCheck<Func<string, string, bool>, bool>(Equals, true, "All expected Service Orders are dispatched.", serviceOrdersGridItemInfos[0].Attribute["Service Order No."], serviceOrderFromGrid.Attribute["Service Order No."]);
                 Assert.IsTrue(expectedResultLastStepA && expectedResultLastStepB, "All expected Service Orders are dispatched.");
 
 
@@ -510,7 +510,7 @@ namespace Draeger.Dynamics365.Testautomation.Testautomation.iService
                 var serviceOrdersGridItemInfos = grid.GetGridItems();
                 var serviceOrderFromGrid = gridItemsToSelect[0];
                 var expectedResultLastStepA = Logger.LogGetExpectedResultCheck(() => serviceOrdersGridItemInfos.Count, 1, "All expected Service Orders are dispatched.");
-                var expectedResultLastStepB = Logger.LogExpectedResultCheck<Func<string, string, bool>, bool>(Compare, true, "All expected Service Orders are dispatched.", serviceOrdersGridItemInfos[0].Attribute["Service Order No."], serviceOrderFromGrid.Attribute["Service Order No."]);
+                var expectedResultLastStepB = Logger.LogExpectedResultCheck<Func<string, string, bool>, bool>(Equals, true, "All expected Service Orders are dispatched.", serviceOrdersGridItemInfos[0].Attribute["Service Order No."], serviceOrderFromGrid.Attribute["Service Order No."]);
                 Assert.IsTrue(expectedResultLastStepA && expectedResultLastStepB, "All expected Service Orders are dispatched.");
 
 

@@ -17,7 +17,7 @@ namespace TaADOLog.Logger
             params object[] args)
         {
             logger.ForContext("MessageType", "Step")
-              .Information(messageTemplate, args);
+              .Information("{MessageType} " + messageTemplate, args);
         }
 
         public static void ExpectedResult(
@@ -26,7 +26,7 @@ namespace TaADOLog.Logger
             params object[] args)
         {
             logger.ForContext("MessageType", "ExpectedResult")
-              .Information(messageTemplate, args);
+              .Information("{MessageType} " + messageTemplate, args);
         }
         public static void ExpectedResultFail(
             this LoggerWrapper logger,
@@ -34,7 +34,7 @@ namespace TaADOLog.Logger
             params object[] args)
         {
             logger.ForContext("MessageType", "ExpectedResult")
-                .Fatal(messageTemplate, args);
+                .Fatal("{MessageType} " + messageTemplate, args);
         }
 
         public static void TestResult(
@@ -43,7 +43,7 @@ namespace TaADOLog.Logger
             params object[] args)
         {
             logger.ForContext("MessageType", "TestResult")
-              .Information(messageTemplate, args);
+              .Information("{MessageType} " + messageTemplate, args);
         }
 
         public static void Error(
@@ -52,7 +52,7 @@ namespace TaADOLog.Logger
             params object[] args)
         {
             logger.ForContext("MessageType", "Error")
-              .Error(messageTemplate, args);
+              .Error("{MessageType} " + messageTemplate, args);
         }
 
         public static void Fail(
@@ -61,7 +61,7 @@ namespace TaADOLog.Logger
             params object[] args)
         {
             logger.ForContext("MessageType", "Fail")
-              .Fatal(messageTemplate, args);
+              .Fatal("{MessageType} " + messageTemplate, args);
         }
 
         public const string VerboseScreenshot = "VerboseScreenshotBeforeInvoke";
@@ -125,6 +125,7 @@ namespace TaADOLog.Logger
             {
                 logger.Verbose(VerboseScreenshot);
                 var retVar = (T)method.DynamicInvoke(extendedMethodParameters.ToArray());
+                
                 logger.ExpectedResult("{ActionClassName} {ActionMethodName} {@Parameters} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, logdict, retVar, expectedResult, expectedResultMsg);
 
                 return (T)retVar;
@@ -162,12 +163,24 @@ namespace TaADOLog.Logger
 
                 logger.Verbose(VerboseScreenshot);
                 var retVar = (T)method.DynamicInvoke(extendedMethodParameters.ToArray());
-                logger.ExpectedResult("{ActionClassName} {ActionMethodName} {@Parameters} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, logdict, retVar, expectedResult, expectedResultMsg);
+                //logger.ExpectedResult("{ActionClassName} {ActionMethodName} {@Parameters} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, logdict, retVar, expectedResult, expectedResultMsg);
 
                 if (retVar is string s)
-                    return s.Contains((string)expectedResult);
+                {
+                    if (s.Contains((string)expectedResult))
+                        logger.ExpectedResult("{ActionClassName} {ActionMethodName} {@Parameters} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, logdict, retVar, expectedResult, expectedResultMsg);
+                    else
+                        logger.ExpectedResultFail("{ActionClassName} {ActionMethodName} {@Parameters} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, logdict, retVar, expectedResult, expectedResultMsg);
 
-                return retVar.Equals(expectedResult);
+                    return s.Contains((string) expectedResult);
+                }
+
+                if (retVar.Equals(expectedResult))
+                    logger.ExpectedResult("{ActionClassName} {ActionMethodName} {@Parameters} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, logdict, retVar, expectedResult, expectedResultMsg);
+                else
+                    logger.ExpectedResultFail("{ActionClassName} {ActionMethodName} {@Parameters} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, logdict, retVar, expectedResult, expectedResultMsg);
+
+                return retVar.Equals(expectedResult); 
             }
             catch (Exception)
             {
@@ -182,10 +195,23 @@ namespace TaADOLog.Logger
             {
                 logger.Verbose(VerboseScreenshot);
                 var retVar = (T)method.DynamicInvoke();
-                logger.ExpectedResult("{ActionClassName} {ActionMethodName} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, retVar, expectedResult, expectedResultMsg);
+                //logger.ExpectedResult("{ActionClassName} {ActionMethodName} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, retVar, expectedResult, expectedResultMsg);
 
                 if (retVar is string s)
+                {
+                    if (s.Contains((string) expectedResult))
+                        logger.ExpectedResult("{ActionClassName} {ActionMethodName} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, retVar, expectedResult, expectedResultMsg);
+                    else
+                        logger.ExpectedResultFail("{ActionClassName} {ActionMethodName} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, retVar, expectedResult, expectedResultMsg);
+
                     return s.Contains((string) expectedResult);
+                }
+
+                if (retVar.Equals(expectedResult))
+                    logger.ExpectedResult("{ActionClassName} {ActionMethodName} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, retVar, expectedResult, expectedResultMsg);
+                else
+                    logger.ExpectedResultFail("{ActionClassName} {ActionMethodName} with value {@ReturnValue} expected result {expectedResult} ({expectedResultMessage})", method.Method.DeclaringType.Name, method.Method.Name, retVar, expectedResult, expectedResultMsg);
+
                 return retVar.Equals(expectedResult);
             }
             catch (Exception)

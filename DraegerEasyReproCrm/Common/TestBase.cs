@@ -223,7 +223,7 @@ namespace Draeger.Dynamics365.Testautomation.Common
             return $"[{attr.Sort}] {attr.WorkItem}: {attr.Description}";
         }
 
-        protected bool Compare(string first, string second)
+        protected bool Equals(string first, string second)
         {
             return first.Equals(second);
         }

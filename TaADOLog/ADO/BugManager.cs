@@ -311,11 +311,11 @@ namespace TaADOLog.ADO
         private static string LoggerToReproStepsHTML(List<ListSinkInfo<TestContext>> loggerSinkList, WorkItemTrackingHttpClient witClient, int actionFailedIndex, WorkItem testCase)
         {
             String reproStepsHTML;
-            var testcaseInfo = loggerSinkList[0].Properties["TestCaseInfo"] as DictionaryValue;
+            var testcaseInfo = loggerSinkList.First(logInfo => logInfo.Properties.ContainsKey("TestCaseInfo")).Properties["TestCaseInfo"] as DictionaryValue;
             var title = testcaseInfo.Elements[new ScalarValue(PropertyKeys.Title)];
             var url = testcaseInfo.Elements[new ScalarValue(PropertyKeys.Url)];
-            var testcaseId = loggerSinkList[0].TestContext.Properties["TestCaseId"];
-            var solutionVersion = loggerSinkList[0].TestContext.Properties["SolutionVersion"];
+            var testcaseId = loggerSinkList.First(logInfo => logInfo.TestContext.Properties.Contains("TestCaseId")).TestContext.Properties["TestCaseId"];
+            var solutionVersion = loggerSinkList.FirstOrDefault(logInfo => logInfo.TestContext.Properties.Contains("SolutionVersion"))?.TestContext.Properties["SolutionVersion"];
             var duration = loggerSinkList.Last().DateTime - loggerSinkList.First().DateTime;
 
 
@@ -388,7 +388,7 @@ namespace TaADOLog.ADO
                                     using (var imgSimilarity = new MagickImage())
                                     {
                                         double similarity = img1.Compare(img2, new ErrorMetric(), imgSimilarity);
-                                        if (similarity > 0.99)
+                                        if (similarity > 0.95)
                                             addAttachment = false;
                                     }
                                 }
@@ -437,7 +437,7 @@ namespace TaADOLog.ADO
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid \">" +
                     $"<i>{log.DateTime:dd/MM/yyyy HH:mm:ss.fff}</i></td>" +
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\">" +
-                    $"{log.Level}</td>" +
+                    $"{(log.Properties.ContainsKey("MessageType") ? log.Properties["MessageType"].ToString() : log.Level)}</td>" +
                     $"<td style=\"padding:10px;border-color:#c0c0c0; border-width: 1px; border-style:solid\"" +
                     (!log.Step.IsNullOrEmpty() ? $"title=\"'{stepDict[actualStep]}'\">" : ">") +
                     $"{log.Step}</td>" +
