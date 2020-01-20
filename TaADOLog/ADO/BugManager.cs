@@ -388,7 +388,7 @@ namespace TaADOLog.ADO
                                     using (var imgSimilarity = new MagickImage())
                                     {
                                         double diff = img1.Compare(img2, ErrorMetric.Fuzz, imgSimilarity);
-                                        if (diff < 0.1)
+                                        if (diff < 0.01)
                                             addAttachment = false;
                                     }
                                 }
