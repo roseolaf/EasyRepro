@@ -11,7 +11,6 @@ namespace TaADOLog.Logger
     public class LoggerWrapper : ILogger
     {
         private Serilog.Core.Logger _logger;
-
         private int _step;
 
         public LoggerWrapper(Serilog.Core.Logger logger)
@@ -187,31 +186,31 @@ namespace TaADOLog.Logger
 
         public ILogger ForContext(ILogEventEnricher enricher)
         {
-            _logger.ForContext(enricher);
+            _logger = (Serilog.Core.Logger)_logger.ForContext(enricher);
             return this;  
         }
 
         public ILogger ForContext(IEnumerable<ILogEventEnricher> enrichers)
         {
-            _logger.ForContext(enrichers);
+            _logger = (Serilog.Core.Logger)_logger.ForContext(enrichers);
             return this; 
         }
 
         public ILogger ForContext(string propertyName, object value, bool destructureObjects = false)
         {
-            _logger.ForContext(propertyName, value, destructureObjects);
+            _logger = (Serilog.Core.Logger)_logger.ForContext(propertyName, value, destructureObjects);
             return this; 
         }
 
         public ILogger ForContext<TSource>()
         {
-            ((ILogger)_logger).ForContext<TSource>();
+            _logger = (Serilog.Core.Logger)((ILogger)_logger).ForContext<TSource>();
             return this;
         }
 
         public ILogger ForContext(Type source)
         {
-            _logger.ForContext(source);
+            _logger = (Serilog.Core.Logger)_logger.ForContext(source);
             return this;
         }
 

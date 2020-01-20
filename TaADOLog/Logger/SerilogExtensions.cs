@@ -17,7 +17,7 @@ namespace TaADOLog.Logger
             params object[] args)
         {
             logger.ForContext("MessageType", "Step")
-              .Information("{MessageType} " + messageTemplate, args);
+              .Information(messageTemplate, args);
         }
 
         public static void ExpectedResult(
@@ -26,7 +26,7 @@ namespace TaADOLog.Logger
             params object[] args)
         {
             logger.ForContext("MessageType", "ExpectedResult")
-              .Information("{MessageType} " + messageTemplate, args);
+              .Information(messageTemplate, args);
         }
         public static void ExpectedResultFail(
             this LoggerWrapper logger,
@@ -34,7 +34,7 @@ namespace TaADOLog.Logger
             params object[] args)
         {
             logger.ForContext("MessageType", "ExpectedResult")
-                .Fatal("{MessageType} " + messageTemplate, args);
+                .Fatal(messageTemplate, args);
         }
 
         public static void TestResult(
@@ -43,7 +43,7 @@ namespace TaADOLog.Logger
             params object[] args)
         {
             logger.ForContext("MessageType", "TestResult")
-              .Information("{MessageType} " + messageTemplate, args);
+              .Information( messageTemplate, args);
         }
 
         public static void Error(
@@ -52,7 +52,7 @@ namespace TaADOLog.Logger
             params object[] args)
         {
             logger.ForContext("MessageType", "Error")
-              .Error("{MessageType} " + messageTemplate, args);
+              .Error(messageTemplate, args);
         }
 
         public static void Fail(
@@ -61,7 +61,7 @@ namespace TaADOLog.Logger
             params object[] args)
         {
             logger.ForContext("MessageType", "Fail")
-              .Fatal("{MessageType} " + messageTemplate, args);
+              .Fatal(messageTemplate, args);
         }
 
         public const string VerboseScreenshot = "VerboseScreenshotBeforeInvoke";

@@ -84,6 +84,8 @@ namespace Draeger.Dynamics365.Testautomation.Common
             var loggerConfig = new LoggerConfiguration()
                 .MinimumLevel.Verbose()
                 .Enrich.With(new ADOEnricher(TestContext))
+                .Enrich.FromLogContext()
+                .Enrich.With()
                 .WriteTo.File(new JsonFormatter(renderMessage: true),
                     Path.Combine(Directory.GetCurrentDirectory(), "/logs/log.json"),
                     rollingInterval: RollingInterval.Day,
