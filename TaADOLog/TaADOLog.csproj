@@ -140,6 +140,8 @@
     <Compile Include="ADO\ADOManager.cs" />
     <Compile Include="ADO\BugManager.cs" />
     <Compile Include="ADO\PropertyKeys.cs" />
+    <Compile Include="ADO\HTML\ReproSteps.cs" />
+    <Compile Include="ADO\HTML\SystemInfo.cs" />
     <Compile Include="Logger\ADOEnricher.cs" />
     <Compile Include="Logger\Sink\ListSinkConfigurationDefault.cs" />
     <Compile Include="Logger\Sink\ListSinkDefault.cs" />
@@ -171,5 +173,6 @@
       <EmbedInteropTypes>False</EmbedInteropTypes>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
