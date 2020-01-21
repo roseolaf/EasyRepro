@@ -93,10 +93,10 @@ namespace TaADOLog.ADO
                 var actionFailedIndex = loggerSinkList.IndexOf(failedLine) - 1;
 
 
-                var exceptionType = exception.InnerException != null
-                    ? exception.InnerException.GetType().Name
-                    : exception.GetType().Name;
-
+                //var exceptionType = exception.InnerException != null
+                //    ? exception.InnerException.GetType().Name
+                //    : exception.GetType().Name;
+                var exceptionType = exception.GetType().Name;
                 exceptionType = exceptionType.Replace("Exception", "");
                 exceptionType = Regex.Replace(exceptionType, @"(\B[A-Z]+?(?=[A-Z][^A-Z])|\B[A-Z]+?(?=[^A-Z]))", " $1");
 
