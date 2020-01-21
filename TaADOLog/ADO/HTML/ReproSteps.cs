@@ -83,7 +83,7 @@ namespace TaADOLog.ADO.HTML
             return tempScreenshot;
         }
 
-        private static string CloseTable( AttachmentReference screenshotError)
+        private static string CloseTable(AttachmentReference screenshotError)
         {
             string returnValue = "</tbody></table>" +
                               "<br/>" +
@@ -136,94 +136,92 @@ namespace TaADOLog.ADO.HTML
             return returnValue;
         }
 
-        private static readonly object htmlLock = new object();
 
         public static string GenerateHtml<T>(List<ListSinkInfo<T>> loggerSinkList, WorkItemTrackingHttpClient witClient, int actionFailedIndex, WorkItem testCase)
         {
-            lock (htmlLock)
+
+            String reproStepsHTML;
+            var testcaseInfo = loggerSinkList.FirstOrDefault(logInfo => logInfo.Properties.ContainsKey("TestCaseInfo"))?.Properties["TestCaseInfo"] as DictionaryValue;
+            var title = testcaseInfo.Elements[new ScalarValue(PropertyKeys.Title)];
+            var url = testcaseInfo.Elements[new ScalarValue(PropertyKeys.Url)];
+            var testcaseId = testcaseInfo.Elements[new ScalarValue(PropertyKeys.Id)];
+            var solutionVersion = BugManager.GetSolutionVersion(loggerSinkList);
+            var duration = loggerSinkList.Last().DateTime - loggerSinkList.First().DateTime;
+
+
+            var steps = testCase.Fields["Microsoft.VSTS.TCM.Steps"].ToString();
+            var stepDict = new Dictionary<int, string>();
+
+            var htmlstepsDoc = new HtmlDocument();
+            htmlstepsDoc.LoadHtml(steps);
+            var stepsNode = htmlstepsDoc.DocumentNode.SelectNodes("//step");
+
+            var i = 1;
+            foreach (var step in stepsNode)
             {
-                String reproStepsHTML;
-                var testcaseInfo = loggerSinkList.FirstOrDefault(logInfo => logInfo.Properties.ContainsKey("TestCaseInfo"))?.Properties["TestCaseInfo"] as DictionaryValue;
-                var title = testcaseInfo.Elements[new ScalarValue(PropertyKeys.Title)];
-                var url = testcaseInfo.Elements[new ScalarValue(PropertyKeys.Url)];
-                var testcaseId = testcaseInfo.Elements[new ScalarValue(PropertyKeys.Id)];
-                var solutionVersion = BugManager.GetSolutionVersion(loggerSinkList);
-                var duration = loggerSinkList.Last().DateTime - loggerSinkList.First().DateTime;
+                var text = step.InnerText;
+                text = text.Replace("&lt;", "<");
+                text = text.Replace("&gt;", ">");
+                text = text.Replace("\"", "'");
+                var tmpDoc = new HtmlDocument();
+                tmpDoc.LoadHtml(text);
+                text = tmpDoc.DocumentNode.InnerText;
+                text = text.Replace("&amp;nbsp;", "");
 
-
-                var steps = testCase.Fields["Microsoft.VSTS.TCM.Steps"].ToString();
-                var stepDict = new Dictionary<int, string>();
-
-                var htmlstepsDoc = new HtmlDocument();
-                htmlstepsDoc.LoadHtml(steps);
-                var stepsNode = htmlstepsDoc.DocumentNode.SelectNodes("//step");
-
-                var i = 1;
-                foreach (var step in stepsNode)
-                {
-                    var text = step.InnerText;
-                    text = text.Replace("&lt;", "<");
-                    text = text.Replace("&gt;", ">");
-                    text = text.Replace("\"", "'");
-                    var tmpDoc = new HtmlDocument();
-                    tmpDoc.LoadHtml(text);
-                    text = tmpDoc.DocumentNode.InnerText;
-                    text = text.Replace("&amp;nbsp;", "");
-
-                    stepDict.Add(i, text);
-                    i++;
-                }
-
-                reproStepsHTML = OpenTable(testcaseId, url, title, duration, solutionVersion);
-
-                string screenshotLastStep = null;
-                AttachmentReference screenshotError = null;
-                AttachmentReference secondScreenshot = null;
-                foreach (var log in loggerSinkList)
-                {
-
-                    secondScreenshot = GetSecondScreenshot(witClient, log, screenshotLastStep);
-
-                    if (log.LogEvent.Level < LogEventLevel.Information)
-                        continue;
-
-                    var logmsgModified = log.Message.Replace("\r\n", "<br>");
-                    if (log.EntityUrl.IsNullOrEmpty())
-                    {
-                        var htmlLink = new Regex(@"(http[^\s""']+)");
-                        var linkValue = htmlLink.Match(logmsgModified).Value;
-                        logmsgModified = htmlLink.Replace(logmsgModified, $"<a href=\"{linkValue}\">{linkValue}</a>");
-                    }
-
-                    AttachmentReference screenshot = null;
-
-                    if (!log.Multimedia.ToString().IsNullOrEmpty())
-                    {
-                        screenshotLastStep = log.Multimedia.ToString();
-                        FileStream attStream =
-                            new FileStream(log.Multimedia.ToString(), FileMode.Open, FileAccess.Read);
-                        screenshot = witClient.CreateAttachmentAsync(attStream).Result; // upload file
-                        attStream.Dispose();
-                    }
-                    
-                    int actualStep = -1;
-                    if (!log.Step.IsNullOrEmpty())
-                        actualStep = Int32.Parse(log.Step);
-
-
-                    reproStepsHTML += AddRow(loggerSinkList, actionFailedIndex, log, stepDict, actualStep, logmsgModified, screenshot, ref secondScreenshot);
-                    
-                    if (loggerSinkList.IndexOf(log) == actionFailedIndex && screenshot != null)
-                    {
-                        screenshotError = screenshot;
-                    }
-
-                }
-
-                reproStepsHTML += CloseTable(screenshotError);
-
-                return reproStepsHTML;
+                stepDict.Add(i, text);
+                i++;
             }
+
+            reproStepsHTML = OpenTable(testcaseId, url, title, duration, solutionVersion);
+
+            string screenshotLastStep = null;
+            AttachmentReference screenshotError = null;
+            AttachmentReference secondScreenshot = null;
+            foreach (var log in loggerSinkList)
+            {
+
+                secondScreenshot = GetSecondScreenshot(witClient, log, screenshotLastStep);
+
+                if (log.LogEvent.Level < LogEventLevel.Information)
+                    continue;
+
+                var logmsgModified = log.Message.Replace("\r\n", "<br>");
+                if (log.EntityUrl.IsNullOrEmpty())
+                {
+                    var htmlLink = new Regex(@"(http[^\s""']+)");
+                    var linkValue = htmlLink.Match(logmsgModified).Value;
+                    logmsgModified = htmlLink.Replace(logmsgModified, $"<a href=\"{linkValue}\">{linkValue}</a>");
+                }
+
+                AttachmentReference screenshot = null;
+
+                if (!log.Multimedia.ToString().IsNullOrEmpty())
+                {
+                    screenshotLastStep = log.Multimedia.ToString();
+                    FileStream attStream =
+                        new FileStream(log.Multimedia.ToString(), FileMode.Open, FileAccess.Read);
+                    screenshot = witClient.CreateAttachmentAsync(attStream).Result; // upload file
+                    attStream.Dispose();
+                }
+
+                int actualStep = -1;
+                if (!log.Step.IsNullOrEmpty())
+                    actualStep = Int32.Parse(log.Step);
+
+
+                reproStepsHTML += AddRow(loggerSinkList, actionFailedIndex, log, stepDict, actualStep, logmsgModified, screenshot, ref secondScreenshot);
+
+                if (loggerSinkList.IndexOf(log) == actionFailedIndex && screenshot != null)
+                {
+                    screenshotError = screenshot;
+                }
+
+            }
+
+            reproStepsHTML += CloseTable(screenshotError);
+
+            return reproStepsHTML;
         }
+
     }
 }
