@@ -404,20 +404,20 @@ namespace Microsoft.Dynamics365.UIAutomation.Browser
 
         public static void WaitForElement(this IWebElement element)
         {
-            element.WaitUntilElement(e => e.Displayed && e.Enabled, TimeSpan.FromSeconds(25));
+            element.WaitUntilElement(e => e.Displayed && e.Enabled, TimeSpan.FromSeconds(60));
             Thread.Sleep(50);
         }
 
         public static void WaitForLoading(this IWebElement element)
         {
             Thread.Sleep(100);
-            element.WaitUntilElement(e => !e.FindElements(By.XPath("//div[@class='progressDot']")).Any(elem => int.Parse(elem.GetAttribute("clientHeight")) > 0), TimeSpan.FromSeconds(60));
+            element.WaitUntilElement(e => !e.FindElements(By.XPath("//div[@class='progressDot']")).Any(elem => int.Parse(elem.GetAttribute("clientHeight")) > 0), TimeSpan.FromSeconds(180));
         }
 
         public static void WaitForSaving(this IWebElement element)
         {
             Thread.Sleep(100);
-            element.WaitUntilElement(e => !e.FindElements(By.XPath("//span[starts-with(text(),'Saving')]")).Any(), TimeSpan.FromSeconds(60));
+            element.WaitUntilElement(e => !e.FindElements(By.XPath("//span[starts-with(text(),'Saving')]")).Any(), TimeSpan.FromSeconds(180));
         }
 
         public static void _ScrollIntoViewIfNeeded(this IWebDriver driver, IWebElement webElement)
